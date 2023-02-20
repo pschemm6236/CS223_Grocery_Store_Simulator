@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Neck {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) { //begin main 
 		
 		Scanner scan = new Scanner(System.in);
 		int minArrivalTime; 
@@ -29,5 +29,17 @@ public class Neck {
 		numCustomers = scan.nextInt();
 		
 		
-	}
+	} //end main 
+	
+	public static int randomGenerator(int minArrivalTime, int maxArrivalTime) { //begin randomGenerator  
+		
+		 // Calculate the range of values
+	    int range = maxArrivalTime - minArrivalTime + 1;
+	    // Generate a random number within the range
+	    int randomArrivalTime = (int)(Math.random() * range) + minArrivalTime;
+	    // Return the random number
+	    return randomArrivalTime;
+		
+	} //end randomGenerator 
+	
 }
