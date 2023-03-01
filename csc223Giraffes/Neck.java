@@ -1,5 +1,6 @@
 package csc223Giraffes;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Neck {
@@ -28,10 +29,16 @@ public class Neck {
 		System.out.println("Enter number of customers to serve:");
 		numCustomers = scan.nextInt();
 		
+		ArrayList<Customer> customers = new ArrayList<Customer>(); 
 		
+		int randomArrival = randomArrival(minArrivalTime, maxArrivalTime);
+		
+		int randomService = randomService(minServiceTime, maxServiceTime);
+		
+			
 	} //end main 
 	
-	public static int randomGenerator(int minArrivalTime, int maxArrivalTime) { //begin randomGenerator  
+	public static int randomArrival(int minArrivalTime, int maxArrivalTime) { //begin randomGenerator  
 		
 		 // Calculate the range of values
 	    int range = maxArrivalTime - minArrivalTime + 1;
@@ -42,4 +49,19 @@ public class Neck {
 		
 	} //end randomGenerator 
 	
+	
+	public static int randomService(int minService, int maxService) { //begin randomGenerator 
+		
+		//calculate the range of values 
+		int range = maxService - minService + 1;
+		
+		//generate random number within the range 
+		int randomServiceTime = (int)(Math.random() * range) + minService;
+		
+		//return the random number
+		return randomServiceTime;
+			
+	} //end randomService
+	
+
 }

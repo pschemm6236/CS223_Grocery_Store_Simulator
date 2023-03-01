@@ -8,4 +8,6 @@ public class CheckoutQueue { //begin checkoutQueue class
 	 * 
 	 */
 	
+	
+	
 } //end checkoutQueue class 
