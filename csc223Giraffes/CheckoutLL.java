@@ -103,11 +103,11 @@ public class CheckoutLL {
         } else {
             // The queue is not empty, so the customer's finish time is the finish time of the customer at the rear of the queue plus its own service time
             Customer rearCustomer = checkoutLines[smallestQueueIndex].rearPeek();
-            customerFinishTime = rearCustomer.getFinishTime() + customer.getServiceTime();
+            customerFinishTime = rearCustomer.getEndTime() + customer.getServiceTime();
         }
 
         // Set the customer's finish time and enqueue it into the correct queue
-        customer.setFinishTime(customerFinishTime);
+        customer.setEndTime(customerFinishTime);
         checkoutLines[smallestQueueIndex].enqueue(customer);
     }
 
