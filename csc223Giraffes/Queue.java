@@ -64,9 +64,12 @@ public class Queue {
         size++;
     }
 
+    
+    //need to change the following methods for exceptions 
+    //we should probably make a costume exception class 
     public Customer dequeue() {
         if (isEmpty()) {
-            throw new NoSuchElementException("Queue is empty");
+            throw new QueueException("Queue is empty");
         }
         Customer customer = front.getCustomer();
         front = front.getNext();
@@ -79,14 +82,14 @@ public class Queue {
 
     public Customer frontPeek() {
         if (isEmpty()) {
-            throw new NoSuchElementException("Queue is empty");
+            throw new QueueException("Queue is empty");
         }
         return front.getCustomer();
     }
 
     public Customer rearPeek() {
         if (isEmpty()) {
-            throw new NoSuchElementException("Queue is empty");
+            throw new QueueException("Queue is empty");
         }
         return rear.getCustomer();
     }
