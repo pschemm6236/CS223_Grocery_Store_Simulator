@@ -49,5 +49,9 @@ public class Simulator {
 			ll.add(cc.getCustomers().get(i));
 		}
 	}
+	
+	public static void runSim() {
+		
+	}
 
 }

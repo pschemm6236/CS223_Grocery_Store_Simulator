@@ -1,5 +1,7 @@
 package csc223Giraffes;
 
+import java.util.ArrayList;
+
 /*
  * 
  * The CheckoutLL class represents the collection of all checkout lanes, 
@@ -110,6 +112,8 @@ public class CheckoutLL {
         customer.setEndTime(customerFinishTime);
         checkoutLines[smallestQueueIndex].enqueue(customer);
     }
+    
+    
 
    
 } // end class CheckoutLL
