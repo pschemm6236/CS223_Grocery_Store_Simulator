@@ -31,7 +31,8 @@ public class SimulatorDriver {
 		populateLL(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime);
 		
 		// Create a CustomerCreator object with minimum and maximum interarrival/service times
-		CustomerCreator creator = new CustomerCreator(1, 5, 1, 10);
+		CustomerCreator creator = new CustomerCreator(numCustomers,  minArrivalTime,  maxArrivalTime,  minServiceTime,
+				 maxServiceTime, 0,  0);
 
 		// Create three queues (lines) for checkout
 		Queue checkoutA = new Queue();
