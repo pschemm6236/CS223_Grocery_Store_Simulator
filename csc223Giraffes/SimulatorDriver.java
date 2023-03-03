@@ -2,7 +2,7 @@ package csc223Giraffes;
 
 import java.util.Scanner;
 
-public class Simulator {
+public class SimulatorDriver {
 
 	public static void main(String[] args) { // begin main
 

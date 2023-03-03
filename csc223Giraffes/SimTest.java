@@ -90,12 +90,21 @@ public class SimTest {
 				maxServiceTime, 0, 0);
 
 		cc.populateCustomers(); // populate the ArrayList of Customers method
+		
+		Queue a = new Queue();
+		Queue b = new Queue(); 
+		Queue c = new Queue();
 
 		CheckoutLL ll = new CheckoutLL();
-		Node a = ll.getA();
+		/**
+		 * Node a = ll.getA();
 		Node b = ll.getB();
 		Node c = ll.getC();
 
+		 */
+		
+		
+		
 		int time = 0;
 		while (true) {
 			// Check if all customers have been served
@@ -110,59 +119,130 @@ public class SimTest {
 			}
 
 			// Serve customers at checkout A
-			if (a.getCustomer() != null) {
-				a.getCustomer().setServiceTime(a.getCustomer().getServiceTime() - 1);
+			if (a.frontPeek() != null) {
+				cc.getNextCustomer().setServiceTime(cc.getNextCustomer().getServiceTime() - 1);
+				if(cc.getNextCustomer().getServiceTime() == 0) {
+					cc.getNextCustomer().setEndTime(time);
+					cc.setCustomers(null);
+				}
+				/**
+				 * a.getCustomer().setServiceTime(a.getCustomer().getServiceTime() - 1);
 				if (a.getCustomer().getServiceTime() == 0) {
 					a.getCustomer().setEndTime(time);
 					a.setCustomer(null);
 				}
+				 */
+				
 			}
 
 			// Serve customers at checkout B
-			if (b.getCustomer() != null) {
-				b.getCustomer().setServiceTime(b.getCustomer().getServiceTime() - 1);
+			if (b.frontPeek() != null) {
+				cc.getNextCustomer().setServiceTime(cc.getNextCustomer().getServiceTime() - 1);
+				if(cc.getNextCustomer().getServiceTime() == 0) {
+					cc.getNextCustomer().setEndTime(time);
+					cc.setCustomers(null);
+				}
+				/**
+				 * b.getCustomer().setServiceTime(b.getCustomer().getServiceTime() - 1);
 				if (b.getCustomer().getServiceTime() == 0) {
 					b.getCustomer().setEndTime(time);
 					b.setCustomer(null);
 				}
+				 */
+				
 			}
 
 			// Serve customers at checkout C
-			if (c.getCustomer() != null) {
-				c.getCustomer().setServiceTime(c.getCustomer().getServiceTime() - 1);
+			if (c.frontPeek() != null) {
+				cc.getNextCustomer().setServiceTime(cc.getNextCustomer().getServiceTime() - 1);
+				if(cc.getNextCustomer().getServiceTime() == 0) {
+					cc.getNextCustomer().setEndTime(time);
+					cc.setCustomers(null);
+				}
+				/**c.getCustomer().setServiceTime(c.getCustomer().getServiceTime() - 1);
 				if (c.getCustomer().getServiceTime() == 0) {
 					c.getCustomer().setEndTime(time);
 					c.setCustomer(null);
 				}
+				**/
 			}
 
 			// Assign customers to checkout A if it's free
-			if (a.getCustomer() == null && ll.size() > 0) {
+			/**if (a.getCustomer() == null && ll.size() > 0) {
 				a.setCustomer(ll.remove());
 				a.getCustomer().setStartTime(time);
 			}
+			**/
+			
+			// Assign customers to checkout A if it's free
+			if(cc.getNextCustomer() == null && ll.size() > 0) {
+				Customer current = cc.getNextCustomer();
+				
+				//since assigning to checkout a use index 0
+				//cc.setCustomers(0, ll.remove());
+				
+				//ll.setCustomer(0, current);
+				a.enqueue(current);
+				current.setStartTime(time);
+				
+			}
 
 			// Assign customers to checkout B if it's free
-			if (b.getCustomer() == null && ll.size() > 0) {
+			/**if (b.getCustomer() == null && ll.size() > 0) {
 				b.setCustomer(ll.remove());
 				b.getCustomer().setStartTime(time);
 			}
+			**/
+			
+			// Assign customers to checkout B if it's free
+			if(cc.getNextCustomer() == null && ll.size() > 0) {
+				Customer current = cc.getNextCustomer();
+				
+				//since assigning to checkout a use index 0
+				//cc.setCustomers(0, ll.remove());
+				
+				//ll.setCustomer(1, current);
+				b.enqueue(current);
+				current.setStartTime(time);
+				
+			}
 
 			// Assign customers to checkout C if it's free
+			/**
 			if (c.getCustomer() == null && ll.size() > 0) {
 				c.setCustomer(ll.remove());
 				c.getCustomer().setStartTime(time);
 			}
+			**/
+			// Assign customers to checkout C if it's free
+			if(cc.getNextCustomer() == null && ll.size() > 0) {
+				Customer current = cc.getNextCustomer();
+				
+				//since assigning to checkout a use index 0
+				//cc.setCustomers(0, ll.remove());
+				
+				//ll.setCustomer(1, current);
+				c.enqueue(current);
+				current.setStartTime(time);
+				
+			}
+			
 
 			// Print status of the checkout counters at each time interval
 			System.out.println("Time:" + time);
 			System.out.println("\" ");
 			// Check status of Checkout A
 			System.out.print("\tCheckout A: ");
-			if (a.getCustomer() != null) {
+			
+			/**if (a.getCustomer() != null) {
 				System.out.println("Customer " + a.getCustomer().getId() + " (service time left: "
 						+ a.getCustomer().getServiceTime() + ")");
-			} else {
+			} **/
+			if (cc.getNextCustomer() != null) {
+				System.out.println("Customer " + cc.getNextCustomer().getCustID() + " (service time left: "
+						+ cc.getNextCustomer().getServiceTime() + ")");
+			}
+			else {
 				System.out.println("free");
 			}
 

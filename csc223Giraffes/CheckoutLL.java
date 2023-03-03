@@ -2,6 +2,7 @@ package csc223Giraffes;
 
 import java.util.ArrayList;
 
+
 /*
  * 
  * The CheckoutLL class represents the collection of all checkout lanes, 
@@ -72,15 +73,17 @@ public class CheckoutLL {
     }
     
     // Fields
-    private Queue[] checkoutLines;
+    private ArrayList<Queue> checkoutLines;
     private int numCheckouts;
 
     // Constructor
     public CheckoutLL(int numCheckouts) {
         this.numCheckouts = numCheckouts;
-        checkoutLines = new Queue[numCheckouts];
+        //checkoutLines = new Queue[numCheckouts];
+        checkoutLines = new ArrayList<Queue>(numCheckouts);
         for (int i = 0; i < numCheckouts; i++) {
-            checkoutLines[i] = new Queue();
+        	Queue q = new Queue();
+            checkoutLines.add(q);
         }
     }
 
@@ -89,31 +92,49 @@ public class CheckoutLL {
     	
         // Find the checkout with the smallest queue
         int smallestQueueIndex = 0;
-        int smallestQueueSize = checkoutLines[0].size();
+        int smallestQueueSize = checkoutLines.get(0).size();
         for (int i = 1; i < numCheckouts; i++) {
-            if (checkoutLines[i].size() < smallestQueueSize) {
+            if (checkoutLines.get(i).size() < smallestQueueSize) {
                 smallestQueueIndex = i;
-                smallestQueueSize = checkoutLines[i].size();
+                smallestQueueSize = checkoutLines.get(i).size();
             }
         }
 
         // Calculate the customer's finish time
         int customerFinishTime;
-        if (checkoutLines[smallestQueueIndex].isEmpty()) {
+        if (checkoutLines.get(0).isEmpty()) {
             // The queue is empty, so the customer's finish time is its arrival time plus service time
             customerFinishTime = customer.getArrivalTime() + customer.getServiceTime();
         } else {
-            // The queue is not empty, so the customer's finish time is the finish time of the customer at the rear of the queue plus its own service time
-            Customer rearCustomer = checkoutLines[smallestQueueIndex].rearPeek();
+            // The queue is not empty, so the customer's finish time is the finish time of the customer 
+        	//at the rear of the queue plus its own service time
+        	Queue index = checkoutLines.get(smallestQueueIndex);
+            Customer rearCustomer = checkoutLines.get(smallestQueueIndex).rearPeek();
             customerFinishTime = rearCustomer.getEndTime() + customer.getServiceTime();
         }
 
         // Set the customer's finish time and enqueue it into the correct queue
         customer.setEndTime(customerFinishTime);
-        checkoutLines[smallestQueueIndex].enqueue(customer);
+        //checkoutLines[smallestQueueIndex].enqueue(customer);
+        checkoutLines.get(smallestQueueIndex).enqueue(customer);
     }
     
-    
+    public int size()
+    {
+       int count = 0;
+       Node p = front;     
+       while (p != null)
+       {
+           // There is an element at p
+           count ++;
+           p = p.next;
+       }
+       return count;
+    }
 
+    public void setCustomer(int laneIndex, Customer customer) {
+        checkoutLines.get(laneIndex).enqueue(customer);
+        
+    }
    
 } // end class CheckoutLL
