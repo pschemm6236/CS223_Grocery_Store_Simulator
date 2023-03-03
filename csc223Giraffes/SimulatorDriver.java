@@ -29,6 +29,36 @@ public class SimulatorDriver {
 		numCustomers = scan.nextInt();
 
 		populateLL(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime);
+		
+		// Create a CustomerCreator object with minimum and maximum interarrival/service times
+		CustomerCreator creator = new CustomerCreator(1, 5, 1, 10);
+
+		// Create three queues (lines) for checkout
+		Queue checkoutA = new Queue();
+		Queue checkoutB = new Queue();
+		Queue checkoutC = new Queue();
+
+		// Create a Simulator object with the number of customers to simulate
+		Simulator sim = new Simulator(20, creator, checkoutA, checkoutB, checkoutC);
+
+		// Run the simulation and get the average waiting time
+		double avgWaitTime = sim.run();
+
+		// Print the average waiting time
+		System.out.println("Average waiting time: " + avgWaitTime);
+
+		// Print the details for each customer
+		sim.printCustomerDetails();
+
+		// Print the total time that checkout lanes were not in use
+		System.out.println("Total idle time: " + sim.getIdleTime());
+
+		// Print the number of satisfied and dissatisfied customers
+		int satisfied = sim.getSatisfiedCustomers();
+		int dissatisfied = sim.getDissatisfiedCustomers();
+		System.out.println("Satisfied customers: " + satisfied);
+		System.out.println("Dissatisfied customers: " + dissatisfied);
+
 
 	} // end main
 
