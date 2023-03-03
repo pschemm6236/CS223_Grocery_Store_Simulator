@@ -26,7 +26,7 @@ public class CustomerCreator { // begin Customer creator class
 	private int minInterarrivalTime;
 	private int maxInterarrivalTime;
 	// AL of customers field
-	private ArrayList<Customer> customers;
+	
 
 	public CustomerCreator(int numCustomers, int minArrivalTime, int maxArrivalTime, int minServiceTime,
 			int maxServiceTime, int minInterarrivalTime, int maxInterarrivalTime) {
@@ -37,7 +37,6 @@ public class CustomerCreator { // begin Customer creator class
 		this.maxServiceTime = maxServiceTime;
 		this.minInterarrivalTime = minInterarrivalTime;
 		this.maxInterarrivalTime = maxInterarrivalTime;
-		this.customers = new ArrayList<>();
 	}
 
 	public int randomArrival(int minArrivalTime, int maxArrivalTime) { // begin randomGenerator
@@ -64,30 +63,31 @@ public class CustomerCreator { // begin Customer creator class
 
 	} // end randomService
 
-	public void populateCustomers() { // begin populate Customers
+	public void populateCustomers (ArrayList<Customer> customers){ // begin populate Customers
 		int arrivalTime = 0;
 
 		
 		for (int i = 0; i < numCustomers; i++) { // begin for
 
-			int interarrivalTime = randomArrival(minInterarrivalTime, maxInterarrivalTime);
+			int interarrivalTime = randomArrival(minArrivalTime, maxArrivalTime);
 
 			int serviceTime = randomService(minServiceTime, maxServiceTime);
 
 			arrivalTime += interarrivalTime;
 
 			// create customer object
-			Customer customer = new Customer(arrivalTime, serviceTime, 0, 0, "");
+			Customer customer = new Customer(arrivalTime, serviceTime, 0, 0);
 
 			customers.add(customer);
 
 		} // end for
+		
 	} // end populateCustomers
 
 	
 	//might need to change this so LL object is passed in and it gets the next customer
 	//in the LL rather than using the AL of costumers that was generated 
-	public Customer getNextCustomer() { // begin getNextCustomer
+	public Customer getNextCustomer(ArrayList<Customer> customers) { // begin getNextCustomer
 
 		if (customers.isEmpty()) {
 			return null;
@@ -157,12 +157,6 @@ public class CustomerCreator { // begin Customer creator class
 		this.maxInterarrivalTime = maxInterarrivalTime;
 	}
 
-	public ArrayList<Customer> getCustomers() {
-		return customers;
-	}
 
-	public void setCustomers(ArrayList<Customer> customers) {
-		this.customers = customers;
-	}
 
 } // end Customer creator class

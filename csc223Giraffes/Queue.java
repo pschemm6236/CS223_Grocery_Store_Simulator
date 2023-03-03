@@ -93,6 +93,10 @@ public class Queue {
         }
         return rear.getCustomer();
     }
+    
+    public boolean isFull(int maxCapacity) {
+        return (size == maxCapacity);
+    }
 
 } // end class Queue
 

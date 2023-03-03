@@ -1,5 +1,6 @@
 package csc223Giraffes;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SimulatorDriver {
@@ -27,8 +28,12 @@ public class SimulatorDriver {
 
 		System.out.println("Enter number of customers to serve:");
 		numCustomers = scan.nextInt();
+		
+		ArrayList<Customer> customers = new ArrayList<Customer>();
 
-		populateLL(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime);
+		populateLL(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime, customers);
+		
+		
 		
 		// Create a CustomerCreator object with minimum and maximum interarrival/service times
 		CustomerCreator creator = new CustomerCreator(numCustomers,  minArrivalTime,  maxArrivalTime,  minServiceTime,
@@ -40,10 +45,10 @@ public class SimulatorDriver {
 		Queue checkoutC = new Queue();
 
 		// Create a Simulator object with the number of customers to simulate
-		Simulator sim = new Simulator(20, creator, checkoutA, checkoutB, checkoutC);
+		Simulator sim = new Simulator(numCustomers, creator, checkoutA, checkoutB, checkoutC);
 
 		// Run the simulation and get the average waiting time
-		double avgWaitTime = sim.run();
+		double avgWaitTime = sim.run(customers);
 
 		// Print the average waiting time
 		System.out.println("Average waiting time: " + avgWaitTime);
@@ -52,33 +57,35 @@ public class SimulatorDriver {
 		sim.printCustomerDetails();
 
 		// Print the total time that checkout lanes were not in use
-		System.out.println("Total idle time: " + sim.getIdleTime());
+		//System.out.println("Total idle time: " + sim.getIdleTime());
 
 		// Print the number of satisfied and dissatisfied customers
-		int satisfied = sim.getSatisfiedCustomers();
-		int dissatisfied = sim.getDissatisfiedCustomers();
-		System.out.println("Satisfied customers: " + satisfied);
-		System.out.println("Dissatisfied customers: " + dissatisfied);
+		//int satisfied = sim.getSatisfiedCustomers();
+		//int dissatisfied = sim.getDissatisfiedCustomers();
+		//System.out.println("Satisfied customers: " + satisfied);
+		//System.out.println("Dissatisfied customers: " + dissatisfied);
 
 
 	} // end main
 
-	public static void populateLL(int numCustomers, int minArrivalTime, int maxArrivalTime, int minServiceTime,
-			int maxServiceTime) {
+	public static ArrayList<Customer> populateLL(int numCustomers, int minArrivalTime, int maxArrivalTime, int minServiceTime,
+			int maxServiceTime, ArrayList<Customer> c) {
 
 		// create an instance of the CostumerCreator class
 		CustomerCreator cc = new CustomerCreator(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime,
 				maxServiceTime, 0, 0);
+		
 
-		cc.populateCustomers(); // populate the ArrayList of Customers method
+		 cc.populateCustomers(c); // populate the ArrayList of Customers method
+		 return c;
 
-		CheckoutLL ll = new CheckoutLL();
+		/**CheckoutLL ll = new CheckoutLL();
 
 		// loop thru generated ArrayList of Customers and add it
 		// to the linked list
 		for (int i = 0; i < cc.getCustomers().size(); i++) {
 			ll.add(cc.getCustomers().get(i));
-		}
+		}**/
 	}
 	
 	public static void runSim() {

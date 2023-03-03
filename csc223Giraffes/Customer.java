@@ -3,7 +3,7 @@ package csc223Giraffes;
 public class Customer { //begin Customer class 
 
 	//most likely the fields we will need for the customer object
-	private static int custID; 
+	private int custID; 
 	private static int nextNum = 1;
 	private int arrivalTime; 
 	private int serviceTime; 
@@ -24,6 +24,8 @@ public class Customer { //begin Customer class
 		this.serviceTime = serviceTime; 
 		this.startTime = startTime; 
 		this.endTime = endTime; 
+		this.custID = nextNum;
+		nextNum++;
 	} //end Customer Constructor 
 	
 	
@@ -45,12 +47,12 @@ public class Customer { //begin Customer class
 
 	//getters and setters for fields 
 
-	public static int getCustID() {
+	public int getCustId() {
 		return custID;
 	}
 
-	public static void setCustID(int custID) {
-		Customer.custID = custID;
+	public void setCustId(int custId) {
+		this.custID = custId;
 	}
 
 	public static int getNextNum() {
