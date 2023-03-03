@@ -67,6 +67,7 @@ public class CustomerCreator { // begin Customer creator class
 	public void populateCustomers() { // begin populate Customers
 		int arrivalTime = 0;
 
+		
 		for (int i = 0; i < numCustomers; i++) { // begin for
 
 			int interarrivalTime = randomArrival(minInterarrivalTime, maxInterarrivalTime);
@@ -83,6 +84,9 @@ public class CustomerCreator { // begin Customer creator class
 		} // end for
 	} // end populateCustomers
 
+	
+	//might need to change this so LL object is passed in and it gets the next customer
+	//in the LL rather than using the AL of costumers that was generated 
 	public Customer getNextCustomer() { // begin getNextCustomer
 
 		if (customers.isEmpty()) {
@@ -94,6 +98,8 @@ public class CustomerCreator { // begin Customer creator class
 		return nextCustomer;
 
 	} // end getNextCustomer
+	
+	
 
 	public int getNumCustomers() {
 		return numCustomers;
