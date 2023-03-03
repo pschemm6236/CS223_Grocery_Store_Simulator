@@ -9,7 +9,7 @@ public class Customer { //begin Customer class
 	private int serviceTime; 
 	private int startTime; 
 	private int endTime; 
-	private String queue;
+	
 	
 	//no argument constructor 
 	public Customer() { 
@@ -19,19 +19,17 @@ public class Customer { //begin Customer class
 	
 	//full constructor 
 	public Customer( int arrivalTime, int serviceTime, 
-			int startTime, int endTime, String queue) { //begin Customer Constructor 
+			int startTime, int endTime) { //begin Customer Constructor 
 		this.arrivalTime = arrivalTime; 
 		this.serviceTime = serviceTime; 
 		this.startTime = startTime; 
 		this.endTime = endTime; 
-		this.queue = queue; 
 	} //end Customer Constructor 
 	
 	
 	public String toString() { //begin toString
 		return "Customer ID of: " + custID + ". Arrival time: " + arrivalTime + ". "
-				+ " Service time: " + serviceTime + ". Start time: " + startTime + ". End time: "
-				+ ". Serviced in queue: " + queue;
+				+ " Service time: " + serviceTime + ". Start time: " + startTime + ". End time: ";
 	} //end toString 
 	
 	//method to calculate how long a customer was waiting in line 
@@ -95,14 +93,6 @@ public class Customer { //begin Customer class
 		this.endTime = endTime;
 	}
 
-	public String getQueue() {
-		return queue;
-	}
-
-	public void setQueue(String queue) {
-		this.queue = queue;
-	}
-	
 	
 	
 } //end Customer class
