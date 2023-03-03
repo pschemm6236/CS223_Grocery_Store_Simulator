@@ -47,6 +47,9 @@ public class Simulator {
 	                    System.out.println("Checkout A: Customer " + checkoutA.frontPeek().getCustId() + " (cont)");
 	                }
 				}
+				//else if( ) {
+					
+				//}
 				
 			}
 			if (!checkoutB.isEmpty()) {
@@ -111,7 +114,7 @@ public class Simulator {
 				c.setStartTime(currentTime);
 				checkoutCFree = false;
 				System.out.println("Time:" + currentTime);
-		        System.out.println("Checkout B: Customer " + c.getCustId() + " starts service");
+		        System.out.println("Checkout C: Customer " + c.getCustId() + " starts service");
 			}
 			currentTime++;
 		}
