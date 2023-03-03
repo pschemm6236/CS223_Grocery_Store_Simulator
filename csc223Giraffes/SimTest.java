@@ -79,6 +79,85 @@ public class SimTest {
 	    }
 	    System.out.println("Simulation complete.");
 	}
+	
+	
+	public static void populateLL(int numCustomers, int minArrivalTime, int maxArrivalTime, int minServiceTime,
+			int maxServiceTime) {
+
+		// create an instance of the CustomerCreator class
+		CustomerCreator cc = new CustomerCreator(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime,
+				maxServiceTime, 0, 0);
+
+		cc.populateCustomers(); // populate the ArrayList of Customers method
+
+		CheckoutLL ll = new CheckoutLL();
+		Node a = ll.getA();
+		Node b = ll.getB();
+		Node c = ll.getC();
+
+		int time = 0;
+		while (true) {
+			// Check if all customers have been served
+			if (ll.size() == 0 && cc.getCustomers().size() == 0) {
+				break;
+			}
+
+			// Check if any customers have arrived
+			if (cc.getCustomers().size() > 0 && cc.getCustomers().get(0).getArrivalTime() == time) {
+				ll.add(cc.getCustomers().get(0));
+				cc.getCustomers().remove(0);
+			}
+
+			// Serve customers at checkout A
+			if (a.getCustomer() != null) {
+				a.getCustomer().setServiceTime(a.getCustomer().getServiceTime() - 1);
+				if (a.getCustomer().getServiceTime() == 0) {
+					a.getCustomer().setEndTime(time);
+					a.setCustomer(null);
+				}
+			}
+
+			// Serve customers at checkout B
+			if (b.getCustomer() != null) {
+				b.getCustomer().setServiceTime(b.getCustomer().getServiceTime() - 1);
+				if (b.getCustomer().getServiceTime() == 0) {
+					b.getCustomer().setEndTime(time);
+					b.setCustomer(null);
+				}
+			}
+
+			// Serve customers at checkout C
+			if (c.getCustomer() != null) {
+				c.getCustomer().setServiceTime(c.getCustomer().getServiceTime() - 1);
+				if (c.getCustomer().getServiceTime() == 0) {
+					c.getCustomer().setEndTime(time);
+					c.setCustomer(null);
+				}
+			}
+
+			// Assign customers to checkout A if it's free
+			if (a.getCustomer() == null && ll.size() > 0) {
+				a.setCustomer(ll.remove());
+				a.getCustomer().setStartTime(time);
+			}
+
+			// Assign customers to checkout B if it's free
+			if (b.getCustomer() == null && ll.size() > 0) {
+				b.setCustomer(ll.remove());
+				b.getCustomer().setStartTime(time);
+			}
+
+			// Assign customers to checkout C if it's free
+			if (c.getCustomer() == null && ll.size() > 0) {
+				c.setCustomer(ll.remove());
+				c.getCustomer().setStartTime(time);
+			}
+
+			// Print status of the checkout counters at each time interval
+			System.out.println("Time:" + time);
+			System.out.println("\" ");
+		}
+	}
 }
 
 
