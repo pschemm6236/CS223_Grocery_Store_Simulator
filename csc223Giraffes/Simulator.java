@@ -3,7 +3,7 @@ package csc223Giraffes;
 import java.util.ArrayList;
 
 public class Simulator {
-
+	//it works now :)
 	// fields
 	private ArrayList<Customer> customers;
 	private QueueLL checkoutA;

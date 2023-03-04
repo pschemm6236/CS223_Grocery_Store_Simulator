@@ -57,6 +57,10 @@ public class SimulatorDriver {
 		
 		sim.runSimulation();
 		
+		for(int i=0;i<customers.size();i++) {
+			System.out.println(customers.get(i).toString());
+		}
+		
 		scan.close();
 
 		// Run the simulation and get the average waiting time
