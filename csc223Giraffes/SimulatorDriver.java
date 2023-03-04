@@ -40,10 +40,6 @@ public class SimulatorDriver {
 		// call populateCustomers method within our creator to fill customers ArrayList with Customer objects 
 		creator.populateCustomers(customers);
 		
-		for(int i=0;i<customers.size();i++) {
-			System.out.println(customers.get(i).toString());
-		}
-
 		// call static method to sort the filled ArrayList (By ascending arrival time)		
 		// Create three queues (lines) for checkout
 		
@@ -56,10 +52,6 @@ public class SimulatorDriver {
 		Simulator sim = new Simulator(customers, checkoutA, checkoutB, checkoutC);
 		
 		sim.runSimulation();
-		
-		for(int i=0;i<customers.size();i++) {
-			System.out.println(customers.get(i).toString());
-		}
 		
 		scan.close();
 

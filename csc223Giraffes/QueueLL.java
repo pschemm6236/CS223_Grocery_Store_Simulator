@@ -9,6 +9,10 @@ package csc223Giraffes;
  *
  */
 
+/**
+ * @author liamj
+ *
+ */
 public class QueueLL {
 	
 	private class Node {
@@ -28,13 +32,23 @@ public class QueueLL {
 	
 	private Node first;
     private Node last;
+    private int timeNotUsed;
 
     public QueueLL() {
         first = null;
         last = null;
+        timeNotUsed = 0;
     }
 
-    public boolean isEmpty() {
+    public int getTimeNotUsed() {
+		return timeNotUsed;
+	}
+
+	public void setTimeNotUsed(int timeNotUsed) {
+		this.timeNotUsed = timeNotUsed;
+	}
+
+	public boolean isEmpty() {
         return first == null;
     }
 
@@ -157,6 +171,7 @@ public class QueueLL {
     public Customer updateQueue(int time) {
     	if(isEmpty()) { //if the queue is empty
     		System.out.println("free");
+    		timeNotUsed++;
     	}
     	else if(first.customer.getStartTime()==-1) { //if the next customer in the queue has not started
     		first.customer.setStartTime(time);
@@ -166,10 +181,13 @@ public class QueueLL {
     		first.customer.setEndTime(time);
     		System.out.print("Customer "+first.customer.getCustId()+" leaves");
     		Customer customerRemoved = remove(0);
-    		if(!isEmpty()) { //if the queue is not empty
-        		first.customer.setStartTime(time);
-        		System.out.print(", Customer "+first.customer.getCustId()+" starts service");
+    		if(isEmpty()) { //if the queue is not empty
+        		timeNotUsed++;
         	}
+    		else {
+    			first.customer.setStartTime(time);
+        		System.out.print(", Customer "+first.customer.getCustId()+" starts service");
+    		}
     		System.out.println();
     		return customerRemoved;
     	}
