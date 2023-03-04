@@ -7,9 +7,7 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 	private int arrivalTime; 
 	private int serviceTime; 
 	private int startTime; 
-	private int endTime;
-	private boolean served = false; 
-	
+	private int endTime;	
 	
 	//no argument constructor 
 	public Customer() { 
@@ -17,23 +15,16 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 	}
 	
 	//full constructor 
-	public Customer( int arrivalTime, int serviceTime, 
-			int startTime, int endTime) { //begin Customer Constructor 
+	public Customer( int arrivalTime, int serviceTime) { //begin Customer Constructor 
 		this.arrivalTime = arrivalTime; 
 		this.serviceTime = serviceTime; 
-		this.startTime = startTime; 
-		this.endTime = endTime; 
-		
-		this.served = served;
-		
+		startTime = -1; //-1 will signify not started
+		endTime = -1; //-1 will signify not ended
 	} //end Customer Constructor 
 	
-	
-	
-
 	public String toString() { //begin toString
 		return "Customer ID of: " + custID + ". Arrival time: " + arrivalTime + ". "
-				+ " Service time: " + serviceTime + ". Start time: " + startTime + ". End time: ";
+				+ " Service time: " + serviceTime + ". Start time: " + startTime + ". End time: "+endTime;
 	} //end toString 
 	
 	@Override
@@ -62,22 +53,7 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 		return endTime - arrivalTime; 
 	}
 	
-	
-	public void startService(int currentTime) { 
-	    this.startTime = currentTime;
-	    this.endTime = this.startTime + this.serviceTime;
-	    this.served = true;
-	}
-
 	//getters and setters for fields 
-
-	public boolean isServed() {
-		return served;
-	}
-
-	public void setServed(boolean served) {
-		this.served = served;
-	}
 	public int getCustId() {
 		return custID;
 	}
@@ -85,9 +61,7 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 	public void setCustId(int custId) {
 		this.custID = custId;
 	}
-
 	
-
 	public int getArrivalTime() {
 		return arrivalTime;
 	}
@@ -118,9 +92,6 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 
 	public void setEndTime(int endTime) {
 		this.endTime = endTime;
-	}
-
-	
-	
+	}	
 } //end Customer class
 

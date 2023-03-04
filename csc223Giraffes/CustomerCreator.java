@@ -1,6 +1,7 @@
 package csc223Giraffes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CustomerCreator { // begin Customer creator class
 
@@ -21,30 +22,24 @@ public class CustomerCreator { // begin Customer creator class
 	private int maxArrivalTime;
 	// service time fields
 	private int minServiceTime;
-	private int maxServiceTime;
-	// interArrivalTime fields
-	private int minInterarrivalTime;
-	private int maxInterarrivalTime;
-	// AL of customers field
-	
+	private int maxServiceTime;	
 
 	public CustomerCreator(int numCustomers, int minArrivalTime, int maxArrivalTime, int minServiceTime,
-			int maxServiceTime, int minInterarrivalTime, int maxInterarrivalTime) {
+			int maxServiceTime) {
 		this.numCustomers = numCustomers;
 		this.minArrivalTime = minArrivalTime;
 		this.maxArrivalTime = maxArrivalTime;
 		this.minServiceTime = minServiceTime;
 		this.maxServiceTime = maxServiceTime;
-		this.minInterarrivalTime = minInterarrivalTime;
-		this.maxInterarrivalTime = maxInterarrivalTime;
 	}
 
 	public int randomArrival(int minArrivalTime, int maxArrivalTime) { // begin randomGenerator
-
 		// Calculate the range of values
 		int range = maxArrivalTime - minArrivalTime + 1;
+		
 		// Generate a random number within the range
 		int randomArrivalTime = (int) (Math.random() * range) + minArrivalTime;
+		
 		// Return the random number
 		return randomArrivalTime;
 
@@ -64,9 +59,6 @@ public class CustomerCreator { // begin Customer creator class
 	} // end randomService
 
 	public void populateCustomers (ArrayList<Customer> customers){ // begin populate Customers
-		int arrivalTime = 0;
-
-		
 		for (int i = 0; i < numCustomers; i++) { // begin for
 
 			int interarrivalTime = randomArrival(minArrivalTime, maxArrivalTime);
@@ -76,30 +68,17 @@ public class CustomerCreator { // begin Customer creator class
 			//arrivalTime += interarrivalTime;
 
 			// create customer object
-			Customer customer = new Customer(interarrivalTime, serviceTime, 0, 0);
+			Customer customer = new Customer(interarrivalTime, serviceTime);
 
 			customers.add(customer);
-
 		} // end for
 		
-	} // end populateCustomers
-
-	
-	//might need to change this so LL object is passed in and it gets the next customer
-	//in the LL rather than using the AL of costumers that was generated 
-	public Customer getNextCustomer(ArrayList<Customer> customers) { // begin getNextCustomer
-
-		if (customers.isEmpty()) {
-			return null;
+		Collections.sort(customers); //I used this to sort the customers by arrival time
+		
+		for (int i = 0; i < numCustomers; i++) {
+			customers.get(i).assignId(i+1);
 		}
-		Customer nextCustomer = customers.get(0);
-		customers.remove(0);
-
-		return nextCustomer;
-
-	} // end getNextCustomer
-	
-	
+	} // end populateCustomers	
 
 	public int getNumCustomers() {
 		return numCustomers;
@@ -140,23 +119,4 @@ public class CustomerCreator { // begin Customer creator class
 	public void setMaxServiceTime(int maxServiceTime) {
 		this.maxServiceTime = maxServiceTime;
 	}
-
-	public int getMinInterarrivalTime() {
-		return minInterarrivalTime;
-	}
-
-	public void setMinInterarrivalTime(int minInterarrivalTime) {
-		this.minInterarrivalTime = minInterarrivalTime;
-	}
-
-	public int getMaxInterarrivalTime() {
-		return maxInterarrivalTime;
-	}
-
-	public void setMaxInterarrivalTime(int maxInterarrivalTime) {
-		this.maxInterarrivalTime = maxInterarrivalTime;
-	}
-
-
-
 } // end Customer creator class

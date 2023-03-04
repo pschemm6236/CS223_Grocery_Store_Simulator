@@ -1,7 +1,6 @@
 package csc223Giraffes;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class SimulatorDriver {
@@ -36,31 +35,37 @@ public class SimulatorDriver {
 		
 		// CustomerCreator object which takes all USER SIMULATION SETTINGS
 		CustomerCreator creator = new CustomerCreator(numCustomers,  minArrivalTime,  maxArrivalTime,  minServiceTime,
-				 maxServiceTime, 0,  0);
+				 maxServiceTime);
 		
 		// call populateCustomers method within our creator to fill customers ArrayList with Customer objects 
 		creator.populateCustomers(customers);
-
-		// call static method to sort the filled ArrayList (By ascending arrival time)
-		sortByAT(customers);
 		
+		for(int i=0;i<customers.size();i++) {
+			System.out.println(customers.get(i).toString());
+		}
+
+		// call static method to sort the filled ArrayList (By ascending arrival time)		
 		// Create three queues (lines) for checkout
-		Queue checkoutA = new Queue();
-		Queue checkoutB = new Queue();
-		Queue checkoutC = new Queue();
+		
+		QueueLL checkoutA = new QueueLL();
+		QueueLL checkoutB = new QueueLL();
+		QueueLL checkoutC = new QueueLL();
 
 		// Create a Simulator object with the number of customers to simulate 
 		// and pass it our Customer ArrayList and Queue objects
-		Simulator sim = new Simulator(numCustomers, creator, checkoutA, checkoutB, checkoutC);
+		Simulator sim = new Simulator(customers, checkoutA, checkoutB, checkoutC);
+		
+		sim.runSimulation();
+		
+		scan.close();
 
 		// Run the simulation and get the average waiting time
-		double avgWaitTime = sim.run3(customers);
 		
 		// Print the average waiting time
-		System.out.println("Average waiting time: " + avgWaitTime);
+		//System.out.println("Average waiting time: " + avgWaitTime);
 
 		// Print the details for each customer
-		sim.printCustomerDetails();
+		//sim.printCustomerDetails();
 
 		// Print the total time that checkout lanes were not in use
 		//System.out.println("Total idle time: " + sim.getIdleTime());
@@ -80,17 +85,4 @@ public class SimulatorDriver {
 	   sorts it by ascending arrival time and assigns id's based on where
 	   Customer object is in ArrayList
 	*/
-	public static void sortByAT(ArrayList<Customer> c) {
-		
-		Collections.sort(c);
-		
-		int id = 1;
-		for(int i = 0; i < c.size(); i++) {
-			//for each sorted customer, after sorted assign them their ID number 
-			c.get(i).assignId( id);
-			id++;
-			System.out.println(c.get(i).toString());
-		}
-	}
-	
 } // end class SimulatorDriver

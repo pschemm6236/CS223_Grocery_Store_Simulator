@@ -91,9 +91,9 @@ public class SimTest {
 
 		cc.populateCustomers(); // populate the ArrayList of Customers method
 		
-		Queue a = new Queue();
-		Queue b = new Queue(); 
-		Queue c = new Queue();
+		QueueLL a = new QueueLL();
+		QueueLL b = new QueueLL(); 
+		QueueLL c = new QueueLL();
 
 		CheckoutLL ll = new CheckoutLL();
 		/**
