@@ -228,27 +228,57 @@ public class Simulator {
 	}
 	
 	public double run3(ArrayList<Customer> customers ) {
+		
+		
 		int currentTime = 0;
 	    double totalWaitTime = 0;
 	    int customersServed = 0;
-	    System.out.println("Time: " + currentTime);
+	    boolean checkoutAFree = true;
+		boolean checkoutBFree = true;
+		boolean checkoutCFree = true;
+
+	    
+	    System.out.println("Time: 0");
  	    System.out.println("\tStart");
+ 	    Customer nextCust = null;
 	   
 	    while (customersServed < numCustomers) { //begin while 
-	    	if(cc.getNextCustomer(customers) == null)
-	    		break;
-	    	Customer cust = cc.getNextCustomer(customers);
 	    	
-            Queue shortestQueue = getShortestQueue();
-            
-            shortestQueue.enqueue(cust);
+	    	
+	    	
+	    	nextCust = cc.getNextCustomer(customers);
+	    	
+	    	if(nextCust.getArrivalTime() == currentTime + cc.getMinArrivalTime()) {
+	    		System.out.println("Customer: " + nextCust.getCustId() + ". Queue: " + checkoutA.getName()); 
+	            Queue shortestQueue = getShortestQueue();
+	            shortestQueue.enqueue(nextCust);
+                System.out.println("Time:" + currentTime);
+                System.out.println("Customer " + nextCust.getCustId() + " arrives and goes into Checkout " + shortestQueue.getName() + " queue");
+
+	    	}
+	    	if(nextCust.getArrivalTime() == currentTime) {
+	            Queue shortestQueue = getShortestQueue();
+	            shortestQueue.enqueue(nextCust);
+                System.out.println("Time:" + currentTime);
+                System.out.println("Customer " + nextCust.getCustId() + " arrives and goes into Checkout " + shortestQueue.getName() + " queue");
+
+	    	}
+	    	if(nextCust.getArrivalTime() == currentTime) {
+	            Queue shortestQueue = getShortestQueue();
+	            shortestQueue.enqueue(nextCust);
+                System.out.println("Time:" + currentTime);
+                System.out.println("Customer " + nextCust.getCustId() + " arrives and goes into Checkout " + shortestQueue.getName() + " queue");
+
+	    	}
+	    	
+     
 	    	
 	    	currentTime++;
 	    	
-	    	System.out.println("Time: " + currentTime);
-	    	System.out.println("\tCheckout A: " + checkoutA.checkStatus(cust, currentTime));
-	    	System.out.println("\tCheckout B: " + checkoutB.checkStatus(cust, currentTime));
-	    	System.out.println("\tCheckout C: " + checkoutC.checkStatus(cust, currentTime));
+	    	
+	    	if(cc.getNextCustomer(customers) == null)
+	    		break;
+	    	
 
 	    }//end while 
 	    System.out.println("Simulation Complete.");
