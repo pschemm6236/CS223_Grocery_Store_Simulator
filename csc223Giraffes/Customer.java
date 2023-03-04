@@ -1,20 +1,19 @@
 package csc223Giraffes;
 
-public class Customer { //begin Customer class 
+public class Customer implements Comparable<Customer> { //begin Customer class 
 
 	//most likely the fields we will need for the customer object
 	private int custID; 
-	private static int nextNum = 1;
 	private int arrivalTime; 
 	private int serviceTime; 
 	private int startTime; 
-	private int endTime; 
+	private int endTime;
+	private boolean served = false; 
 	
 	
 	//no argument constructor 
 	public Customer() { 
-		custID = nextNum; 
-		nextNum ++;
+		
 	}
 	
 	//full constructor 
@@ -24,15 +23,33 @@ public class Customer { //begin Customer class
 		this.serviceTime = serviceTime; 
 		this.startTime = startTime; 
 		this.endTime = endTime; 
-		this.custID = nextNum;
-		nextNum++;
+		
+		this.served = served;
+		
 	} //end Customer Constructor 
 	
 	
+	
+
 	public String toString() { //begin toString
 		return "Customer ID of: " + custID + ". Arrival time: " + arrivalTime + ". "
 				+ " Service time: " + serviceTime + ". Start time: " + startTime + ". End time: ";
 	} //end toString 
+	
+	@Override
+	public int compareTo(Customer c) {
+		
+		if(c.arrivalTime > this.arrivalTime)
+			return -1; 
+		else if(c.arrivalTime < this.arrivalTime)
+			return 1; 
+		else
+			return 0;
+	}
+	
+	public void assignId(int id) {
+		this.custID = id; 
+	}
 	
 	//method to calculate how long a customer was waiting in line 
 	public int waitingTime() {
@@ -44,9 +61,23 @@ public class Customer { //begin Customer class
 	public int tunraroundTime() {
 		return endTime - arrivalTime; 
 	}
+	
+	
+	public void startService(int currentTime) { 
+	    this.startTime = currentTime;
+	    this.endTime = this.startTime + this.serviceTime;
+	    this.served = true;
+	}
 
 	//getters and setters for fields 
 
+	public boolean isServed() {
+		return served;
+	}
+
+	public void setServed(boolean served) {
+		this.served = served;
+	}
 	public int getCustId() {
 		return custID;
 	}
@@ -55,13 +86,7 @@ public class Customer { //begin Customer class
 		this.custID = custId;
 	}
 
-	public static int getNextNum() {
-		return nextNum;
-	}
-
-	public static void setNextNum(int nextNum) {
-		Customer.nextNum = nextNum;
-	}
+	
 
 	public int getArrivalTime() {
 		return arrivalTime;

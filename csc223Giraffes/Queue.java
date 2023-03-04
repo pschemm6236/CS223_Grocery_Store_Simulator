@@ -38,6 +38,9 @@ public class Queue {
     private Node front;
     private Node rear;
     private int size;
+    public static Queue checkoutA = new Queue();
+    public static Queue checkoutB = new Queue();
+    public static Queue checkoutC = new Queue();
 
     public Queue() {
         front = null;
@@ -97,6 +100,57 @@ public class Queue {
     public boolean isFull(int maxCapacity) {
         return (size == maxCapacity);
     }
+    
+    public String checkStatus(Customer customer, int currentTime) {
+    	if (!customer.isServed()) {
+    		
+    		customer.setServed(true);
+            // Customer has not started service yet
+            return "Customer " + customer.getCustId() + " starts service";            
+        } else if (customer.getServiceTime() + customer.getStartTime() > currentTime) {
+            // Customer is still being served
+            return "Customer " + customer.getCustId() + " (cont)";
+        } else {
+            // Queue is empty and no customers are being served
+            return "free";
+        }
+    }
+    
+    // New methods for isFree and startService
+    public boolean isFree() {
+        if (front == null) {
+            return true;
+        } else {
+            return front.getCustomer().getServiceTime() == 0;
+        }
+    }
 
+    public void startService(int currentTime) {
+        if (front == null) {
+            throw new QueueException("Queue is empty");
+        } else {
+            front.getCustomer().startService(currentTime);
+        }
+    }
+    
+    public String getName() {
+        // Check if queue is one of the three checkout lanes, and return the corresponding name
+        if (this == checkoutA) {
+            return "Checkout A";
+        } else if (this == checkoutB) {
+            return "Checkout B";
+        } else if (this == checkoutC) {
+            return "Checkout C";
+        } else {
+            return "Unknown queue";
+        }
+    }
+
+    public void endService() {
+        // Set the service time for the customer at the front of the queue to 0
+        if (!isEmpty()) {
+            front.getCustomer().setServiceTime(0);
+        }
+    }
 } // end class Queue
 

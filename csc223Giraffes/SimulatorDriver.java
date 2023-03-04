@@ -1,6 +1,7 @@
 package csc223Giraffes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class SimulatorDriver {
@@ -30,14 +31,16 @@ public class SimulatorDriver {
 		numCustomers = scan.nextInt();
 		
 		ArrayList<Customer> customers = new ArrayList<Customer>();
-
-		populateLL(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime, customers);
-		
-		
-		
-		// Create a CustomerCreator object with minimum and maximum interarrival/service times
 		CustomerCreator creator = new CustomerCreator(numCustomers,  minArrivalTime,  maxArrivalTime,  minServiceTime,
 				 maxServiceTime, 0,  0);
+		
+		creator.populateCustomers(customers);
+
+		
+		sortByAT(customers);
+		
+		// Create a CustomerCreator object with minimum and maximum interarrival/service times
+		
 
 		// Create three queues (lines) for checkout
 		Queue checkoutA = new Queue();
@@ -48,7 +51,8 @@ public class SimulatorDriver {
 		Simulator sim = new Simulator(numCustomers, creator, checkoutA, checkoutB, checkoutC);
 
 		// Run the simulation and get the average waiting time
-		double avgWaitTime = sim.run(customers);
+		double avgWaitTime = sim.run3(customers);
+		
 
 		// Print the average waiting time
 		System.out.println("Average waiting time: " + avgWaitTime);
@@ -68,28 +72,17 @@ public class SimulatorDriver {
 
 	} // end main
 
-	public static ArrayList<Customer> populateLL(int numCustomers, int minArrivalTime, int maxArrivalTime, int minServiceTime,
-			int maxServiceTime, ArrayList<Customer> c) {
-
-		// create an instance of the CostumerCreator class
-		CustomerCreator cc = new CustomerCreator(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime,
-				maxServiceTime, 0, 0);
-		
-
-		 cc.populateCustomers(c); // populate the ArrayList of Customers method
-		 return c;
-
-		/**CheckoutLL ll = new CheckoutLL();
-
-		// loop thru generated ArrayList of Customers and add it
-		// to the linked list
-		for (int i = 0; i < cc.getCustomers().size(); i++) {
-			ll.add(cc.getCustomers().get(i));
-		}**/
-	}
 	
-	public static void runSim() {
+	public static void sortByAT(ArrayList<Customer> c) {
 		
+		Collections.sort(c);
+		
+		int id = 1;
+		for(int i = 0; i < c.size(); i++) {
+			//for each sorted customer, after sorted assign them their ID number 
+			c.get(i).assignId( id);
+			id++;
+			System.out.println(c.get(i).toString());
+		}	
 	}
-
 }

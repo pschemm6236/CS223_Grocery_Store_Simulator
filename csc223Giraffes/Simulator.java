@@ -29,8 +29,9 @@ public class Simulator {
 		boolean checkoutBFree = true;
 		boolean checkoutCFree = true;
 
+		//Customer c = new Customer();
 		// Run the simulation for each customer
-		while (customersServed < numCustomers) {
+		while (customersServed <= numCustomers) {
 			// Check if there are any customers waiting in the queues
 			if (!checkoutA.isEmpty()) {
 				Customer c = checkoutA.frontPeek();
@@ -89,32 +90,62 @@ public class Simulator {
 			boolean full = checkoutA.isFull(1);
 			// Check if any checkout lanes are available
 			if (checkoutAFree && checkoutA.isEmpty() && !checkoutA.isFull(1)) {
+				
+				if(cc.getNextCustomer(customers) == null) {
+					break;
+				}
+				
 				// Assign the next customer to checkout A
 				Customer c = cc.getNextCustomer(customers);
 				checkoutA.enqueue(c);
 				c.setStartTime(currentTime);
 				checkoutAFree = false;
 				System.out.println("Time:" + currentTime);
-		        System.out.println("Checkout A: Customer " + c.getCustId() + " starts service");
+		        //System.out.println("Checkout A: Customer " + c.getCustId() + " starts service");
+		        System.out.println("Checkout A:" + checkoutA.checkStatus(c, currentTime));
+		        System.out.println("Checkout B:" + checkoutB.checkStatus(c, currentTime));
+		        System.out.println("Checkout C:" + checkoutC.checkStatus(c, currentTime));
+
 			}
 			if (checkoutBFree && checkoutB.isEmpty() && !checkoutB.isFull(1)) {
+				
+				if(cc.getNextCustomer(customers) == null) {
+					break;
+				}
+				
 				// Assign the next customer to checkout B
 				Customer c = cc.getNextCustomer(customers);
 				checkoutB.enqueue(c);
 				c.setStartTime(currentTime);
 				checkoutBFree = false;
 				System.out.println("Time:" + currentTime);
-		        System.out.println("Checkout B: Customer " + c.getCustId() + " starts service");
+		        //System.out.println("Checkout B: Customer " + c.getCustId() + " starts service");
+		        System.out.println("Checkout A:" + checkoutA.checkStatus(c, currentTime));
+
+		        System.out.println("Checkout B:" + checkoutB.checkStatus(c, currentTime));
+		        System.out.println("Checkout C:" + checkoutC.checkStatus(c, currentTime));
+
 
 			}
 			if (checkoutCFree && checkoutC.isEmpty() && !checkoutC.isFull(1)) {
+				
+				if(cc.getNextCustomer(customers) == null) {
+					break;
+				}
+				
 				// Assign the next customer to checkout C
 				Customer c = cc.getNextCustomer(customers);
+				
 				checkoutC.enqueue(c);
 				c.setStartTime(currentTime);
 				checkoutCFree = false;
 				System.out.println("Time:" + currentTime);
-		        System.out.println("Checkout C: Customer " + c.getCustId() + " starts service");
+		       // System.out.println("Checkout C: Customer " + c.getCustId() + " starts service");
+		        System.out.println("Checkout A:" + checkoutA.checkStatus(c, currentTime));
+
+				System.out.println("Checkout B:" + checkoutB.checkStatus(c, currentTime));
+		        System.out.println("Checkout C:" + checkoutC.checkStatus(c, currentTime));
+
 			}
 			currentTime++;
 		}
@@ -123,6 +154,121 @@ public class Simulator {
 		return totalWaitTime / numCustomers;
 		
 		
+	}
+	
+	public double run2(ArrayList<Customer> customers ) {
+		 int currentTime = 0;
+		    double totalWaitTime = 0;
+		    int customersServed = 0;
+
+		    System.out.println("Time: " + currentTime);
+		    System.out.println("\tStart");
+		    while (customersServed < numCustomers) {
+		        // Check for new arrivals and add them to shortest checkout queue
+		        for (Customer c : customers) {
+		            if (c.getArrivalTime() == currentTime) {
+		                Queue shortestQueue = getShortestQueue();
+		                shortestQueue.enqueue(c);
+		                System.out.println("Time:" + currentTime);
+		                System.out.println("Customer " + c.getCustId() + " arrives and goes into Checkout " + shortestQueue.getName() + " queue");
+		            }
+		          
+		        }
+
+		        // Check each checkout queue for free servers
+		        for (int i = 0; i < 3; i++) {
+		            Queue checkout = null;
+		            if (i == 0) {
+		                checkout = checkoutA;
+		            } else if (i == 1) {
+		                checkout = checkoutB;
+		            } else {
+		                checkout = checkoutC;
+		            }
+
+		            if (checkout.isFree() && !checkout.isEmpty()) {
+		                Customer c = checkout.frontPeek();
+		                c.setStartTime(currentTime);
+		                checkout.dequeue();
+		                checkout.startService(currentTime);
+		                System.out.println("Time:" + currentTime);
+		                System.out.println(checkout.getName() + ": Customer " + c.getCustId() + " starts service");
+		                System.out.println("Current queues: " + checkoutA.getName() + ": " + checkoutA.toString() + " " + checkoutB.getName() + ": " + checkoutB.toString() + " " + checkoutC.getName() + ": " + checkoutC.toString());
+
+		            }
+		        }
+
+		        // Increment current time and check for customers leaving
+		        currentTime++;
+		        for (int i = 0; i < 3; i++) {
+		            Queue checkout = null;
+		            if (i == 0) {
+		                checkout = checkoutA;
+		            } else if (i == 1) {
+		                checkout = checkoutB;
+		            } else {
+		                checkout = checkoutC;
+		            }
+
+		            if (checkout.isFree() && !checkout.isEmpty()) {
+		                Customer c = checkout.frontPeek();
+		                c.setStartTime(currentTime);
+		                checkout.dequeue();
+		                checkout.startService(currentTime);
+		                System.out.println("Time:" + currentTime);
+		                System.out.println(checkout.getName() + ": Customer " + c.getCustId() + " starts service");
+		                System.out.println("Current queues: " + checkoutA.getName() + ": " + checkoutA.toString() + " " + checkoutB.getName() + ": " + checkoutB.toString() + " " + checkoutC.getName() + ": " + checkoutC.toString());
+
+		            }
+		        }
+		    }
+
+		    return totalWaitTime / numCustomers;
+		
+	}
+	
+	public double run3(ArrayList<Customer> customers ) {
+		int currentTime = 0;
+	    double totalWaitTime = 0;
+	    int customersServed = 0;
+	    System.out.println("Time: " + currentTime);
+ 	    System.out.println("\tStart");
+	   
+	    while (customersServed < numCustomers) { //begin while 
+	    	if(cc.getNextCustomer(customers) == null)
+	    		break;
+	    	Customer cust = cc.getNextCustomer(customers);
+	    	
+            Queue shortestQueue = getShortestQueue();
+            
+            shortestQueue.enqueue(cust);
+	    	
+	    	currentTime++;
+	    	
+	    	System.out.println("Time: " + currentTime);
+	    	System.out.println("\tCheckout A: " + checkoutA.checkStatus(cust, currentTime));
+	    	System.out.println("\tCheckout B: " + checkoutB.checkStatus(cust, currentTime));
+	    	System.out.println("\tCheckout C: " + checkoutC.checkStatus(cust, currentTime));
+
+	    }//end while 
+	    System.out.println("Simulation Complete.");
+	    
+	    return 0; 
+		
+	}
+	
+	private Queue getShortestQueue() {
+	    int sizeA = checkoutA.size();
+	    int sizeB = checkoutB.size();
+	    int sizeC = checkoutC.size();
+ 
+	    if (sizeA <= sizeB && sizeA <= sizeC) {
+	        return checkoutA;
+	    } else if (sizeB <= sizeA && sizeB <= sizeC) {
+	        return checkoutB;
+	    } else {
+	        return checkoutC;
+	    }
 	}
 
 	public void printCustomerDetails() {

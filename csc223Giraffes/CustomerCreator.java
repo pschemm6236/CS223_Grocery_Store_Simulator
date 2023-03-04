@@ -73,10 +73,10 @@ public class CustomerCreator { // begin Customer creator class
 
 			int serviceTime = randomService(minServiceTime, maxServiceTime);
 
-			arrivalTime += interarrivalTime;
+			//arrivalTime += interarrivalTime;
 
 			// create customer object
-			Customer customer = new Customer(arrivalTime, serviceTime, 0, 0);
+			Customer customer = new Customer(interarrivalTime, serviceTime, 0, 0);
 
 			customers.add(customer);
 
