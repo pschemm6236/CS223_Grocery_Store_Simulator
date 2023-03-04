@@ -244,11 +244,13 @@ public class Simulator {
 	   
 	    while (customersServed < numCustomers) { //begin while 
 	    	
+	    	// only assign a customer if currentTime is > 1
+	    	if (currentTime >= 1) {
+	    		nextCust = cc.getNextCustomer(customers);
+	    	}
 	    	
-	    	
-	    	nextCust = cc.getNextCustomer(customers);
-	    	
-	    	if(nextCust.getArrivalTime() == currentTime + cc.getMinArrivalTime()) {
+	    	// 3 if statements that represent the 3 lines
+	    	if(nextCust.getArrivalTime() == currentTime && nextCust != null) {
 	    		System.out.println("Customer: " + nextCust.getCustId() + ". Queue: " + checkoutA.getName()); 
 	            Queue shortestQueue = getShortestQueue();
 	            shortestQueue.enqueue(nextCust);
@@ -256,14 +258,14 @@ public class Simulator {
                 System.out.println("Customer " + nextCust.getCustId() + " arrives and goes into Checkout " + shortestQueue.getName() + " queue");
 
 	    	}
-	    	if(nextCust.getArrivalTime() == currentTime) {
+	    	if(nextCust.getArrivalTime() == currentTime && nextCust != null) {
 	            Queue shortestQueue = getShortestQueue();
 	            shortestQueue.enqueue(nextCust);
                 System.out.println("Time:" + currentTime);
                 System.out.println("Customer " + nextCust.getCustId() + " arrives and goes into Checkout " + shortestQueue.getName() + " queue");
 
 	    	}
-	    	if(nextCust.getArrivalTime() == currentTime) {
+	    	if(nextCust.getArrivalTime() == currentTime && nextCust != null) {
 	            Queue shortestQueue = getShortestQueue();
 	            shortestQueue.enqueue(nextCust);
                 System.out.println("Time:" + currentTime);
@@ -273,11 +275,15 @@ public class Simulator {
 	    	
      
 	    	
+	    	if (currentTime == 0) {
+	    		System.out.println("START");
+	    	}
+	    	// Increment the time
 	    	currentTime++;
 	    	
-	    	
-	    	if(cc.getNextCustomer(customers) == null)
-	    		break;
+	    	// catch for end of ArrayList (all customers have been empty for this ith loop)
+	    	// if(cc.getNextCustomer(customers) == null)
+	    	//	break;
 	    	
 
 	    }//end while 
