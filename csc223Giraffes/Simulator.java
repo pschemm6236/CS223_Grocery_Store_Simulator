@@ -250,7 +250,7 @@ public class Simulator {
 	    	}
 	    	
 	    	// 3 if statements that represent the 3 lines
-	    	if(nextCust.getArrivalTime() == currentTime && nextCust != null) {
+	    	if(nextCust != null && nextCust.getArrivalTime() == currentTime) {
 	    		System.out.println("Customer: " + nextCust.getCustId() + ". Queue: " + checkoutA.getName()); 
 	            Queue shortestQueue = getShortestQueue();
 	            shortestQueue.enqueue(nextCust);
@@ -258,14 +258,14 @@ public class Simulator {
                 System.out.println("Customer " + nextCust.getCustId() + " arrives and goes into Checkout " + shortestQueue.getName() + " queue");
 
 	    	}
-	    	if(nextCust.getArrivalTime() == currentTime && nextCust != null) {
+	    	if(nextCust != null && nextCust.getArrivalTime() == currentTime) {
 	            Queue shortestQueue = getShortestQueue();
 	            shortestQueue.enqueue(nextCust);
                 System.out.println("Time:" + currentTime);
                 System.out.println("Customer " + nextCust.getCustId() + " arrives and goes into Checkout " + shortestQueue.getName() + " queue");
 
 	    	}
-	    	if(nextCust.getArrivalTime() == currentTime && nextCust != null) {
+	    	if(nextCust != null && nextCust.getArrivalTime() == currentTime) {
 	            Queue shortestQueue = getShortestQueue();
 	            shortestQueue.enqueue(nextCust);
                 System.out.println("Time:" + currentTime);
