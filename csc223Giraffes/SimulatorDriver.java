@@ -15,6 +15,7 @@ public class SimulatorDriver {
 		int maxServiceTime;
 		int numCustomers;
 
+		// GET USER SIMULATION SETTINGS 
 		System.out.println("Enter minimum arrival time between customers:");
 		minArrivalTime = scan.nextInt();
 
@@ -30,30 +31,31 @@ public class SimulatorDriver {
 		System.out.println("Enter number of customers to serve:");
 		numCustomers = scan.nextInt();
 		
+		// ArrayList to Store Customer Objects that is defined here in main AND passed by reference to wherever 
 		ArrayList<Customer> customers = new ArrayList<Customer>();
+		
+		// CustomerCreator object which takes all USER SIMULATION SETTINGS
 		CustomerCreator creator = new CustomerCreator(numCustomers,  minArrivalTime,  maxArrivalTime,  minServiceTime,
 				 maxServiceTime, 0,  0);
 		
+		// call populateCustomers method within our creator to fill customers ArrayList with Customer objects 
 		creator.populateCustomers(customers);
 
-		
+		// call static method to sort the filled ArrayList (By ascending arrival time)
 		sortByAT(customers);
 		
-		// Create a CustomerCreator object with minimum and maximum interarrival/service times
-		
-
 		// Create three queues (lines) for checkout
 		Queue checkoutA = new Queue();
 		Queue checkoutB = new Queue();
 		Queue checkoutC = new Queue();
 
-		// Create a Simulator object with the number of customers to simulate
+		// Create a Simulator object with the number of customers to simulate 
+		// and pass it our Customer ArrayList and Queue objects
 		Simulator sim = new Simulator(numCustomers, creator, checkoutA, checkoutB, checkoutC);
 
 		// Run the simulation and get the average waiting time
 		double avgWaitTime = sim.run3(customers);
 		
-
 		// Print the average waiting time
 		System.out.println("Average waiting time: " + avgWaitTime);
 
@@ -71,8 +73,13 @@ public class SimulatorDriver {
 
 
 	} // end main
-
 	
+	// - - - - - - - - - - - - - static methods - - - - - - - - - - - - -
+	
+	/* When called takes a pass by reference ArrayList of Customer,
+	   sorts it by ascending arrival time and assigns id's based on where
+	   Customer object is in ArrayList
+	*/
 	public static void sortByAT(ArrayList<Customer> c) {
 		
 		Collections.sort(c);
@@ -83,6 +90,7 @@ public class SimulatorDriver {
 			c.get(i).assignId( id);
 			id++;
 			System.out.println(c.get(i).toString());
-		}	
+		}
 	}
-}
+	
+} // end class SimulatorDriver
