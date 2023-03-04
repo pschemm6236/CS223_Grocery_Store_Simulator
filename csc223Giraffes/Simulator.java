@@ -45,10 +45,10 @@ public class Simulator {
 	}
 	
 	public QueueLL shortestQueue() {
-		if(checkoutA.size()>=checkoutB.size()&&checkoutA.size()>=checkoutC.size()) {
+		if(checkoutA.size()<=checkoutB.size()&&checkoutA.size()<=checkoutC.size()) {
 			return checkoutA;
 		}
-		else if(checkoutB.size()>=checkoutA.size()&&checkoutB.size()>=checkoutC.size()) {
+		else if(checkoutB.size()<=checkoutA.size()&&checkoutB.size()<=checkoutC.size()) {
 			return checkoutB;
 		}
 		else {
