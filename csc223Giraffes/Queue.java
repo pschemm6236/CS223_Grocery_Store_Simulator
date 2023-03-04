@@ -57,10 +57,16 @@ public class Queue {
     }
 
     public void enqueue(Customer customer) {
-        Node newNode = new Node(customer);
+       
+    	// Node object for the Node we are adding to the linked list / queue
+    	Node newNode = new Node(customer);
+    	
+    	// if there are no Nodes, add the Node object to front of list
         if (isEmpty()) {
             front = newNode;
-        } else {
+        } 
+        // else then there already exist Nodes, so add the Node object to end of list
+        else {
             rear.setNext(newNode);
         }
         rear = newNode;
@@ -74,8 +80,13 @@ public class Queue {
         if (isEmpty()) {
             throw new QueueException("Queue is empty");
         }
+        // store the customer object from the front Node 
         Customer customer = front.getCustomer();
+        
+        // change the front Node to the next Node
         front = front.getNext();
+        
+        // reduce the list size (rid of the Node we pulled the Customer out of)
         size--;
         if (isEmpty()) {
             rear = null;
