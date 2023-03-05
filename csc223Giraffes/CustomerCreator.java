@@ -15,6 +15,10 @@ public class CustomerCreator { // begin Customer creator class
 	 * instantiation. Its primary responsibility is to generate and return the
 	 * “next” customer when requested.
 	 */
+	
+	/**
+	 * @author Parker S. 
+	 */
 
 	private int numCustomers;
 	// arrival time fields

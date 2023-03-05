@@ -1,0 +1,1073 @@
+Run 1:
+Enter minimum arrival time between customers:
+1
+Enter maximum arrival time between customers:
+4
+Enter minimum service time:
+5
+Enter maximum service time:
+7
+Enter number of customers to serve:
+6 
+Time 0: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 1: 
+Checkout A: Customer 1 starts service
+Checkout B: free
+Checkout C: free
+Time 2: 
+Checkout A: Customer 1
+Checkout B: Customer 2 starts service
+Checkout C: Customer 3 starts service
+Time 3: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 4: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 5: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 6: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 7: 
+Checkout A: Customer 1 leaves, Customer 4 starts service
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 8: 
+Checkout A: Customer 4
+Checkout B: Customer 2 leaves, Customer 5 starts service
+Checkout C: Customer 3
+Time 9: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 3 leaves, Customer 6 starts service
+Time 10: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 11: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 12: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 13: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 14: 
+Checkout A: Customer 4 leaves
+Checkout B: Customer 5 leaves
+Checkout C: Customer 6
+Time 15: 
+Checkout A: free
+Checkout B: free
+Checkout C: Customer 6
+Time 16: 
+Checkout A: free
+Checkout B: free
+Checkout C: Customer 6 leaves
+
+----- Simulation Data -----
+
+Average wait: 2.5 min.
+Total time checkouts were not in use: 12 minutes
+Customer satisfaction: 3 satisfied (<5 minutes) 3 dissatisfied (>=5 minutes)
+
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     1 |                      1 |            6 |                          7 |           0 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     2 |                      2 |            6 |                          8 |           0 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     3 |                      2 |            7 |                          9 |           0 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     4 |                      2 |            7 |                         14 |           5 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     5 |                      3 |            6 |                         14 |           5 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     6 |                      4 |            7 |                         16 |           5 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+Run 2: 
+Enter minimum arrival time between customers:
+1
+Enter maximum arrival time between customers:
+3
+Enter minimum service time:
+3
+Enter maximum service time:
+6
+Enter number of customers to serve:
+5
+Time 0: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 1: 
+Checkout A: Customer 1 starts service
+Checkout B: Customer 2 starts service
+Checkout C: free
+Time 2: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3 starts service
+Time 3: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 4: 
+Checkout A: Customer 1 leaves, Customer 4 starts service
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 5: 
+Checkout A: Customer 4
+Checkout B: Customer 2 leaves, Customer 5 starts service
+Checkout C: Customer 3
+Time 6: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 3 leaves
+Time 7: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: free
+Time 8: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: free
+Time 9: 
+Checkout A: Customer 4 leaves
+Checkout B: Customer 5
+Checkout C: free
+Time 10: 
+Checkout A: free
+Checkout B: Customer 5
+Checkout C: free
+Time 11: 
+Checkout A: free
+Checkout B: Customer 5 leaves
+Checkout C: free
+
+----- Simulation Data -----
+
+Average wait: 0.6 min.
+Total time checkouts were not in use: 14 minutes
+Customer satisfaction: 5 satisfied (<5 minutes) 0 dissatisfied (>=5 minutes)
+
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     1 |                      1 |            3 |                          4 |           0 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     2 |                      1 |            4 |                          5 |           0 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     3 |                      2 |            4 |                          6 |           0 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     4 |                      3 |            5 |                          9 |           1 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     5 |                      3 |            6 |                         11 |           2 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+Run 3: 
+Enter minimum arrival time between customers:
+1
+Enter maximum arrival time between customers:
+2
+Enter minimum service time:
+3
+Enter maximum service time:
+4
+Enter number of customers to serve:
+12
+Time 0: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 1: 
+Checkout A: Customer 1 starts service
+Checkout B: Customer 2 starts service
+Checkout C: Customer 3 starts service
+Time 2: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 3: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 4: 
+Checkout A: Customer 1
+Checkout B: Customer 2 leaves, Customer 5 starts service
+Checkout C: Customer 3 leaves, Customer 6 starts service
+Time 5: 
+Checkout A: Customer 1 leaves, Customer 4 starts service
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 6: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 7: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 8: 
+Checkout A: Customer 4
+Checkout B: Customer 5 leaves, Customer 8 starts service
+Checkout C: Customer 6 leaves, Customer 9 starts service
+Time 9: 
+Checkout A: Customer 4 leaves, Customer 7 starts service
+Checkout B: Customer 8
+Checkout C: Customer 9
+Time 10: 
+Checkout A: Customer 7
+Checkout B: Customer 8
+Checkout C: Customer 9
+Time 11: 
+Checkout A: Customer 7
+Checkout B: Customer 8 leaves, Customer 11 starts service
+Checkout C: Customer 9 leaves, Customer 12 starts service
+Time 12: 
+Checkout A: Customer 7
+Checkout B: Customer 11
+Checkout C: Customer 12
+Time 13: 
+Checkout A: Customer 7 leaves, Customer 10 starts service
+Checkout B: Customer 11
+Checkout C: Customer 12
+Time 14: 
+Checkout A: Customer 10
+Checkout B: Customer 11
+Checkout C: Customer 12 leaves
+Time 15: 
+Checkout A: Customer 10
+Checkout B: Customer 11 leaves
+Checkout C: free
+Time 16: 
+Checkout A: Customer 10 leaves
+Checkout B: free
+Checkout C: free
+
+----- Simulation Data -----
+
+Average wait: 4.8 min.
+Total time checkouts were not in use: 9 minutes
+Customer satisfaction: 6 satisfied (<5 minutes) 6 dissatisfied (>=5 minutes)
+
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     1 |                      1 |            4 |                          5 |           0 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     2 |                      1 |            3 |                          4 |           0 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     3 |                      1 |            3 |                          4 |           0 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     4 |                      1 |            4 |                          9 |           4 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     5 |                      1 |            4 |                          8 |           3 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     6 |                      1 |            4 |                          8 |           3 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     7 |                      2 |            4 |                         13 |           7 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     8 |                      2 |            3 |                         11 |           6 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     9 |                      2 |            3 |                         11 |           6 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    10 |                      2 |            3 |                         16 |          11 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    11 |                      2 |            4 |                         15 |           9 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    12 |                      2 |            3 |                         14 |           9 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+Run 4: 
+Enter minimum arrival time between customers:
+1
+Enter maximum arrival time between customers:
+2
+Enter minimum service time:
+5
+Enter maximum service time:
+9
+Enter number of customers to serve:
+9
+Time 0: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 1: 
+Checkout A: Customer 1 starts service
+Checkout B: Customer 2 starts service
+Checkout C: Customer 3 starts service
+Time 2: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 3: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 4: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 5: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 6: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 7: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3 leaves, Customer 6 starts service
+Time 8: 
+Checkout A: Customer 1 leaves, Customer 4 starts service
+Checkout B: Customer 2
+Checkout C: Customer 6
+Time 9: 
+Checkout A: Customer 4
+Checkout B: Customer 2 leaves, Customer 5 starts service
+Checkout C: Customer 6
+Time 10: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 11: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 12: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 13: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 14: 
+Checkout A: Customer 4 leaves, Customer 7 starts service
+Checkout B: Customer 5
+Checkout C: Customer 6 leaves, Customer 9 starts service
+Time 15: 
+Checkout A: Customer 7
+Checkout B: Customer 5 leaves, Customer 8 starts service
+Checkout C: Customer 9
+Time 16: 
+Checkout A: Customer 7
+Checkout B: Customer 8
+Checkout C: Customer 9
+Time 17: 
+Checkout A: Customer 7
+Checkout B: Customer 8
+Checkout C: Customer 9
+Time 18: 
+Checkout A: Customer 7
+Checkout B: Customer 8
+Checkout C: Customer 9
+Time 19: 
+Checkout A: Customer 7
+Checkout B: Customer 8
+Checkout C: Customer 9
+Time 20: 
+Checkout A: Customer 7
+Checkout B: Customer 8
+Checkout C: Customer 9
+Time 21: 
+Checkout A: Customer 7
+Checkout B: Customer 8
+Checkout C: Customer 9 leaves
+Time 22: 
+Checkout A: Customer 7 leaves
+Checkout B: Customer 8
+Checkout C: free
+Time 23: 
+Checkout A: free
+Checkout B: Customer 8 leaves
+Checkout C: free
+
+----- Simulation Data -----
+
+Average wait: 6.4 min.
+Total time checkouts were not in use: 9 minutes
+Customer satisfaction: 3 satisfied (<5 minutes) 6 dissatisfied (>=5 minutes)
+
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     1 |                      1 |            7 |                          8 |           0 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     2 |                      1 |            8 |                          9 |           0 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     3 |                      1 |            6 |                          7 |           0 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     4 |                      1 |            6 |                         14 |           7 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     5 |                      1 |            6 |                         15 |           8 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     6 |                      1 |            7 |                         14 |           6 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     7 |                      2 |            8 |                         22 |          12 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     8 |                      2 |            8 |                         23 |          13 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     9 |                      2 |            7 |                         21 |          12 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+Run 5: 
+Enter minimum arrival time between customers:
+1
+Enter maximum arrival time between customers:
+5
+Enter minimum service time:
+3
+Enter maximum service time:
+6
+Enter number of customers to serve:
+6
+Time 0: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 1: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 2: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 3: 
+Checkout A: Customer 1 starts service
+Checkout B: Customer 2 starts service
+Checkout C: free
+Time 4: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3 starts service
+Time 5: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 6: 
+Checkout A: Customer 1 leaves, Customer 4 starts service
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 7: 
+Checkout A: Customer 4
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 8: 
+Checkout A: Customer 4
+Checkout B: Customer 2 leaves, Customer 5 starts service
+Checkout C: Customer 3
+Time 9: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 3 leaves, Customer 6 starts service
+Time 10: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 11: 
+Checkout A: Customer 4 leaves
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 12: 
+Checkout A: free
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 13: 
+Checkout A: free
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 14: 
+Checkout A: free
+Checkout B: Customer 5 leaves
+Checkout C: Customer 6
+Time 15: 
+Checkout A: free
+Checkout B: free
+Checkout C: Customer 6 leaves
+
+----- Simulation Data -----
+
+Average wait: 1.5 min.
+Total time checkouts were not in use: 18 minutes
+Customer satisfaction: 6 satisfied (<5 minutes) 0 dissatisfied (>=5 minutes)
+
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     1 |                      3 |            3 |                          6 |           0 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     2 |                      3 |            5 |                          8 |           0 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     3 |                      4 |            5 |                          9 |           0 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     4 |                      4 |            5 |                         11 |           2 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     5 |                      5 |            6 |                         14 |           3 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     6 |                      5 |            6 |                         15 |           4 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+Run 6: 
+
+Enter minimum arrival time between customers:
+1
+Enter maximum arrival time between customers:
+2
+Enter minimum service time:
+2
+Enter maximum service time:
+5
+Enter number of customers to serve:
+10
+Time 0: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 1: 
+Checkout A: Customer 1 starts service
+Checkout B: Customer 2 starts service
+Checkout C: Customer 3 starts service
+Time 2: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 3: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 4: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 5: 
+Checkout A: Customer 1 leaves, Customer 4 starts service
+Checkout B: Customer 2 leaves, Customer 5 starts service
+Checkout C: Customer 3 leaves, Customer 6 starts service
+Time 6: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 7: 
+Checkout A: Customer 4 leaves, Customer 7 starts service
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 8: 
+Checkout A: Customer 7
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 9: 
+Checkout A: Customer 7
+Checkout B: Customer 5
+Checkout C: Customer 6 leaves, Customer 9 starts service
+Time 10: 
+Checkout A: Customer 7
+Checkout B: Customer 5 leaves, Customer 8 starts service
+Checkout C: Customer 9
+Time 11: 
+Checkout A: Customer 7
+Checkout B: Customer 8
+Checkout C: Customer 9 leaves
+Time 12: 
+Checkout A: Customer 7 leaves, Customer 10 starts service
+Checkout B: Customer 8
+Checkout C: free
+Time 13: 
+Checkout A: Customer 10
+Checkout B: Customer 8
+Checkout C: free
+Time 14: 
+Checkout A: Customer 10
+Checkout B: Customer 8 leaves
+Checkout C: free
+Time 15: 
+Checkout A: Customer 10
+Checkout B: free
+Checkout C: free
+Time 16: 
+Checkout A: Customer 10
+Checkout B: free
+Checkout C: free
+Time 17: 
+Checkout A: Customer 10 leaves
+Checkout B: free
+Checkout C: free
+
+----- Simulation Data -----
+
+Average wait: 4.2 min.
+Total time checkouts were not in use: 15 minutes
+Customer satisfaction: 6 satisfied (<5 minutes) 4 dissatisfied (>=5 minutes)
+
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     1 |                      1 |            4 |                          5 |           0 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     2 |                      1 |            4 |                          5 |           0 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     3 |                      1 |            4 |                          5 |           0 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     4 |                      1 |            2 |                          7 |           4 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     5 |                      1 |            5 |                         10 |           4 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     6 |                      1 |            4 |                          9 |           4 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     7 |                      2 |            5 |                         12 |           5 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     8 |                      2 |            4 |                         14 |           8 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     9 |                      2 |            2 |                         11 |           7 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    10 |                      2 |            5 |                         17 |          10 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+Run 7: 
+Enter minimum arrival time between customers:
+1
+Enter maximum arrival time between customers:
+6
+Enter minimum service time:
+1
+Enter maximum service time:
+3
+Enter number of customers to serve:
+8
+Time 0: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 1: 
+Checkout A: Customer 1 starts service
+Checkout B: free
+Checkout C: free
+Time 2: 
+Checkout A: Customer 1
+Checkout B: Customer 2 starts service
+Checkout C: Customer 3 starts service
+Time 3: 
+Checkout A: Customer 1 leaves, Customer 4 starts service
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 4: 
+Checkout A: Customer 4
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 5: 
+Checkout A: Customer 4
+Checkout B: Customer 2 leaves, Customer 5 starts service
+Checkout C: Customer 3 leaves
+Time 6: 
+Checkout A: Customer 4 leaves, Customer 6 starts service
+Checkout B: Customer 5
+Checkout C: Customer 7 starts service
+Time 7: 
+Checkout A: Customer 6
+Checkout B: Customer 5 leaves, Customer 8 starts service
+Checkout C: Customer 7 leaves
+Time 8: 
+Checkout A: Customer 6 leaves
+Checkout B: Customer 8
+Checkout C: free
+Time 9: 
+Checkout A: free
+Checkout B: Customer 8 leaves
+Checkout C: free
+
+----- Simulation Data -----
+
+Average wait: 0.6 min.
+Total time checkouts were not in use: 12 minutes
+Customer satisfaction: 8 satisfied (<5 minutes) 0 dissatisfied (>=5 minutes)
+
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     1 |                      1 |            2 |                          3 |           0 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     2 |                      2 |            3 |                          5 |           0 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     3 |                      2 |            3 |                          5 |           0 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     4 |                      3 |            3 |                          6 |           0 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     5 |                      3 |            2 |                          7 |           2 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     6 |                      4 |            2 |                          8 |           2 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     7 |                      6 |            1 |                          7 |           0 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     8 |                      6 |            2 |                          9 |           1 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+Run 8: 
+Enter minimum arrival time between customers:
+1
+Enter maximum arrival time between customers:
+2
+Enter minimum service time:
+2
+Enter maximum service time:
+7
+Enter number of customers to serve:
+12
+Time 0: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 1: 
+Checkout A: Customer 1 starts service
+Checkout B: Customer 2 starts service
+Checkout C: Customer 3 starts service
+Time 2: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 3: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 4: 
+Checkout A: Customer 1
+Checkout B: Customer 2 leaves, Customer 5 starts service
+Checkout C: Customer 3 leaves, Customer 6 starts service
+Time 5: 
+Checkout A: Customer 1 leaves, Customer 4 starts service
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 6: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 7: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 8: 
+Checkout A: Customer 4
+Checkout B: Customer 5 leaves, Customer 8 starts service
+Checkout C: Customer 6
+Time 9: 
+Checkout A: Customer 4
+Checkout B: Customer 8
+Checkout C: Customer 6
+Time 10: 
+Checkout A: Customer 4
+Checkout B: Customer 8
+Checkout C: Customer 6 leaves, Customer 9 starts service
+Time 11: 
+Checkout A: Customer 4
+Checkout B: Customer 8
+Checkout C: Customer 9
+Time 12: 
+Checkout A: Customer 4 leaves, Customer 7 starts service
+Checkout B: Customer 8
+Checkout C: Customer 9
+Time 13: 
+Checkout A: Customer 7
+Checkout B: Customer 8 leaves, Customer 11 starts service
+Checkout C: Customer 9
+Time 14: 
+Checkout A: Customer 7 leaves, Customer 10 starts service
+Checkout B: Customer 11
+Checkout C: Customer 9 leaves, Customer 12 starts service
+Time 15: 
+Checkout A: Customer 10
+Checkout B: Customer 11
+Checkout C: Customer 12
+Time 16: 
+Checkout A: Customer 10
+Checkout B: Customer 11
+Checkout C: Customer 12
+Time 17: 
+Checkout A: Customer 10
+Checkout B: Customer 11
+Checkout C: Customer 12 leaves
+Time 18: 
+Checkout A: Customer 10
+Checkout B: Customer 11
+Checkout C: free
+Time 19: 
+Checkout A: Customer 10
+Checkout B: Customer 11
+Checkout C: free
+Time 20: 
+Checkout A: Customer 10
+Checkout B: Customer 11 leaves
+Checkout C: free
+Time 21: 
+Checkout A: Customer 10 leaves
+Checkout B: free
+Checkout C: free
+
+----- Simulation Data -----
+
+Average wait: 5.8 min.
+Total time checkouts were not in use: 11 minutes
+Customer satisfaction: 6 satisfied (<5 minutes) 6 dissatisfied (>=5 minutes)
+
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     1 |                      1 |            4 |                          5 |           0 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     2 |                      1 |            3 |                          4 |           0 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     3 |                      1 |            3 |                          4 |           0 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     4 |                      1 |            7 |                         12 |           4 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     5 |                      1 |            4 |                          8 |           3 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     6 |                      1 |            6 |                         10 |           3 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     7 |                      2 |            2 |                         14 |          10 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     8 |                      2 |            5 |                         13 |           6 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     9 |                      2 |            4 |                         14 |           8 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    10 |                      2 |            7 |                         21 |          12 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    11 |                      2 |            7 |                         20 |          11 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    12 |                      2 |            3 |                         17 |          12 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+Run 9:
+Enter minimum arrival time between customers:
+1
+Enter maximum arrival time between customers:
+1
+Enter minimum service time:
+3
+Enter maximum service time:
+5
+Enter number of customers to serve:
+14
+Time 0: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 1: 
+Checkout A: Customer 1 starts service
+Checkout B: Customer 2 starts service
+Checkout C: Customer 3 starts service
+Time 2: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 3: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 4: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 5: 
+Checkout A: Customer 1
+Checkout B: Customer 2 leaves, Customer 5 starts service
+Checkout C: Customer 3 leaves, Customer 6 starts service
+Time 6: 
+Checkout A: Customer 1 leaves, Customer 4 starts service
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 7: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 8: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 9: 
+Checkout A: Customer 4 leaves, Customer 7 starts service
+Checkout B: Customer 5
+Checkout C: Customer 6
+Time 10: 
+Checkout A: Customer 7
+Checkout B: Customer 5 leaves, Customer 8 starts service
+Checkout C: Customer 6 leaves, Customer 9 starts service
+Time 11: 
+Checkout A: Customer 7
+Checkout B: Customer 8
+Checkout C: Customer 9
+Time 12: 
+Checkout A: Customer 7
+Checkout B: Customer 8
+Checkout C: Customer 9
+Time 13: 
+Checkout A: Customer 7 leaves, Customer 10 starts service
+Checkout B: Customer 8 leaves, Customer 11 starts service
+Checkout C: Customer 9 leaves, Customer 12 starts service
+Time 14: 
+Checkout A: Customer 10
+Checkout B: Customer 11
+Checkout C: Customer 12
+Time 15: 
+Checkout A: Customer 10
+Checkout B: Customer 11
+Checkout C: Customer 12
+Time 16: 
+Checkout A: Customer 10 leaves, Customer 13 starts service
+Checkout B: Customer 11 leaves, Customer 14 starts service
+Checkout C: Customer 12 leaves
+Time 17: 
+Checkout A: Customer 13
+Checkout B: Customer 14
+Checkout C: free
+Time 18: 
+Checkout A: Customer 13
+Checkout B: Customer 14
+Checkout C: free
+Time 19: 
+Checkout A: Customer 13 leaves
+Checkout B: Customer 14
+Checkout C: free
+Time 20: 
+Checkout A: free
+Checkout B: Customer 14 leaves
+Checkout C: free
+
+----- Simulation Data -----
+
+Average wait: 7.5 min.
+Total time checkouts were not in use: 11 minutes
+Customer satisfaction: 5 satisfied (<5 minutes) 9 dissatisfied (>=5 minutes)
+
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     1 |                      1 |            5 |                          6 |           0 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     2 |                      1 |            4 |                          5 |           0 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     3 |                      1 |            4 |                          5 |           0 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     4 |                      1 |            3 |                          9 |           5 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     5 |                      1 |            5 |                         10 |           4 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     6 |                      1 |            5 |                         10 |           4 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     7 |                      1 |            4 |                         13 |           8 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     8 |                      1 |            3 |                         13 |           9 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     9 |                      1 |            3 |                         13 |           9 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    10 |                      1 |            3 |                         16 |          12 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    11 |                      1 |            3 |                         16 |          12 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    12 |                      1 |            3 |                         16 |          12 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    13 |                      1 |            3 |                         19 |          15 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|    14 |                      1 |            4 |                         20 |          15 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+Run 10: 
+Enter minimum arrival time between customers:
+1
+Enter maximum arrival time between customers:
+1
+Enter minimum service time:
+4
+Enter maximum service time:
+9
+Enter number of customers to serve:
+5
+Time 0: 
+Checkout A: free
+Checkout B: free
+Checkout C: free
+Time 1: 
+Checkout A: Customer 1 starts service
+Checkout B: Customer 2 starts service
+Checkout C: Customer 3 starts service
+Time 2: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 3: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 4: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3
+Time 5: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: Customer 3 leaves
+Time 6: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: free
+Time 7: 
+Checkout A: Customer 1
+Checkout B: Customer 2
+Checkout C: free
+Time 8: 
+Checkout A: Customer 1 leaves, Customer 4 starts service
+Checkout B: Customer 2 leaves, Customer 5 starts service
+Checkout C: free
+Time 9: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: free
+Time 10: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: free
+Time 11: 
+Checkout A: Customer 4
+Checkout B: Customer 5
+Checkout C: free
+Time 12: 
+Checkout A: Customer 4
+Checkout B: Customer 5 leaves
+Checkout C: free
+Time 13: 
+Checkout A: Customer 4
+Checkout B: free
+Checkout C: free
+Time 14: 
+Checkout A: Customer 4 leaves
+Checkout B: free
+Checkout C: free
+
+----- Simulation Data -----
+
+Average wait: 2.8 min.
+Total time checkouts were not in use: 17 minutes
+Customer satisfaction: 3 satisfied (<5 minutes) 2 dissatisfied (>=5 minutes)
+
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     1 |                      1 |            7 |                          8 |           0 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     2 |                      1 |            7 |                          8 |           0 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     3 |                      1 |            4 |                          5 |           0 |               C |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     4 |                      1 |            6 |                         14 |           7 |               A |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|
+|     5 |                      1 |            4 |                         12 |           7 |               B |
+|-------|------------------------|--------------|----------------------------|-------------|-----------------|

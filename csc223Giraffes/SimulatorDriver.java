@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.text.DecimalFormat;
 
+/**
+ * 
+ * @author Troy F. 
+ * @author Parker S. 
+ *
+ */
+
 public class SimulatorDriver {
 
 	public static void main(String[] args) { // begin main
@@ -43,8 +50,6 @@ public class SimulatorDriver {
 		// call populateCustomers method within our creator to fill customers ArrayList with Customer objects 
 		creator.populateCustomers(customers);
 		
-		// (DEBUGGER IGNORE)
-		//printDebug(customers);
 		
 		// Create three queues (lines) for checkout
 		QueueLL checkoutA = new QueueLL();
@@ -62,10 +67,6 @@ public class SimulatorDriver {
 		// call static methods to print data from simulation 
 		printSimResults(numCustomers, customers, checkoutA, checkoutB, checkoutC);
 		printSimResultsTable(numCustomers, customers, checkoutA, checkoutB, checkoutC);
-
-		
-		// (DEBUGGER IGNORE)
-		// printDebug(customers);
 		
 	} // end main
 	
@@ -115,10 +116,10 @@ public class SimulatorDriver {
 	public static void printSimResultsTable(int numCust,ArrayList<Customer> customers, QueueLL cha, 
 			QueueLL chb, QueueLL chc) {
 		
-		System.out.println();
-		System.out.println("|-------|------------------------|--------------|----------------------------|-------------|");
-		System.out.println("| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  |");
-		System.out.println("|-------|------------------------|--------------|----------------------------|-------------|");
+		  System.out.println();
+		    System.out.println("|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
+		    System.out.println("| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |");
+		    System.out.println("|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
 
 
 		// for loop each row of table to print data
@@ -126,11 +127,12 @@ public class SimulatorDriver {
 			
 			Customer ithCustomer = customers.get(i);
 					
-		    System.out.printf("| %5d | %22d | %12d | %26d | %11d |\n", 
-		    		ithCustomer.getCustId(), ithCustomer.getArrivalTime(), 
-		    		ithCustomer.getServiceTime(), ithCustomer.getEndTime(), 
-		    		ithCustomer.waitingTime());
-		    System.out.println("|-------|------------------------|--------------|----------------------------|-------------|");
+			 System.out.printf("| %5d | %22d | %12d | %26d | %11d | %15s |\n",
+		                ithCustomer.getCustId(), ithCustomer.getArrivalTime(),
+		                ithCustomer.getServiceTime(), ithCustomer.getEndTime(),
+		                ithCustomer.waitingTime(), ithCustomer.getUsedLine());
+		        System.out.println("|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
+		    
 		}
 	
 	} // end printSimResultsTable
@@ -145,7 +147,7 @@ public class SimulatorDriver {
 	} // end printDebug
 	
 	// prints recommended settings on call
-	public static void printRecSet() {
+	public static void printRecSet() { //begin printRecSet 
 		
 		System.out.println("Recommended Settings:");
 		System.out.println("minimum arrival time = 1");

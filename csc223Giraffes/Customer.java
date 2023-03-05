@@ -1,5 +1,12 @@
 package csc223Giraffes;
 
+/**
+ * @author Troy F. 
+ * @author Liam J. 
+ * @author Parker S. 
+ *
+ */
+
 public class Customer implements Comparable<Customer> { //begin Customer class 
 
 	//most likely the fields we will need for the customer object
@@ -8,6 +15,7 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 	private int serviceTime; 
 	private int startTime; 
 	private int endTime;	
+	private String usedLine;
 	
 	//no argument constructor 
 	public Customer() { 
@@ -92,6 +100,15 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 
 	public void setEndTime(int endTime) {
 		this.endTime = endTime;
+	}
+
+	public String getUsedLine() {
+		return usedLine;
+	}
+
+	public void setUsedLine(String usedLine) {
+		this.usedLine = usedLine;
 	}	
+	
 } //end Customer class
 

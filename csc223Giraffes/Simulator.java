@@ -2,8 +2,14 @@ package csc223Giraffes;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Liam J. 
+ * @author Parker S. 
+ *
+ */
 public class Simulator {
-	//it works now :)
+	
 	// fields
 	private ArrayList<Customer> customers;
 	private QueueLL checkoutA;
@@ -25,6 +31,15 @@ public class Simulator {
 			System.out.println("Time "+currentTime+": ");
 			for(int i=0;i<customers.size();i++) { //this for loop adds the customers that just arrived
 				if(customers.get(i).getArrivalTime()==currentTime) {
+					if(shortestQueue() == checkoutA) {
+						shortestQueue().setLineName("A");
+					}
+					else if(shortestQueue() == checkoutB) {
+						shortestQueue().setLineName("B");
+					}
+					else {
+						shortestQueue().setLineName("C");
+					}
 					shortestQueue().add(shortestQueue().size(),customers.get(i)); //adds the customer to the end of the shortest queue
 				}
 			}

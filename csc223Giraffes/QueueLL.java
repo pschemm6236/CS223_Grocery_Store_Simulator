@@ -10,7 +10,7 @@ package csc223Giraffes;
  */
 
 /**
- * @author liamj
+ * @author Liam J. 
  *
  */
 public class QueueLL {
@@ -33,11 +33,13 @@ public class QueueLL {
 	private Node first;
     private Node last;
     private int timeNotUsed;
+    private String lineName; 
 
     public QueueLL() {
         first = null;
         last = null;
         timeNotUsed = 0;
+        this.lineName = lineName;
     }
 
     public int getTimeNotUsed() {
@@ -175,6 +177,7 @@ public class QueueLL {
     	}
     	else if(first.customer.getStartTime()==-1) { //if the next customer in the queue has not started
     		first.customer.setStartTime(time);
+    		first.customer.setUsedLine(lineName);
     		System.out.println("Customer "+first.customer.getCustId()+" starts service");
     	}
     	else if(first.customer.getStartTime()+first.customer.getServiceTime()==time) { //if the customer is in the queue and their time is done
@@ -186,9 +189,12 @@ public class QueueLL {
         	}
     		else {
     			first.customer.setStartTime(time);
+        		first.customer.setUsedLine(lineName);
+
         		System.out.print(", Customer "+first.customer.getCustId()+" starts service");
     		}
     		System.out.println();
+    		
     		return customerRemoved;
     	}
     	else {
@@ -196,5 +202,16 @@ public class QueueLL {
     	}
     	return null;
     }
+
+	public String getLineName() {
+		return lineName;
+	}
+
+	public void setLineName(String lineName) {
+		this.lineName = lineName;
+	}
+    
+    
+    
 } // end class Queue
 
