@@ -2,6 +2,7 @@ package csc223Giraffes;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.text.DecimalFormat;
 
 public class SimulatorDriver {
 
@@ -40,9 +41,10 @@ public class SimulatorDriver {
 		// call populateCustomers method within our creator to fill customers ArrayList with Customer objects 
 		creator.populateCustomers(customers);
 		
-		// call static method to sort the filled ArrayList (By ascending arrival time)		
-		// Create three queues (lines) for checkout
+		// (DEBUGGER IGNORE)
+		//printDebug(customers);
 		
+		// Create three queues (lines) for checkout
 		QueueLL checkoutA = new QueueLL();
 		QueueLL checkoutB = new QueueLL();
 		QueueLL checkoutC = new QueueLL();
@@ -54,31 +56,96 @@ public class SimulatorDriver {
 		sim.runSimulation();
 		
 		scan.close();
-
-		// Run the simulation and get the average waiting time
 		
-		// Print the average waiting time
-		//System.out.println("Average waiting time: " + avgWaitTime);
+		// call static methods to print data from simulation 
+		printSimResults(numCustomers, customers, checkoutA, checkoutB, checkoutC);
+		printSimResultsTable(numCustomers, customers, checkoutA, checkoutB, checkoutC);
 
-		// Print the details for each customer
-		//sim.printCustomerDetails();
-
-		// Print the total time that checkout lanes were not in use
-		//System.out.println("Total idle time: " + sim.getIdleTime());
-
-		// Print the number of satisfied and dissatisfied customers
-		//int satisfied = sim.getSatisfiedCustomers();
-		//int dissatisfied = sim.getDissatisfiedCustomers();
-		//System.out.println("Satisfied customers: " + satisfied);
-		//System.out.println("Dissatisfied customers: " + dissatisfied);
-
-
+		
+		// (DEBUGGER IGNORE)
+		// printDebug(customers);
+		
 	} // end main
 	
 	// - - - - - - - - - - - - - static methods - - - - - - - - - - - - -
 	
-	/* When called takes a pass by reference ArrayList of Customer,
-	   sorts it by ascending arrival time and assigns id's based on where
-	   Customer object is in ArrayList
-	*/
+	// Takes the original customers ArrayList and QueueLL objects to gather all simulation results and print
+	public static void printSimResults(int numCust,ArrayList<Customer> customers, QueueLL cha, QueueLL chb, QueueLL chc) {
+		
+		int totalCustWaitTime = 0;
+		double averageCustWaitTime = 0;
+		int totalChkoutNoUseTime = 0;
+		int satisfiedCust = 0;
+		int dissatisfiedCust = 0;
+		DecimalFormat df = new DecimalFormat("##.#");
+		
+		System.out.println("\n----- Simulation Data -----\n");
+		
+		// for loop all the customers to get each of their wait times and number satisfied
+		for(int i=0; i < customers.size(); i++) {
+			
+			int ithCustWaitTime = (customers.get(i).waitingTime());
+			totalCustWaitTime = totalCustWaitTime + ithCustWaitTime;
+			
+			// check for satisfied/non
+			if(ithCustWaitTime < 5) {
+				satisfiedCust++;
+			}
+			else
+				dissatisfiedCust++;
+		}
+		
+		// calculate the average wait time
+		averageCustWaitTime = (double) totalCustWaitTime / numCust;
+		
+		// calculate the total time for the three lines 
+		totalChkoutNoUseTime = (cha.getTimeNotUsed()+chb.getTimeNotUsed()+chc.getTimeNotUsed());
+		
+		// print results
+		System.out.println("Average wait: " + df.format(averageCustWaitTime) + " min.");
+		System.out.println("Total time checkouts were not in use: " + totalChkoutNoUseTime + " minutes");
+		System.out.println("Customer satisfaction: " + satisfiedCust + " satisfied (<5 minutes) " 
+				+ dissatisfiedCust + " dissatisfied (>=5 minutes)");
+		
+	} // end printSimResults
+	
+	// Takes the data and prints out formatted table  
+	public static void printSimResultsTable(int numCust,ArrayList<Customer> customers, QueueLL cha, 
+			QueueLL chb, QueueLL chc) {
+		
+		System.out.println();
+		System.out.println("|-------|------------------------|--------------|----------------------------|-------------|");
+		System.out.println("| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  |");
+		System.out.println("|-------|------------------------|--------------|----------------------------|-------------|");
+
+
+		// for loop each row of table to print data
+		for (int i=0; i < customers.size(); i++) {
+			
+			Customer ithCustomer = customers.get(i);
+					
+		    System.out.printf("| %5d | %22d | %12d | %26d | %11d |\n", 
+		    		ithCustomer.getCustId(), ithCustomer.getArrivalTime(), 
+		    		ithCustomer.getServiceTime(), ithCustomer.getEndTime(), 
+		    		ithCustomer.waitingTime());
+		    System.out.println("|-------|------------------------|--------------|----------------------------|-------------|");
+		}
+	
+	} // end printSimResultsTable
+	
+	// Takes the original customers ArrayList and prints out all the Customer objects inside (to see all their time values)
+	public static void printDebug(ArrayList<Customer> customers) {
+		
+		for(int i=0;i<customers.size();i++) {
+				System.out.println(customers.get(i).toString());
+		}
+		
+	} // end printDebug
+	
+	public static void printRecSet() {
+		
+		System.out.println("Recommeded Settings:");
+		
+	} // end printRecSet
+	
 } // end class SimulatorDriver
