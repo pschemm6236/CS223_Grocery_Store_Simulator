@@ -14,6 +14,8 @@ public class SimulatorDriver {
 		int minServiceTime;
 		int maxServiceTime;
 		int numCustomers;
+		
+		printRecSet();
 
 		// GET USER SIMULATION SETTINGS 
 		System.out.println("Enter minimum arrival time between customers:");
@@ -142,9 +144,17 @@ public class SimulatorDriver {
 		
 	} // end printDebug
 	
+	// prints recommended settings on call
 	public static void printRecSet() {
 		
-		System.out.println("Recommeded Settings:");
+		System.out.println("Recommended Settings:");
+		System.out.println("minimum arrival time = 1");
+		System.out.println("maximum arrival time = 4");
+		System.out.println("minimum service time = 3");
+		System.out.println("maximum service time = 4");
+		System.out.println("number of customers  = 3 to 12");
+		
+		System.out.println();
 		
 	} // end printRecSet
 	
