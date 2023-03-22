@@ -2,6 +2,7 @@ package csc223Giraffes;
 
 import java.util.ArrayList;
 
+
 /**
  * 
  * @author Liam J. 
@@ -12,12 +13,12 @@ public class Simulator {
 	
 	// fields
 	private ArrayList<Customer> customers;
-	private QueueLL checkoutA;
-	private QueueLL checkoutB;
-	private QueueLL checkoutC;
+	private Queue checkoutA;
+	private Queue checkoutB;
+	private Queue checkoutC;
 	
 	// full constructor
-	public Simulator(ArrayList<Customer> customers, QueueLL checkoutA, QueueLL checkoutB, QueueLL checkoutC) {
+	public Simulator(ArrayList<Customer> customers, Queue checkoutA, Queue checkoutB, Queue checkoutC) {
 		this.customers = customers;
 		this.checkoutA = checkoutA;
 		this.checkoutB = checkoutB;
@@ -40,7 +41,7 @@ public class Simulator {
 					else {
 						shortestQueue().setLineName("C");
 					}
-					shortestQueue().add(shortestQueue().size(),customers.get(i)); //adds the customer to the end of the shortest queue
+					shortestQueue().enqueue(customers.get(i)); //adds the customer to the end of the shortest queue
 				}
 			}
 			System.out.print("Checkout A: ");
@@ -59,7 +60,8 @@ public class Simulator {
 		}
 	}
 	
-	public QueueLL shortestQueue() {
+	//change this for the queue structure 
+	public Queue shortestQueue() {
 		if(checkoutA.size()<=checkoutB.size()&&checkoutA.size()<=checkoutC.size()) {
 			return checkoutA;
 		}
@@ -71,7 +73,32 @@ public class Simulator {
 		}
 	}
 
-	public QueueLL getCheckoutA() {
+	public Queue getCheckoutA() {
+		return checkoutA;
+	}
+
+	public void setCheckoutA(Queue checkoutA) {
+		this.checkoutA = checkoutA;
+	}
+
+	public Queue getCheckoutB() {
+		return checkoutB;
+	}
+
+	public void setCheckoutB(Queue checkoutB) {
+		this.checkoutB = checkoutB;
+	}
+
+	public Queue getCheckoutC() {
+		return checkoutC;
+	}
+
+	public void setCheckoutC(Queue checkoutC) {
+		this.checkoutC = checkoutC;
+	}
+	
+
+	/**public QueueLL getCheckoutA() {
 		return checkoutA;
 	}
 
@@ -94,5 +121,5 @@ public class Simulator {
 	public void setCheckoutC(QueueLL checkoutC) {
 		this.checkoutC = checkoutC;
 	}
-
+**/
 }

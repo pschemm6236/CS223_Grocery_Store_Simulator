@@ -2,6 +2,8 @@ package csc223Giraffes;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+
 import java.text.DecimalFormat;
 
 /**
@@ -55,25 +57,30 @@ public class SimulatorDriver {
 		QueueLL checkoutA = new QueueLL();
 		QueueLL checkoutB = new QueueLL();
 		QueueLL checkoutC = new QueueLL();
+		
+		Queue checkoutAQueue = new Queue();
+		Queue checkoutBQueue = new Queue();
+		Queue checkoutCQueue = new Queue();
+
 
 		// Create a Simulator object with the number of customers to simulate 
 		// and pass it our Customer ArrayList and Queue objects
-		Simulator sim = new Simulator(customers, checkoutA, checkoutB, checkoutC);
+		Simulator sim = new Simulator(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue);
 		
 		sim.runSimulation();
 		
 		scan.close();
 		
 		// call static methods to print data from simulation 
-		printSimResults(numCustomers, customers, checkoutA, checkoutB, checkoutC);
-		printSimResultsTable(numCustomers, customers, checkoutA, checkoutB, checkoutC);
+		printSimResults(numCustomers, customers, checkoutAQueue, checkoutBQueue, checkoutCQueue);
+		printSimResultsTable(numCustomers, customers, checkoutAQueue, checkoutBQueue, checkoutCQueue);
 		
 	} // end main
 	
 	// - - - - - - - - - - - - - static methods - - - - - - - - - - - - -
 	
 	// Takes the original customers ArrayList and QueueLL objects to gather all simulation results and print
-	public static void printSimResults(int numCust,ArrayList<Customer> customers, QueueLL cha, QueueLL chb, QueueLL chc) {
+	public static void printSimResults(int numCust,ArrayList<Customer> customers, Queue cha, Queue chb, Queue chc) {
 		
 		int totalCustWaitTime = 0;
 		double averageCustWaitTime = 0;
@@ -113,8 +120,8 @@ public class SimulatorDriver {
 	} // end printSimResults
 	
 	// Takes the data and prints out formatted table  
-	public static void printSimResultsTable(int numCust,ArrayList<Customer> customers, QueueLL cha, 
-			QueueLL chb, QueueLL chc) {
+	public static void printSimResultsTable(int numCust,ArrayList<Customer> customers, Queue cha, 
+			Queue chb, Queue chc) {
 		
 		  System.out.println();
 		    System.out.println("|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
