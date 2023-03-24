@@ -122,12 +122,11 @@ public class List<E> {
 	public int size() {
 		int count = 0;
 		ListNode<Customer> current = firstNode;
-		while (current.nextNode != lastNode) {
+		while (current != null) {
 			count++;
 			current = current.nextNode;
 		}
-
-		return count; 
+		return count;
 	}
 
 	public String getLineName() {
@@ -137,46 +136,43 @@ public class List<E> {
 	public void setLineName(String lineName) {
 		this.lineName = lineName;
 	}
-	
+
 	public Customer updateQueue(int time) {
 		ListNode<Customer> current = firstNode;
-		
-    	if(isEmpty()) { //if the queue is empty
-    		System.out.println("free");
-    		timeNotUsed++;
-    	}
-    	else if(firstNode.cust.getStartTime()==-1) { //if the next customer in the queue has not started
-    		firstNode.cust.setStartTime(time);
-    		firstNode.cust.setUsedLine(lineName);
-    		System.out.println("Customer "+firstNode.cust.getCustId()+" starts service");
-    	}
-    	else if(firstNode.cust.getStartTime()+firstNode.cust.getServiceTime()==time) { //if the customer is in the queue and their time is done
-    		firstNode.cust.setEndTime(time);
-    		System.out.print("Customer "+firstNode.cust.getCustId()+" leaves");
-    		Customer customerRemoved = removeFromFront();
-    		if(isEmpty()) { //if the queue is not empty
-        		timeNotUsed++;
-        	}
-    		else {
-    			firstNode.cust.setStartTime(time);
-        		firstNode.cust.setUsedLine(lineName);
 
-        		System.out.print(", Customer "+ firstNode.cust.getCustId()+" starts service");
-    		}
-    		System.out.println();
-    		
-    		return customerRemoved;
-    	}
-    	else {
-    		System.out.println("Customer "+firstNode.cust.getCustId());
-    	}
-    	return null;
-    }
-	
+		if (isEmpty()) { // if the queue is empty
+			System.out.println("free");
+			timeNotUsed++;
+		} else if (firstNode.cust.getStartTime() == -1) { // if the next customer in the queue has not started
+			firstNode.cust.setStartTime(time);
+			firstNode.cust.setUsedLine(lineName);
+			System.out.println("Customer " + firstNode.cust.getCustId() + " starts service");
+		} else if (firstNode.cust.getStartTime() + firstNode.cust.getServiceTime() == time) { // if the customer is in
+																								// the queue and their
+																								// time is done
+			firstNode.cust.setEndTime(time);
+			System.out.print("Customer " + firstNode.cust.getCustId() + " leaves");
+			Customer customerRemoved = removeFromFront();
+			if (isEmpty()) { // if the queue is not empty
+				timeNotUsed++;
+			} else {
+				firstNode.cust.setStartTime(time);
+				firstNode.cust.setUsedLine(lineName);
+
+				System.out.print(", Customer " + firstNode.cust.getCustId() + " starts service");
+			}
+			System.out.println();
+
+			return customerRemoved;
+		} else {
+			System.out.println("Customer " + firstNode.cust.getCustId());
+		}
+		return null;
+	}
+
 	public int getTimeNotUsed() {
 		return timeNotUsed;
 	}
-	
 
 	/**
 	 * public Customer updateQueue(int time) { if(isEmpty()) { //if the queue is

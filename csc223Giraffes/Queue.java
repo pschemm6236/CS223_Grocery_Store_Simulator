@@ -12,7 +12,7 @@ public class Queue<E> {
    // constructor
    public Queue() {queueList = new List<Customer>("queue");}
 
-   // add object to queue
+   // add object to queue1
    public void enqueue(Customer cust) {queueList.insertAtBack(cust);}
 
    // remove object from queue

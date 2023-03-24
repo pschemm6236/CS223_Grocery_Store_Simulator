@@ -13,12 +13,12 @@ public class Simulator {
 	
 	// fields
 	private ArrayList<Customer> customers;
-	private Queue checkoutA;
-	private Queue checkoutB;
-	private Queue checkoutC;
+	private Queue<Customer> checkoutA;
+	private Queue<Customer> checkoutB;
+	private Queue<Customer> checkoutC;
 	
 	// full constructor
-	public Simulator(ArrayList<Customer> customers, Queue checkoutA, Queue checkoutB, Queue checkoutC) {
+	public Simulator(ArrayList<Customer> customers, Queue<Customer> checkoutA, Queue<Customer> checkoutB, Queue<Customer> checkoutC) {
 		this.customers = customers;
 		this.checkoutA = checkoutA;
 		this.checkoutB = checkoutB;
@@ -53,7 +53,7 @@ public class Simulator {
 				customersServed++;
 			}
 			System.out.print("Checkout C: ");
-			if(checkoutC.updateQueue(currentTime)!=null) {
+			if(checkoutC.updateQueue (currentTime)!=null) {
 				customersServed++;
 			}
 			currentTime++;
@@ -61,7 +61,7 @@ public class Simulator {
 	}
 	
 	//change this for the queue structure 
-	public Queue shortestQueue() {
+	public Queue<Customer> shortestQueue() {
 		if(checkoutA.size()<=checkoutB.size()&&checkoutA.size()<=checkoutC.size()) {
 			return checkoutA;
 		}
@@ -73,23 +73,23 @@ public class Simulator {
 		}
 	}
 
-	public Queue getCheckoutA() {
+	public Queue<Customer> getCheckoutA() {
 		return checkoutA;
 	}
 
-	public void setCheckoutA(Queue checkoutA) {
+	public void setCheckoutA(Queue<Customer> checkoutA) {
 		this.checkoutA = checkoutA;
 	}
 
-	public Queue getCheckoutB() {
+	public Queue<Customer> getCheckoutB() {
 		return checkoutB;
 	}
 
-	public void setCheckoutB(Queue checkoutB) {
+	public void setCheckoutB(Queue<Customer> checkoutB) {
 		this.checkoutB = checkoutB;
 	}
 
-	public Queue getCheckoutC() {
+	public Queue<Customer> getCheckoutC() {
 		return checkoutC;
 	}
 

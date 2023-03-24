@@ -58,9 +58,9 @@ public class SimulatorDriver {
 		QueueLL checkoutB = new QueueLL();
 		QueueLL checkoutC = new QueueLL();
 		
-		Queue checkoutAQueue = new Queue();
-		Queue checkoutBQueue = new Queue();
-		Queue checkoutCQueue = new Queue();
+		Queue<Customer> checkoutAQueue = new Queue<>();
+		Queue<Customer> checkoutBQueue = new Queue<>();
+		Queue<Customer> checkoutCQueue = new Queue<>();
 
 
 		// Create a Simulator object with the number of customers to simulate 
