@@ -15,6 +15,7 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 	private int serviceTime; 
 	private int startTime; 
 	private int endTime;	
+	private int coinToss;
 	private String usedLine;
 	
 	//no argument constructor 
@@ -28,6 +29,7 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 		this.serviceTime = serviceTime; 
 		startTime = -1; //-1 will signify not started
 		endTime = -1; //-1 will signify not ended
+		this.coinToss = coinToss;
 	} //end Customer Constructor 
 	
 	public String toString() { //begin toString
@@ -108,6 +110,14 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 
 	public void setUsedLine(String usedLine) {
 		this.usedLine = usedLine;
+	}
+
+	public int getCoinToss() {
+		return coinToss;
+	}
+
+	public void setCoinToss(int coinToss) {
+		this.coinToss = coinToss;
 	}	
 	
 } //end Customer class

@@ -16,13 +16,16 @@ public class Simulator {
 	private Queue<Customer> checkoutA;
 	private Queue<Customer> checkoutB;
 	private Queue<Customer> checkoutC;
+	private Queue<Customer> selfCheckout; 
 	
 	// full constructor
-	public Simulator(ArrayList<Customer> customers, Queue<Customer> checkoutA, Queue<Customer> checkoutB, Queue<Customer> checkoutC) {
+	public Simulator(ArrayList<Customer> customers, Queue<Customer> checkoutA, Queue<Customer> checkoutB, 
+			Queue<Customer> checkoutC, Queue<Customer> selfCheckout) {
 		this.customers = customers;
 		this.checkoutA = checkoutA;
 		this.checkoutB = checkoutB;
 		this.checkoutC = checkoutC;
+		this.selfCheckout = selfCheckout;
 	}
 	
 	public void runSimulation() {
@@ -32,14 +35,24 @@ public class Simulator {
 			System.out.println("Time "+currentTime+": ");
 			for(int i=0;i<customers.size();i++) { //this for loop adds the customers that just arrived
 				if(customers.get(i).getArrivalTime()==currentTime) {
-					if(shortestQueue() == checkoutA) {
-						shortestQueue().setLineName("A");
+					
+					coinToss(customers.get(i));
+					//let 0 be equal to tails, so they get full service 
+					if(customers.get(i).getCoinToss()==0) {
+						if(shortestQueue() == checkoutA) {
+							shortestQueue().setLineName("A");
+						}
+						else if(shortestQueue() == checkoutB) {
+							shortestQueue().setLineName("B");
+						}
+						else if(shortestQueue() == checkoutC){
+							shortestQueue().setLineName("C");
+						}
 					}
-					else if(shortestQueue() == checkoutB) {
-						shortestQueue().setLineName("B");
-					}
+					
+					//else the customer landed heads and is self checking out 
 					else {
-						shortestQueue().setLineName("C");
+						
 					}
 					shortestQueue().enqueue(customers.get(i)); //adds the customer to the end of the shortest queue
 				}
@@ -54,6 +67,14 @@ public class Simulator {
 			}
 			System.out.print("Checkout C: ");
 			if(checkoutC.updateQueue (currentTime)!=null) {
+				customersServed++;
+			}
+			System.out.println("Checkout D: ");
+			if(selfCheckout.updateQueue(currentTime)!=null) {
+				customersServed++;
+			}
+			System.out.println("Checkout E: ");
+			if(selfCheckout.updateQueue(currentTime)!=null) {
 				customersServed++;
 			}
 			currentTime++;
@@ -71,6 +92,11 @@ public class Simulator {
 		else {
 			return checkoutC;
 		}
+	}
+	
+	public void coinToss(Customer c) {
+		 int randomNum = (int) (Math.random() * 2); // Generate a random number between 0 and 1
+		 c.setCoinToss(randomNum); // Assign the random number to the customer's coinToss field
 	}
 
 	public Queue<Customer> getCheckoutA() {
