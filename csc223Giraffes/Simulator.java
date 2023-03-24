@@ -16,16 +16,18 @@ public class Simulator {
 	private Queue<Customer> checkoutA;
 	private Queue<Customer> checkoutB;
 	private Queue<Customer> checkoutC;
-	private Queue<Customer> selfCheckout; 
+	private Queue<Customer> checkoutD; 
+	private Queue<Customer> checkoutE;
 	
 	// full constructor
 	public Simulator(ArrayList<Customer> customers, Queue<Customer> checkoutA, Queue<Customer> checkoutB, 
-			Queue<Customer> checkoutC, Queue<Customer> selfCheckout) {
+			Queue<Customer> checkoutC, Queue<Customer> checkoutD, Queue<Customer> checkoutE) {
 		this.customers = customers;
 		this.checkoutA = checkoutA;
 		this.checkoutB = checkoutB;
 		this.checkoutC = checkoutC;
-		this.selfCheckout = selfCheckout;
+		this.checkoutD = checkoutD;
+		this.checkoutE = checkoutE;
 	}
 	
 	public void runSimulation() {
@@ -37,24 +39,34 @@ public class Simulator {
 				if(customers.get(i).getArrivalTime()==currentTime) {
 					
 					coinToss(customers.get(i));
-					//let 0 be equal to tails, so they get full service 
-					if(customers.get(i).getCoinToss()==0) {
-						if(shortestQueue() == checkoutA) {
-							shortestQueue().setLineName("A");
+					System.out.println("CUSTOMER " + customers.get(i).getCustId() + "LANDED " +  customers.get(i).getCoinToss());
+					// store the current iteration customer coin
+					int custCoin = customers.get(i).getCoinToss();
+					
+					// let 0 be equal to tails, so they get full service 
+					if(custCoin == 0) {
+						if(shortestQueue(custCoin) == checkoutA) {
+							shortestQueue(custCoin).setLineName("A");
 						}
-						else if(shortestQueue() == checkoutB) {
-							shortestQueue().setLineName("B");
+						else if(shortestQueue(custCoin) == checkoutB) {
+							shortestQueue(custCoin).setLineName("B");
 						}
-						else if(shortestQueue() == checkoutC){
-							shortestQueue().setLineName("C");
+						else if(shortestQueue(custCoin) == checkoutC){
+							shortestQueue(custCoin).setLineName("C");
 						}
 					}
 					
-					//else the customer landed heads and is self checking out 
+					// else the customer landed heads and is self checking out 
 					else {
+						if(shortestQueue(custCoin) == checkoutD) {
+							shortestQueue(custCoin).setLineName("D");
+						}
+						else {
+							shortestQueue(custCoin).setLineName("E");
+						}
 						
 					}
-					shortestQueue().enqueue(customers.get(i)); //adds the customer to the end of the shortest queue
+					shortestQueue(custCoin).enqueue(customers.get(i)); //adds the customer to the end of the shortest queue
 				}
 			}
 			System.out.print("Checkout A: ");
@@ -70,11 +82,11 @@ public class Simulator {
 				customersServed++;
 			}
 			System.out.println("Checkout D: ");
-			if(selfCheckout.updateQueue(currentTime)!=null) {
+			if(checkoutD.updateQueue(currentTime)!=null) {
 				customersServed++;
 			}
 			System.out.println("Checkout E: ");
-			if(selfCheckout.updateQueue(currentTime)!=null) {
+			if(checkoutE.updateQueue(currentTime)!=null) {
 				customersServed++;
 			}
 			currentTime++;
@@ -82,15 +94,28 @@ public class Simulator {
 	}
 	
 	//change this for the queue structure 
-	public Queue<Customer> shortestQueue() {
-		if(checkoutA.size()<=checkoutB.size()&&checkoutA.size()<=checkoutC.size()) {
-			return checkoutA;
+	public Queue<Customer> shortestQueue(int custCoin) {
+		
+		if(custCoin == 0) {
+			if(checkoutA.size()<=checkoutB.size()&&checkoutA.size()<=checkoutC.size()) {
+				return checkoutA;
+			}
+			else if(checkoutB.size()<=checkoutA.size()&&checkoutB.size()<=checkoutC.size()) {
+				return checkoutB;
+			}
+			else {
+				return checkoutC;
+			}
 		}
-		else if(checkoutB.size()<=checkoutA.size()&&checkoutB.size()<=checkoutC.size()) {
-			return checkoutB;
-		}
+		// // else the customer landed heads and is self checking out  
 		else {
-			return checkoutC;
+			if(checkoutD.size()<=checkoutE.size()) {
+				return checkoutD;
+			}
+			else {
+				return checkoutE;
+			}
+			
 		}
 	}
 	

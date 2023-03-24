@@ -61,12 +61,13 @@ public class SimulatorDriver {
 		Queue<Customer> checkoutAQueue = new Queue<>();
 		Queue<Customer> checkoutBQueue = new Queue<>();
 		Queue<Customer> checkoutCQueue = new Queue<>();
-		Queue<Customer> selfCheckoutQueue = new Queue<>();
-
+		//Queue<Customer> selfCheckoutQueue = new Queue<>();
+		Queue<Customer> checkoutDQueue = new Queue<>();
+		Queue<Customer> checkoutEQueue = new Queue<>();
 
 		// Create a Simulator object with the number of customers to simulate 
 		// and pass it our Customer ArrayList and Queue objects
-		Simulator sim = new Simulator(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, selfCheckoutQueue);
+		Simulator sim = new Simulator(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, checkoutDQueue, checkoutEQueue);
 		
 		sim.runSimulation();
 		
