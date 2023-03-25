@@ -16,18 +16,18 @@ public class Simulator {
 	private Queue<Customer> checkoutA;
 	private Queue<Customer> checkoutB;
 	private Queue<Customer> checkoutC;
-	private Queue<Customer> checkoutD; 
-	private Queue<Customer> checkoutE;
+	private Queue<Customer>[] selfCheckout = new Queue[2];
 	
 	// full constructor
 	public Simulator(ArrayList<Customer> customers, Queue<Customer> checkoutA, Queue<Customer> checkoutB, 
-			Queue<Customer> checkoutC, Queue<Customer> checkoutD, Queue<Customer> checkoutE) {
+			Queue<Customer> checkoutC, Queue<Customer> selfCheckout) {
 		this.customers = customers;
 		this.checkoutA = checkoutA;
 		this.checkoutB = checkoutB;
 		this.checkoutC = checkoutC;
-		this.checkoutD = checkoutD;
-		this.checkoutE = checkoutE;
+		this.selfCheckout[0] = new Queue<Customer>();
+		this.selfCheckout[1] = new Queue<Customer>();
+
 	}
 	
 	public void runSimulation() {
@@ -38,13 +38,33 @@ public class Simulator {
 			for(int i=0;i<customers.size();i++) { //this for loop adds the customers that just arrived
 				if(customers.get(i).getArrivalTime()==currentTime) {
 					
-					coinToss(customers.get(i));
-					System.out.println("CUSTOMER " + customers.get(i).getCustId() + "LANDED " +  customers.get(i).getCoinToss());
+					if(customers.get(i).getCoinToss()==0){
+						System.out.println("CUSTOMER " + customers.get(i).getCustId() + " LANDED TAILS SO THEY ENTER FULL CHECKOUT LINE");
+					}
+					else {
+						System.out.println("CUSTOMER " + customers.get(i).getCustId() + " LANDED HEADS SO THEY ENTER SELF-CHECKOUT LINE");
+
+					}
+					
 					// store the current iteration customer coin
 					int custCoin = customers.get(i).getCoinToss();
 					
+					if(custCoin==1) {
+						if(selfCheckout[0].size() <= selfCheckout[1].size()	) {
+							selfCheckout[0].enqueue(customers.get(i));
+							//customers.get(i).setUsedLine("D");
+							selfCheckout[0].setLineName("D");
+						
+						}
+						else {
+							selfCheckout[1].enqueue(customers.get(i));
+							//customers.get(i).setUsedLine("E");
+							selfCheckout[1].setLineName("E");
+						}
+					}
+					
 					// let 0 be equal to tails, so they get full service 
-					if(custCoin == 0) {
+					else {
 						if(shortestQueue(custCoin) == checkoutA) {
 							shortestQueue(custCoin).setLineName("A");
 						}
@@ -54,19 +74,15 @@ public class Simulator {
 						else if(shortestQueue(custCoin) == checkoutC){
 							shortestQueue(custCoin).setLineName("C");
 						}
+						shortestQueue(custCoin).enqueue(customers.get(i)); //adds the customer to the end of the shortest queue
 					}
 					
 					// else the customer landed heads and is self checking out 
-					else {
-						if(shortestQueue(custCoin) == checkoutD) {
-							shortestQueue(custCoin).setLineName("D");
-						}
-						else {
-							shortestQueue(custCoin).setLineName("E");
-						}
+					
 						
-					}
-					shortestQueue(custCoin).enqueue(customers.get(i)); //adds the customer to the end of the shortest queue
+						
+					
+					
 				}
 			}
 			System.out.print("Checkout A: ");
@@ -82,21 +98,23 @@ public class Simulator {
 				customersServed++;
 			}
 			System.out.println("Checkout D: ");
-			if(checkoutD.updateQueue(currentTime)!=null) {
+			if(selfCheckout[0].updateQueue(currentTime) != null) {
 				customersServed++;
 			}
 			System.out.println("Checkout E: ");
-			if(checkoutE.updateQueue(currentTime)!=null) {
+			if(selfCheckout[1].updateQueue(currentTime) != null) {
 				customersServed++;
 			}
 			currentTime++;
+			System.out.println();
 		}
+		
 	}
 	
 	//change this for the queue structure 
 	public Queue<Customer> shortestQueue(int custCoin) {
 		
-		if(custCoin == 0) {
+		//if(custCoin == 0) {
 			if(checkoutA.size()<=checkoutB.size()&&checkoutA.size()<=checkoutC.size()) {
 				return checkoutA;
 			}
@@ -106,9 +124,10 @@ public class Simulator {
 			else {
 				return checkoutC;
 			}
-		}
+		//}
 		// // else the customer landed heads and is self checking out  
-		else {
+		//prolly delete
+		/*else {
 			if(checkoutD.size()<=checkoutE.size()) {
 				return checkoutD;
 			}
@@ -117,6 +136,7 @@ public class Simulator {
 			}
 			
 		}
+		*/
 	}
 	
 	public void coinToss(Customer c) {

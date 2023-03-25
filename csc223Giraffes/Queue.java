@@ -8,9 +8,10 @@ import java.util.NoSuchElementException;
 
 public class Queue<E> {
    private List<Customer> queueList;
+   private int self; 
 
    // constructor
-   public Queue() {queueList = new List<Customer>("queue");}
+   public Queue() {queueList = new List<Customer>();}
 
    // add object to queue1
    public void enqueue(Customer cust) {queueList.insertAtBack(cust);}
@@ -40,6 +41,15 @@ public class Queue<E> {
 	   int time = queueList.getTimeNotUsed();
 	   return time;
 	}
+
+   public int getSelf() {
+	return self;
+   }
+
+   public void setSelf(int self) {
+	this.self = self;
+   }
+   
    
 } 	
 

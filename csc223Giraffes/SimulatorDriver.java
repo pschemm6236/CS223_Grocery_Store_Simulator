@@ -62,12 +62,11 @@ public class SimulatorDriver {
 		Queue<Customer> checkoutBQueue = new Queue<>();
 		Queue<Customer> checkoutCQueue = new Queue<>();
 		//Queue<Customer> selfCheckoutQueue = new Queue<>();
-		Queue<Customer> checkoutDQueue = new Queue<>();
-		Queue<Customer> checkoutEQueue = new Queue<>();
+		Queue<Customer> selfCheckout = new Queue<> ();
 
 		// Create a Simulator object with the number of customers to simulate 
 		// and pass it our Customer ArrayList and Queue objects
-		Simulator sim = new Simulator(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, checkoutDQueue, checkoutEQueue);
+		Simulator sim = new Simulator(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, selfCheckout);
 		
 		sim.runSimulation();
 		
@@ -122,8 +121,8 @@ public class SimulatorDriver {
 	} // end printSimResults
 	
 	// Takes the data and prints out formatted table  
-	public static void printSimResultsTable(int numCust,ArrayList<Customer> customers, Queue cha, 
-			Queue chb, Queue chc) {
+	public static void printSimResultsTable(int numCust,ArrayList<Customer> customers, Queue<Customer> cha, 
+			Queue<Customer> chb, Queue<Customer> chc) {
 		
 		  System.out.println();
 		    System.out.println("|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
