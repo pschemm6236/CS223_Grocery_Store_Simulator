@@ -57,7 +57,7 @@ public class SimulatorDriver {
 		Queue checkoutAQueue = new Queue("A");
 		Queue checkoutBQueue = new Queue("B");
 		Queue checkoutCQueue = new Queue("C");
-		SplitQueue selfCheckoutQueue = new SplitQueue(2,new String[]{"A","B"});
+		SplitQueue selfCheckoutQueue = new SplitQueue(2,new String[]{"D","E"});
 
 		// Create a Simulator object with the number of customers to simulate 
 		// and pass it our Customer ArrayList and Queue objects

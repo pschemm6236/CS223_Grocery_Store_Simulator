@@ -6,6 +6,7 @@ public class SplitQueue{ //This is like a Queue, but it has multiple values
 	
 	public SplitQueue(int length) {
 		this.mainQueue = new Queue();
+		this.queues = new Queue[length];
 		for(int i=0;i<length;i++) {
 			queues[i] = new Queue();
 		}
@@ -13,6 +14,7 @@ public class SplitQueue{ //This is like a Queue, but it has multiple values
 	
 	public SplitQueue(int length, String[] names) {
 		this.mainQueue = new Queue();
+		this.queues = new Queue[length];
 		for(int i=0;i<length;i++) {
 			queues[i] = new Queue(names[i]);
 		}
@@ -40,7 +42,7 @@ public class SplitQueue{ //This is like a Queue, but it has multiple values
 			}
 		}
 		for(int i=0;i<queues.length;i++) {
-			System.out.print("Checkout "+queues[i].getLineName());
+			System.out.print("\tCheckout "+queues[i].getLineName()+" ");
 			customers[i] = queues[i].updateQueue(time);
 		}
 		return customers;

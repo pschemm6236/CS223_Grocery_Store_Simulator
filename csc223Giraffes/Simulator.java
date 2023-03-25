@@ -48,35 +48,34 @@ public class Simulator {
 					else {
 						System.out.println("	CUSTOMER " + customers.get(i).getCustId() + " LANDED HEADS SO THEY ENTER SELF-CHECKOUT LINE");
 						System.out.println("	CUSTOMER " + customers.get(i).getCustId() + " IS " + percentSlower + "% SLOWER B/C OF SELF-CHECKOUT");
+						customers.get(i).setServiceTime((int)Math.round(customers.get(i).getServiceTime()*(1.0+percentSlower/100))); //This adds the percent slower to the service time
 						System.out.println();
 						selfCheckout.enqueue(customers.get(i));
 					}
 				}
-				System.out.print("	Checkout A: ");
-				if(checkoutA.updateQueue(currentTime)!=null) {
-					customersServed++;
-				}
-				System.out.print("	Checkout B: ");
-				if(checkoutB.updateQueue(currentTime)!=null) {
-					customersServed++;
-				}
-				System.out.print("	Checkout C: ");
-				if(checkoutC.updateQueue (currentTime)!=null) {
-					customersServed++;
-				}
-				Customer[] returnedCustomers = selfCheckout.updateQueues(currentTime);
-				for(int j=0;j<returnedCustomers.length;j++) {
-					if (returnedCustomers[i] != null) {
-						customersServed++;
-					}
-				}
-				
-				
-				currentTime++;
-				System.out.println();
 			}
-		}
+			System.out.print("	Checkout A: ");
+			if(checkoutA.updateQueue(currentTime)!=null) {
+				customersServed++;
+			}
+			System.out.print("	Checkout B: ");
+			if(checkoutB.updateQueue(currentTime)!=null) {
+				customersServed++;
+			}
+			System.out.print("	Checkout C: ");
+			if(checkoutC.updateQueue (currentTime)!=null) {
+				customersServed++;
+			}
+			Customer[] returnedCustomers = selfCheckout.updateQueues(currentTime);
+			for(int i=0;i<returnedCustomers.length;i++) {
+				if (returnedCustomers[i] != null) {
+					customersServed++;
+				}
+			}
 
+			currentTime++;
+			System.out.println();
+		}
 	}
 
 	//change this for the queue structure 
