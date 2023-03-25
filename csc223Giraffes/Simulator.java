@@ -37,12 +37,13 @@ public class Simulator {
 			System.out.println("Time "+currentTime+": ");
 			for(int i=0;i<customers.size();i++) { //this for loop adds the customers that just arrived
 				if(customers.get(i).getArrivalTime()==currentTime) {
+					coinToss(customers.get(i));
 					
 					if(customers.get(i).getCoinToss()==0){
-						System.out.println("CUSTOMER " + customers.get(i).getCustId() + " LANDED TAILS SO THEY ENTER FULL CHECKOUT LINE");
+						System.out.println("	CUSTOMER " + customers.get(i).getCustId() + " LANDED TAILS SO THEY ENTER FULL CHECKOUT LINE");
 					}
 					else {
-						System.out.println("CUSTOMER " + customers.get(i).getCustId() + " LANDED HEADS SO THEY ENTER SELF-CHECKOUT LINE");
+						System.out.println("	CUSTOMER " + customers.get(i).getCustId() + " LANDED HEADS SO THEY ENTER SELF-CHECKOUT LINE");
 
 					}
 					
@@ -85,23 +86,23 @@ public class Simulator {
 					
 				}
 			}
-			System.out.print("Checkout A: ");
+			System.out.print("	Checkout A: ");
 			if(checkoutA.updateQueue(currentTime)!=null) {
 				customersServed++;
 			}
-			System.out.print("Checkout B: ");
+			System.out.print("	Checkout B: ");
 			if(checkoutB.updateQueue(currentTime)!=null) {
 				customersServed++;
 			}
-			System.out.print("Checkout C: ");
+			System.out.print("	Checkout C: ");
 			if(checkoutC.updateQueue (currentTime)!=null) {
 				customersServed++;
 			}
-			System.out.println("Checkout D: ");
+			System.out.print("	Checkout D: ");
 			if(selfCheckout[0].updateQueue(currentTime) != null) {
 				customersServed++;
 			}
-			System.out.println("Checkout E: ");
+			System.out.print("	Checkout E: ");
 			if(selfCheckout[1].updateQueue(currentTime) != null) {
 				customersServed++;
 			}
