@@ -6,51 +6,50 @@ import java.util.NoSuchElementException;
 
 
 
-public class Queue<E> {
-   private List<Customer> queueList;
-   private int self; 
+public class Queue{
+	private List<Customer> queueList;
 
-   // constructor
-   public Queue() {queueList = new List<Customer>();}
-
-   // add object to queue1
-   public void enqueue(Customer cust) {queueList.insertAtBack(cust);}
-
-   // remove object from queue
-   public Customer dequeue() throws NoSuchElementException {
-      return queueList.removeFromFront(); 
-   } 
-
-   // determine if queue is empty
-   public boolean isEmpty() {return queueList.isEmpty();}
-
-   // output queue contents
-
-   public Customer updateQueue(int time) {
-	   Customer cust  = queueList.updateQueue(time); 
-	   return cust;
-   }
-   
-   public int size() {int size = queueList.size(); return size;}
-
-   public void setLineName(String string) {
-	   queueList.setLineName(string);
-   }
-  
-   public int getTimeNotUsed() {
-	   int time = queueList.getTimeNotUsed();
-	   return time;
+	// constructor
+	public Queue() {
+		queueList = new List<Customer>();
 	}
 
-   public int getSelf() {
-	return self;
-   }
+	public Queue(String name) {
+		queueList = new List<Customer>(name);
+	}
 
-   public void setSelf(int self) {
-	this.self = self;
-   }
-   
-   
+	// add object to queue1
+	public void enqueue(Customer cust) {queueList.insertAtBack(cust);}
+
+	// remove object from queue
+	public Customer dequeue() throws NoSuchElementException {
+		return queueList.removeFromFront(); 
+	} 
+
+	// determine if queue is empty
+	public boolean isEmpty() {return queueList.isEmpty();}
+
+	// output queue contents
+
+	public Customer updateQueue(int time) {
+		Customer cust  = queueList.updateQueue(time); 
+		return cust;
+	}
+
+	public int size() {int size = queueList.size(); return size;}
+
+	public void setLineName(String string) {
+		queueList.setLineName(string);
+	}
+
+	public String getLineName() {
+		return queueList.getLineName();
+	}
+
+	public int getTimeNotUsed() {
+		int time = queueList.getTimeNotUsed();
+		return time;
+	}
 } 	
 
 

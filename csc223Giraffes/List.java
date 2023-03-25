@@ -138,8 +138,6 @@ public class List<E> {
 	}
 
 	public Customer updateQueue(int time) {
-		ListNode<Customer> current = firstNode;
-
 		if (isEmpty()) { // if the queue is empty
 			System.out.println("free");
 			timeNotUsed++;
@@ -147,9 +145,7 @@ public class List<E> {
 			firstNode.cust.setStartTime(time);
 			firstNode.cust.setUsedLine(lineName);
 			System.out.println("Customer " + firstNode.cust.getCustId() + " starts service");
-		} else if (firstNode.cust.getStartTime() + firstNode.cust.getServiceTime() == time) { // if the customer is in
-																								// the queue and their
-																								// time is done
+		} else if (firstNode.cust.getStartTime() + firstNode.cust.getServiceTime() == time) { // if the customer is in the queue and their time is done
 			firstNode.cust.setEndTime(time);
 			System.out.print("Customer " + firstNode.cust.getCustId() + " leaves");
 			Customer customerRemoved = removeFromFront();
