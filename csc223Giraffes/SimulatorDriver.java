@@ -42,6 +42,9 @@ public class SimulatorDriver {
 		System.out.println("Enter number of customers to serve:");
 		numCustomers = scan.nextInt();
 		
+		System.out.println("Percentage slower for SELF: ");
+		double percentSlower = scan.nextDouble();
+		
 		// ArrayList to Store Customer Objects that is defined here in main AND passed by reference to wherever 
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		
@@ -66,7 +69,7 @@ public class SimulatorDriver {
 
 		// Create a Simulator object with the number of customers to simulate 
 		// and pass it our Customer ArrayList and Queue objects
-		Simulator sim = new Simulator(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, selfCheckout);
+		Simulator sim = new Simulator(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, selfCheckout, percentSlower);
 		
 		sim.runSimulation();
 		

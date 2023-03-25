@@ -17,16 +17,18 @@ public class Simulator {
 	private Queue<Customer> checkoutB;
 	private Queue<Customer> checkoutC;
 	private Queue<Customer>[] selfCheckout = new Queue[2];
+	private double percentSlower; 
 	
 	// full constructor
 	public Simulator(ArrayList<Customer> customers, Queue<Customer> checkoutA, Queue<Customer> checkoutB, 
-			Queue<Customer> checkoutC, Queue<Customer> selfCheckout) {
+			Queue<Customer> checkoutC, Queue<Customer> selfCheckout, double percentSlower) {
 		this.customers = customers;
 		this.checkoutA = checkoutA;
 		this.checkoutB = checkoutB;
 		this.checkoutC = checkoutC;
 		this.selfCheckout[0] = new Queue<Customer>();
 		this.selfCheckout[1] = new Queue<Customer>();
+		this.percentSlower = percentSlower;
 
 	}
 	
@@ -44,6 +46,7 @@ public class Simulator {
 					}
 					else {
 						System.out.println("	CUSTOMER " + customers.get(i).getCustId() + " LANDED HEADS SO THEY ENTER SELF-CHECKOUT LINE");
+						System.out.println("	CUSTOMER " + customers.get(i).getCustId() + " IS " + percentSlower + "% SLOWER B/C OF SELF-CHECKOUT");
 
 					}
 					
@@ -51,6 +54,7 @@ public class Simulator {
 					int custCoin = customers.get(i).getCoinToss();
 					
 					if(custCoin==1) {
+						System.out.println();
 						if(selfCheckout[0].size() <= selfCheckout[1].size()	) {
 							selfCheckout[0].enqueue(customers.get(i));
 							//customers.get(i).setUsedLine("D");
@@ -64,8 +68,10 @@ public class Simulator {
 						}
 					}
 					
+				
 					// let 0 be equal to tails, so they get full service 
 					else {
+						System.out.println();
 						if(shortestQueue(custCoin) == checkoutA) {
 							shortestQueue(custCoin).setLineName("A");
 						}
