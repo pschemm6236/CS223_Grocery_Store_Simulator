@@ -63,7 +63,7 @@ public class SimulatorDriver {
 		// and pass it our Customer ArrayList and Queue objects
 		Simulator sim = new Simulator(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, selfCheckoutQueue, percentSlower);
 		
-		System.out.println("\n----- Strating Simulation -----\n");
+		System.out.println("\n----- Starting Simulation -----\n");
 		sim.runSimulation();
 
 		scan.close();

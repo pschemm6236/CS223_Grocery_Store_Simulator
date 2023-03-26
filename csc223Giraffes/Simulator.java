@@ -42,15 +42,15 @@ public class Simulator {
 					if(serviceType==0){
 						System.out.println("	CUSTOMER " + customers.get(i).getCustId() + " LANDED TAILS SO THEY ENTER FULL CHECKOUT LINE");
 						System.out.println();
-						customers.get(i).setUsedLine(shortestQueue().getLineName());
-						shortestQueue().enqueue(customers.get(i));
+						customers.get(i).setUsedLine(shortestQueue().getLineName()); //sets the line used for the customer to the shortest line name
+						shortestQueue().enqueue(customers.get(i)); //adds the customer to this line
 					}
 					else {
 						System.out.println("	CUSTOMER " + customers.get(i).getCustId() + " LANDED HEADS SO THEY ENTER SELF-CHECKOUT LINE");
 						System.out.println("	CUSTOMER " + customers.get(i).getCustId() + " IS " + percentSlower + "% SLOWER B/C OF SELF-CHECKOUT");
 						customers.get(i).setServiceTime((int)Math.round(customers.get(i).getServiceTime()*(1.0+percentSlower/100))); //This adds the percent slower to the service time
 						System.out.println();
-						selfCheckout.enqueue(customers.get(i));
+						selfCheckout.enqueue(customers.get(i)); //adds the customer to the selfCheckout
 					}
 				}
 			}
@@ -68,8 +68,8 @@ public class Simulator {
 			}
 			Customer[] returnedCustomers = selfCheckout.updateQueues(currentTime);
 			for(int i=0;i<returnedCustomers.length;i++) {
-				if (returnedCustomers[i] != null) {
-					customersServed++;
+				if (returnedCustomers[i] != null) { //if a customer was finished being served for this queue
+					customersServed++; //adds to the customers served
 				}
 			}
 

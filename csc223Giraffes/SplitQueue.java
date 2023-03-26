@@ -1,10 +1,19 @@
 package csc223Giraffes;
 
-public class SplitQueue{ //This is like a Queue, but it has multiple values 
-	private Queue mainQueue;
-	private Queue[] queues;
+/**
+ * 
+ * @author Liam J. 
+ *
+ */
+
+//This is like a Queue, but it has one queue going into multiple queues, and these queues only hold one value
+//This was necessary to be able to continue to use the UpdateQueue in the List class
+
+public class SplitQueue{
+	private Queue mainQueue; //this is the main queue where items wait for open spots in the queues
+	private Queue[] queues;  //array of queues. this is where the main queue drops into once one of the queues is open, these hold one value in most cases
 	
-	public SplitQueue(int length) {
+	public SplitQueue(int length) { //one parameter, length
 		this.mainQueue = new Queue();
 		this.queues = new Queue[length];
 		for(int i=0;i<length;i++) {
@@ -12,7 +21,7 @@ public class SplitQueue{ //This is like a Queue, but it has multiple values
 		}
 	}
 	
-	public SplitQueue(int length, String[] names) {
+	public SplitQueue(int length, String[] names) { //two parameters, length and the names for each queue
 		this.mainQueue = new Queue();
 		this.queues = new Queue[length];
 		for(int i=0;i<length;i++) {
@@ -21,12 +30,12 @@ public class SplitQueue{ //This is like a Queue, but it has multiple values
 	}
 	
 	public void enqueue(Customer cust) {
-		if(openQueue()==null) {
-			mainQueue.enqueue(cust);
+		if(openQueue()==null) { //if there is not an open queue available
+			mainQueue.enqueue(cust); //it is added to the main queue
 		}
-		else {
-			cust.setUsedLine(openQueue().getLineName());
-			openQueue().enqueue(cust);
+		else { //if there is an open queue available
+			cust.setUsedLine(openQueue().getLineName()); //it sets the line used field of the customer to this line name
+			openQueue().enqueue(cust); //and adds it to the queue
 		}
 	}
 	
@@ -35,27 +44,27 @@ public class SplitQueue{ //This is like a Queue, but it has multiple values
 	} 
 	
 	public Customer[] updateQueues(int time) {
-		Customer[] customers = new Customer[queues.length];
+		Customer[] customers = new Customer[queues.length]; //this will represent the customers that are returned to the simulator for each queue during an update
 		for(int i=0;i<queues.length;i++) { //adds to Queues that are empty from the mainQueue
-			if(queues[i].isEmpty() && !mainQueue.isEmpty()) {
-				mainQueue.peek().setUsedLine(queues[i].getLineName());
-				queues[i].enqueue(mainQueue.dequeue());
+			if(queues[i].isEmpty() && !mainQueue.isEmpty()) { //if the queue is empty and the mainQueue has items
+				mainQueue.peek().setUsedLine(queues[i].getLineName()); //sets the line used of the customer to the line name
+				queues[i].enqueue(mainQueue.dequeue()); //adds the customer to the specific queue from the main queue
 			}
 		}
-		for(int i=0;i<queues.length;i++) {
-			System.out.print("\tCheckout "+queues[i].getLineName()+": ");
-			if(queues[i].peek()!=null) {
-				if(queues[i].peek().getStartTime()+queues[i].peek().getServiceTime()==time && !mainQueue.isEmpty()){
-					mainQueue.peek().setUsedLine(queues[i].getLineName());
-					queues[i].enqueue(mainQueue.dequeue());
+		for(int i=0;i<queues.length;i++) { //updates each queue
+			System.out.print("\tCheckout "+queues[i].getLineName()+": "); //prints qhich queue is being updated
+			if(queues[i].peek()!=null) { //if the queue is not empty
+				if(queues[i].peek().getStartTime()+queues[i].peek().getServiceTime()==time && !mainQueue.isEmpty()){ //then if the customer is done being served and the mainQueue has items
+					mainQueue.peek().setUsedLine(queues[i].getLineName());  //sets the line used of the customer to the line name
+					queues[i].enqueue(mainQueue.dequeue()); //adds the customer to the specific queue from the main queue, so that the updateQueue method can work properly, with two items in the queue
 				}
 			}
-			customers[i] = queues[i].updateQueue(time);
+			customers[i] = queues[i].updateQueue(time); //updates the queue
 		}
 		return customers;
 	}
 	
-	public int size() {
+	public int size() { //returns the size of the main queue and all the sub queues combined
 		int subCount = 0;
 		for(int i=0;i<queues.length;i++) {
 			subCount+=queues[i].size();
@@ -71,12 +80,12 @@ public class SplitQueue{ //This is like a Queue, but it has multiple values
 		return queues[index].getLineName();
 	}
 
-	public int getTimeNotUsed(int index) {
+	public int getTimeNotUsed(int index) { //queue specific
 		int time = queues[index].getTimeNotUsed();
 		return time;
 	}
 	
-	public int getTotalTimeNotUsed() {
+	public int getTotalTimeNotUsed() { //all queues combined
 		int totalTime = 0;
 		for(int i=0;i<queues.length;i++) {
 			totalTime += getTimeNotUsed(i);

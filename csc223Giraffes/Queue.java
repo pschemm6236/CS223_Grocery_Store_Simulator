@@ -4,7 +4,12 @@ package csc223Giraffes;
 
 import java.util.NoSuchElementException;
 
-
+/**
+ * 
+ * @author Liam J. 
+ * @author Parker S. 
+ *
+ */
 
 public class Queue{
 	private List<Customer> queueList;
@@ -26,7 +31,7 @@ public class Queue{
 		return queueList.removeFromFront(); 
 	} 
 	
-	public Customer peek() {
+	public Customer peek() { //returns the customer that is next in the queue, without removing it
 		return queueList.getFirstNode();
 	}
 
@@ -35,7 +40,7 @@ public class Queue{
 
 	// output queue contents
 
-	public Customer updateQueue(int time) {
+	public Customer updateQueue(int time) { //updates the queue with the time parameter
 		Customer cust  = queueList.updateQueue(time); 
 		return cust;
 	}

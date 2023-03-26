@@ -133,7 +133,7 @@ public class List<E> {
 		return lineName;
 	}
 	
-	public Customer getFirstNode() {
+	public Customer getFirstNode() { //necessary for the peek method in the Queue class
 		if(!isEmpty()) {
 			return firstNode.getData();
 		}
