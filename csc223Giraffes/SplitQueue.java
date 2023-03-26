@@ -38,6 +38,7 @@ public class SplitQueue{ //This is like a Queue, but it has multiple values
 		Customer[] customers = new Customer[queues.length];
 		for(int i=0;i<queues.length;i++) { //adds to Queues that are empty from the mainQueue
 			if(queues[i].isEmpty() && !mainQueue.isEmpty()) {
+				mainQueue.peek().setUsedLine(queues[i].getLineName());
 				queues[i].enqueue(mainQueue.dequeue());
 			}
 		}
@@ -45,6 +46,7 @@ public class SplitQueue{ //This is like a Queue, but it has multiple values
 			System.out.print("\tCheckout "+queues[i].getLineName()+": ");
 			if(queues[i].peek()!=null) {
 				if(queues[i].peek().getStartTime()+queues[i].peek().getServiceTime()==time && !mainQueue.isEmpty()){
+					mainQueue.peek().setUsedLine(queues[i].getLineName());
 					queues[i].enqueue(mainQueue.dequeue());
 				}
 			}
