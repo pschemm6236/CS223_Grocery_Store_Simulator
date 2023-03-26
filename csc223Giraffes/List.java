@@ -132,6 +132,13 @@ public class List<E> {
 	public String getLineName() {
 		return lineName;
 	}
+	
+	public Customer getFirstNode() {
+		if(!isEmpty()) {
+			return firstNode.getData();
+		}
+		return null;
+	}
 
 	public void setLineName(String lineName) {
 		this.lineName = lineName;

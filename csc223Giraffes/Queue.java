@@ -25,6 +25,10 @@ public class Queue{
 	public Customer dequeue() throws NoSuchElementException {
 		return queueList.removeFromFront(); 
 	} 
+	
+	public Customer peek() {
+		return queueList.getFirstNode();
+	}
 
 	// determine if queue is empty
 	public boolean isEmpty() {return queueList.isEmpty();}
@@ -41,7 +45,7 @@ public class Queue{
 	public void setLineName(String string) {
 		queueList.setLineName(string);
 	}
-
+	
 	public String getLineName() {
 		return queueList.getLineName();
 	}

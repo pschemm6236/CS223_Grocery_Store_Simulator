@@ -43,6 +43,11 @@ public class SplitQueue{ //This is like a Queue, but it has multiple values
 		}
 		for(int i=0;i<queues.length;i++) {
 			System.out.print("\tCheckout "+queues[i].getLineName()+": ");
+			if(queues[i].peek()!=null) {
+				if(queues[i].peek().getStartTime()+queues[i].peek().getServiceTime()==time && !mainQueue.isEmpty()){
+					queues[i].enqueue(mainQueue.dequeue());
+				}
+			}
 			customers[i] = queues[i].updateQueue(time);
 		}
 		return customers;
@@ -85,12 +90,7 @@ public class SplitQueue{ //This is like a Queue, but it has multiple values
 		}
 		return null;
 	}
-	
-	
-	
 }
-
-
 
 /**************************************************************************
  * (C) Copyright 1992-2018 by Deitel & Associates, Inc. and               *
