@@ -143,7 +143,6 @@ public class List<E> {
 			timeNotUsed++;
 		} else if (firstNode.cust.getStartTime() == -1) { // if the next customer in the queue has not started
 			firstNode.cust.setStartTime(time);
-			firstNode.cust.setUsedLine(lineName);
 			System.out.println("Customer " + firstNode.cust.getCustId() + " starts service");
 		} else if (firstNode.cust.getStartTime() + firstNode.cust.getServiceTime() == time) { // if the customer is in the queue and their time is done
 			firstNode.cust.setEndTime(time);
@@ -153,8 +152,6 @@ public class List<E> {
 				timeNotUsed++;
 			} else {
 				firstNode.cust.setStartTime(time);
-				firstNode.cust.setUsedLine(lineName);
-
 				System.out.print(", Customer " + firstNode.cust.getCustId() + " starts service");
 			}
 			System.out.println();
