@@ -134,7 +134,6 @@ public class SimulatorDriver {
 		+checkoutDandE.getTotalTimeNotUsed());
 
 		// print results
-		System.out.println("Average wait: " + df.format(averageCustWaitTime) + " min.");
 		System.out.println("Total time checkouts (FULL and SELF) were not in use: " + totalChkoutNoUseTime + " minutes");
 		System.out.println("Customer satisfaction: " + satisfiedCust + " satisfied (<5 minutes) " 
 				+ dissatisfiedCust + " dissatisfied (>=5 minutes)");
