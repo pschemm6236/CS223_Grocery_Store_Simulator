@@ -80,9 +80,6 @@ public class SimulatorDriver {
 	public static void printSimResults(ArrayList<Customer> customers, Queue checkoutAQueue, Queue checkoutBQueue, Queue checkoutCQueue, 
 			SplitQueue checkoutDandE, double percentSlower) {
 
-		int totalCustWaitTime = 0;
-		double averageCustWaitTime = 0;
-		int totalChkoutNoUseTime = 0;
 		int satisfiedCust = 0;
 		int dissatisfiedCust = 0;
 		DecimalFormat df = new DecimalFormat("##.#");
@@ -93,8 +90,7 @@ public class SimulatorDriver {
 		for(int i=0; i < customers.size(); i++) {
 
 			int ithCustWaitTime = (customers.get(i).waitingTime());
-			totalCustWaitTime = totalCustWaitTime + ithCustWaitTime;
-
+	
 			// check for satisfied/non
 			if(ithCustWaitTime < 5) {
 				satisfiedCust++;
@@ -111,13 +107,12 @@ public class SimulatorDriver {
 		for (Customer customer : customers) {
 		    double waitTime = customer.waitingTime();
 		    String line = customer.getUsedLine();
-		    int serviceTime = customer.getServiceTime();
 
 		    if (line.equals("A") || line.equals("B") || line.equals("C")) { // FULL line
 		        totalWaitTimeFull += waitTime;
 		        numCustomersFull++;
 		    } else { // SELF line
-		        totalWaitTimeSelf += waitTime + (waitTime * (percentSlower / 100.0)); // adjust for SELF checkout time
+		        totalWaitTimeSelf += waitTime;
 		        numCustomersSelf++;
 		    }
 		}
@@ -130,11 +125,14 @@ public class SimulatorDriver {
 		System.out.println("Average wait time for SELF: " + df.format(avgWaitTimeSelf) + " min. With SELF serving a total of "
 				+ numCustomersSelf + " for the day.");
 
-		totalChkoutNoUseTime = (checkoutAQueue.getTimeNotUsed()+checkoutBQueue.getTimeNotUsed()+checkoutCQueue.getTimeNotUsed()
-		+checkoutDandE.getTotalTimeNotUsed());
+		int totalChkoutNoUseTimeFULL = (checkoutAQueue.getTimeNotUsed()+checkoutBQueue.getTimeNotUsed()+checkoutCQueue.getTimeNotUsed());
+		
+		int totalChkoutNoUseTimeSELF = (checkoutDandE.getTotalTimeNotUsed());
 
 		// print results
-		System.out.println("Total time checkouts (FULL and SELF) were not in use: " + totalChkoutNoUseTime + " minutes");
+		System.out.println();
+		System.out.println("Total time checkouts (FULL) were not in use: " + totalChkoutNoUseTimeFULL + " minutes");
+		System.out.println("Total time checkouts (SELF) were not in use: " + totalChkoutNoUseTimeSELF + " minutes");
 		System.out.println("Customer satisfaction: " + satisfiedCust + " satisfied (<5 minutes) " 
 				+ dissatisfiedCust + " dissatisfied (>=5 minutes)");
 
