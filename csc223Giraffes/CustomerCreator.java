@@ -13,7 +13,7 @@ public class CustomerCreator { // begin Customer creator class
 	 * will need a CustomerCreator class. An object of this class is passed the
 	 * minimum and maximum interarrival and service times of the customers upon
 	 * instantiation. Its primary responsibility is to generate and return the
-	 * “next” customer when requested.
+	 * ï¿½nextï¿½ customer when requested.
 	 */
 	
 	/**
@@ -63,22 +63,22 @@ public class CustomerCreator { // begin Customer creator class
 	} // end randomService
 
 	public void populateCustomers (ArrayList<Customer> customers){ // begin populate Customers
-		for (int i = 0; i < numCustomers; i++) { // begin for
+		int arrivalTime = 0;
+	    for (int i = 0; i < numCustomers; i++) {
+	        int interarrivalTime = randomArrival(minArrivalTime, maxArrivalTime);
+	        arrivalTime += interarrivalTime;
 
-			int interarrivalTime = randomArrival(minArrivalTime, maxArrivalTime);
+	        int serviceTime = randomService(minServiceTime, maxServiceTime);
 
-			int serviceTime = randomService(minServiceTime, maxServiceTime);
+	        // create customer object
+	        Customer customer = new Customer(arrivalTime, serviceTime);
 
-			//arrivalTime += interarrivalTime;
+	        customers.add(customer);
+	    }
 
-			// create customer object
-			Customer customer = new Customer(interarrivalTime, serviceTime);
-
-			customers.add(customer);
-		} // end for
+	    Collections.sort(customers); //I used this to sort the customers by arrival time
 		
-		Collections.sort(customers); //I used this to sort the customers by arrival time
-		
+	    // then assign Customer objects Id now that they are sorted by arrival
 		for (int i = 0; i < numCustomers; i++) {
 			customers.get(i).assignId(i+1);
 		}

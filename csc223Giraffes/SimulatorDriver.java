@@ -69,7 +69,7 @@ public class SimulatorDriver {
 		scan.close();
 
 		// call static methods to print data from simulation 
-		printSimResults(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue);
+		printSimResults(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, selfCheckoutQueue, percentSlower);
 		printSimResultsTable(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue);
 
 	} // end main
@@ -77,7 +77,8 @@ public class SimulatorDriver {
 	// - - - - - - - - - - - - - static methods - - - - - - - - - - - - -
 
 	// Takes the original customers ArrayList and Queue objects to gather all simulation results and print
-	public static void printSimResults(ArrayList<Customer> customers, Queue checkoutAQueue, Queue checkoutBQueue, Queue checkoutCQueue) {
+	public static void printSimResults(ArrayList<Customer> customers, Queue checkoutAQueue, Queue checkoutBQueue, Queue checkoutCQueue, 
+			SplitQueue checkoutDandE, double percentSlower) {
 
 		int totalCustWaitTime = 0;
 		double averageCustWaitTime = 0;
@@ -102,15 +103,39 @@ public class SimulatorDriver {
 				dissatisfiedCust++;
 		}
 
-		// calculate the average wait time
-		averageCustWaitTime = (double) totalCustWaitTime / customers.size();
+		double totalWaitTimeFull = 0;
+		int numCustomersFull = 0;
+		double totalWaitTimeSelf = 0;
+		int numCustomersSelf = 0;
 
-		// calculate the total time for the three lines 
-		totalChkoutNoUseTime = (checkoutAQueue.getTimeNotUsed()+checkoutBQueue.getTimeNotUsed()+checkoutCQueue.getTimeNotUsed());
+		for (Customer customer : customers) {
+		    double waitTime = customer.waitingTime();
+		    String line = customer.getUsedLine();
+		    int serviceTime = customer.getServiceTime();
+
+		    if (line.equals("A") || line.equals("B") || line.equals("C")) { // FULL line
+		        totalWaitTimeFull += waitTime;
+		        numCustomersFull++;
+		    } else { // SELF line
+		        totalWaitTimeSelf += waitTime + (waitTime * (percentSlower / 100.0)); // adjust for SELF checkout time
+		        numCustomersSelf++;
+		    }
+		}
+
+		double avgWaitTimeFull = totalWaitTimeFull / numCustomersFull;
+		double avgWaitTimeSelf = totalWaitTimeSelf / numCustomersSelf;
+
+		System.out.println("Average wait time for FULL: " + df.format(avgWaitTimeFull) + " min. With FULL serving a total of " 
+				+ numCustomersFull + " for the day.");
+		System.out.println("Average wait time for SELF: " + df.format(avgWaitTimeSelf) + " min. With SELF serving a total of "
+				+ numCustomersSelf + " for the day.");
+
+		totalChkoutNoUseTime = (checkoutAQueue.getTimeNotUsed()+checkoutBQueue.getTimeNotUsed()+checkoutCQueue.getTimeNotUsed()
+		+checkoutDandE.getTotalTimeNotUsed());
 
 		// print results
 		System.out.println("Average wait: " + df.format(averageCustWaitTime) + " min.");
-		System.out.println("Total time checkouts were not in use: " + totalChkoutNoUseTime + " minutes");
+		System.out.println("Total time checkouts (FULL and SELF) were not in use: " + totalChkoutNoUseTime + " minutes");
 		System.out.println("Customer satisfaction: " + satisfiedCust + " satisfied (<5 minutes) " 
 				+ dissatisfiedCust + " dissatisfied (>=5 minutes)");
 
