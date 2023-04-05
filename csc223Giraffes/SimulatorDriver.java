@@ -3,13 +3,12 @@ package csc223Giraffes;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 import java.text.DecimalFormat;
 
 /**
  * 
- * @author Troy F. 
- * @author Parker S. 
+ * @author Troy F.
+ * @author Parker S.
  *
  */
 
@@ -18,6 +17,9 @@ public class SimulatorDriver {
 	public static void main(String[] args) { // begin main
 
 		Scanner scan = new Scanner(System.in);
+
+		int fullServiceLines;
+		int selfServiceLines;
 		int minArrivalTime;
 		int maxArrivalTime;
 		int minServiceTime;
@@ -26,7 +28,13 @@ public class SimulatorDriver {
 
 		printRecSet();
 
-		// GET USER SIMULATION SETTINGS 
+		// GET USER SIMULATION SETTINGS
+		System.out.println("Number of full-service lines:");
+		fullServiceLines = scan.nextInt();
+
+		System.out.println("Numberr of self-service lines:");
+		selfServiceLines = scan.nextInt();
+
 		System.out.println("Enter minimum arrival time between customers:");
 		minArrivalTime = scan.nextInt();
 
@@ -45,30 +53,41 @@ public class SimulatorDriver {
 		System.out.println("Percentage slower for SELF: ");
 		double percentSlower = scan.nextDouble();
 
-		// ArrayList to Store Customer Objects that is defined here in main AND passed by reference to wherever 
+		// ArrayList to Store Customer Objects that is defined here in main AND passed
+		// by reference to wherever
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 
 		// CustomerCreator object which takes all USER SIMULATION SETTINGS
-		CustomerCreator creator = new CustomerCreator(numCustomers,  minArrivalTime,  maxArrivalTime,  minServiceTime, maxServiceTime);
+		CustomerCreator creator = new CustomerCreator(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime,
+				maxServiceTime);
 
-		// call populateCustomers method within our creator to fill customers ArrayList with Customer objects 
+		// call populateCustomers method within our creator to fill customers ArrayList
+		// with Customer objects
 		creator.populateCustomers(customers);
+
+		ArrayList<Queue> fullQueues = new ArrayList<Queue>();
+		ArrayList<Queue> selfQueues = new ArrayList<Queue>();
+
+		fullQueues = createFullQueues(fullServiceLines);
+
+		selfQueues = createSelfQueues(selfServiceLines, fullQueues);
 
 		Queue checkoutAQueue = new Queue("A");
 		Queue checkoutBQueue = new Queue("B");
 		Queue checkoutCQueue = new Queue("C");
-		SplitQueue selfCheckoutQueue = new SplitQueue(2,new String[]{"D","E"});
+		SplitQueue selfCheckoutQueue = new SplitQueue(2, new String[] { "D", "E" });
 
-		// Create a Simulator object with the number of customers to simulate 
+		// Create a Simulator object with the number of customers to simulate
 		// and pass it our Customer ArrayList and Queue objects
-		Simulator sim = new Simulator(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, selfCheckoutQueue, percentSlower);
-		
+		Simulator sim = new Simulator(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, selfCheckoutQueue,
+				percentSlower);
+
 		System.out.println("\n----- Starting Simulation -----\n");
 		sim.runSimulation();
 
 		scan.close();
 
-		// call static methods to print data from simulation 
+		// call static methods to print data from simulation
 		printSimResults(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, selfCheckoutQueue, percentSlower);
 		printSimResultsTable(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue);
 
@@ -76,9 +95,49 @@ public class SimulatorDriver {
 
 	// - - - - - - - - - - - - - static methods - - - - - - - - - - - - -
 
-	// Takes the original customers ArrayList and Queue objects to gather all simulation results and print
-	public static void printSimResults(ArrayList<Customer> customers, Queue checkoutAQueue, Queue checkoutBQueue, Queue checkoutCQueue, 
-			SplitQueue checkoutDandE, double percentSlower) {
+	public static ArrayList<Queue> createFullQueues(int full) {
+		ArrayList<Queue> fullQ = new ArrayList<Queue>();
+
+		 int counter = 0;
+		    for (int i = 0; i < full; i++) {
+		      String queueName;
+		      if (counter < 26) {
+		        char letter = (char)('A' + counter);
+		        queueName = Character.toString(letter);
+		      } else {
+		        char firstLetter = (char)('A' + (counter - 26) / 26);
+		        char secondLetter = (char)(firstLetter + (counter - 26) % 26);
+		        queueName = Character.toString(firstLetter) + Character.toString(secondLetter);
+		      }
+		      Queue newQueue = new Queue(queueName);
+		      fullQ.add(newQueue);
+		      counter++;
+		    }
+
+		    return fullQ;
+
+	}
+
+	public static ArrayList<Queue> createSelfQueues(int self, ArrayList<Queue> fullQueues) {
+
+		ArrayList<Queue> selfQ = new ArrayList<Queue>();
+
+		int numFullQueues = fullQueues.size();
+
+		char lastQueueName = fullQueues.get(numFullQueues - 1).getLineName().charAt(0);
+
+		for (int i = 1; i <= self; i++) {
+			Queue newQueue = new Queue(Character.toString((char) (lastQueueName + i)));
+			selfQ.add(newQueue);
+		}
+
+		return selfQ;
+	}
+
+	// Takes the original customers ArrayList and Queue objects to gather all
+	// simulation results and print
+	public static void printSimResults(ArrayList<Customer> customers, Queue checkoutAQueue, Queue checkoutBQueue,
+			Queue checkoutCQueue, SplitQueue checkoutDandE, double percentSlower) {
 
 		int satisfiedCust = 0;
 		int dissatisfiedCust = 0;
@@ -86,16 +145,16 @@ public class SimulatorDriver {
 
 		System.out.println("\n----- Simulation Data -----\n");
 
-		// for loop all the customers to get each of their wait times and number satisfied
-		for(int i=0; i < customers.size(); i++) {
+		// for loop all the customers to get each of their wait times and number
+		// satisfied
+		for (int i = 0; i < customers.size(); i++) {
 
 			int ithCustWaitTime = (customers.get(i).waitingTime());
-	
+
 			// check for satisfied/non
-			if(ithCustWaitTime < 5) {
+			if (ithCustWaitTime < 5) {
 				satisfiedCust++;
-			}
-			else
+			} else
 				dissatisfiedCust++;
 		}
 
@@ -105,74 +164,79 @@ public class SimulatorDriver {
 		int numCustomersSelf = 0;
 
 		for (Customer customer : customers) {
-		    double waitTime = customer.waitingTime();
-		    String line = customer.getUsedLine();
+			double waitTime = customer.waitingTime();
+			String line = customer.getUsedLine();
 
-		    if (line.equals("A") || line.equals("B") || line.equals("C")) { // FULL line
-		        totalWaitTimeFull += waitTime;
-		        numCustomersFull++;
-		    } else { // SELF line
-		        totalWaitTimeSelf += waitTime;
-		        numCustomersSelf++;
-		    }
+			if (line.equals("A") || line.equals("B") || line.equals("C")) { // FULL line
+				totalWaitTimeFull += waitTime;
+				numCustomersFull++;
+			} else { // SELF line
+				totalWaitTimeSelf += waitTime;
+				numCustomersSelf++;
+			}
 		}
 
 		double avgWaitTimeFull = totalWaitTimeFull / numCustomersFull;
 		double avgWaitTimeSelf = totalWaitTimeSelf / numCustomersSelf;
 
-		System.out.println("Average wait time for FULL: " + df.format(avgWaitTimeFull) + " min. With FULL serving a total of " 
-				+ numCustomersFull + " for the day.");
-		System.out.println("Average wait time for SELF: " + df.format(avgWaitTimeSelf) + " min. With SELF serving a total of "
-				+ numCustomersSelf + " for the day.");
+		System.out.println("Average wait time for FULL: " + df.format(avgWaitTimeFull)
+				+ " min. With FULL serving a total of " + numCustomersFull + " for the day.");
+		System.out.println("Average wait time for SELF: " + df.format(avgWaitTimeSelf)
+				+ " min. With SELF serving a total of " + numCustomersSelf + " for the day.");
 
-		int totalChkoutNoUseTimeFULL = (checkoutAQueue.getTimeNotUsed()+checkoutBQueue.getTimeNotUsed()+checkoutCQueue.getTimeNotUsed());
-		
+		int totalChkoutNoUseTimeFULL = (checkoutAQueue.getTimeNotUsed() + checkoutBQueue.getTimeNotUsed()
+				+ checkoutCQueue.getTimeNotUsed());
+
 		int totalChkoutNoUseTimeSELF = (checkoutDandE.getTotalTimeNotUsed());
 
 		// print results
 		System.out.println();
 		System.out.println("Total time checkouts (FULL) were not in use: " + totalChkoutNoUseTimeFULL + " minutes");
 		System.out.println("Total time checkouts (SELF) were not in use: " + totalChkoutNoUseTimeSELF + " minutes");
-		System.out.println("Customer satisfaction: " + satisfiedCust + " satisfied (<5 minutes) " 
-				+ dissatisfiedCust + " dissatisfied (>=5 minutes)");
+		System.out.println("Customer satisfaction: " + satisfiedCust + " satisfied (<5 minutes) " + dissatisfiedCust
+				+ " dissatisfied (>=5 minutes)");
 
 	} // end printSimResults
 
-	// Takes the data and prints out formatted table  
-	public static void printSimResultsTable(ArrayList<Customer> customers, Queue checkoutAQueue, Queue checkoutBQueue, Queue checkoutCQueue) {
+	// Takes the data and prints out formatted table
+	public static void printSimResultsTable(ArrayList<Customer> customers, Queue checkoutAQueue, Queue checkoutBQueue,
+			Queue checkoutCQueue) {
 
 		System.out.println();
-		System.out.println("|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
-		System.out.println("| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |");
-		System.out.println("|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
-
+		System.out.println(
+				"|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
+		System.out.println(
+				"| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |");
+		System.out.println(
+				"|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
 
 		// for loop each row of table to print data
-		for (int i=0; i < customers.size(); i++) {
+		for (int i = 0; i < customers.size(); i++) {
 
 			Customer ithCustomer = customers.get(i);
 
-			System.out.printf("| %5d | %22d | %12d | %26d | %11d | %15s |\n",
-					ithCustomer.getCustId(), ithCustomer.getArrivalTime(),
-					ithCustomer.getServiceTime(), ithCustomer.getEndTime(),
+			System.out.printf("| %5d | %22d | %12d | %26d | %11d | %15s |\n", ithCustomer.getCustId(),
+					ithCustomer.getArrivalTime(), ithCustomer.getServiceTime(), ithCustomer.getEndTime(),
 					ithCustomer.waitingTime(), ithCustomer.getUsedLine());
-			System.out.println("|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
+			System.out.println(
+					"|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
 
 		}
 
 	} // end printSimResultsTable
 
-	// Takes the original customers ArrayList and prints out all the Customer objects inside (to see all their time values)
+	// Takes the original customers ArrayList and prints out all the Customer
+	// objects inside (to see all their time values)
 	public static void printDebug(ArrayList<Customer> customers) {
 
-		for(int i=0;i<customers.size();i++) {
+		for (int i = 0; i < customers.size(); i++) {
 			System.out.println(customers.get(i).toString());
 		}
 
 	} // end printDebug
 
 	// prints recommended settings on call
-	public static void printRecSet() { //begin printRecSet 
+	public static void printRecSet() { // begin printRecSet
 
 		System.out.println("Recommended Settings:");
 		System.out.println("minimum arrival time = 1");
