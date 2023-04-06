@@ -148,7 +148,7 @@ public class SimulatorDriver {
 
 	// Takes the original customers ArrayList and Queue objects to gather all
 	// simulation results and print
-	public static void printSimResults(ArrayList<Customer> customers, ArrayList<Queue> fullQueues, SplitQueue checkoutDandE, double percentSlower) {
+	public static void printSimResults(ArrayList<Customer> customers, ArrayList<Queue> fullQueues, SplitQueue self, double percentSlower) {
 
 		int satisfiedCust = 0;
 		int dissatisfiedCust = 0;
@@ -192,18 +192,21 @@ public class SimulatorDriver {
 
 		System.out.println("Average wait time for FULL: " + df.format(avgWaitTimeFull)
 				+ " min. With FULL serving a total of " + numCustomersFull + " for the day.");
-		//System.out.println("Average wait time for SELF: " + df.format(avgWaitTimeSelf);
-		//		+ " min. With SELF serving a total of " + numCustomersSelf + " for the day.");
+		System.out.println("Average wait time for SELF: " + df.format(avgWaitTimeSelf)
+				+ " min. With SELF serving a total of " + numCustomersSelf + " for the day.");
 
-		 //int totalChkoutNoUseTimeFULL = (checkoutAQueue.getTimeNotUsed() + checkoutBQueue.getTimeNotUsed()
-			//	+ checkoutCQueue.getTimeNotUsed());
-
-		int totalChkoutNoUseTimeSELF = (checkoutDandE.getTotalTimeNotUsed());
-
+		
+		int totalChkoutNoUseTimeFULL = 0;
+		//loop thru AL of fullChecouts, accumulate timenotused to variable
+		for(int i = 0; i<fullQueues.size(); i++) {
+			
+			totalChkoutNoUseTimeFULL += fullQueues.get(i).getTimeNotUsed();
+		}
+		 
 		// print results
 		System.out.println();
-		//System.out.println("Total time checkouts (FULL) were not in use: " + totalChkoutNoUseTimeFULL + " minutes");
-		//System.out.println("Total time checkouts (SELF) were not in use: " + totalChkoutNoUseTimeSELF + " minutes");
+		System.out.println("Total time checkouts (FULL) were not in use: " + totalChkoutNoUseTimeFULL + " minutes");
+		System.out.println("Total time checkouts (SELF) were not in use: " + self.getTotalTimeNotUsed() + " minutes");
 		System.out.println("Customer satisfaction: " + satisfiedCust + " satisfied (<5 minutes) " + dissatisfiedCust
 				+ " dissatisfied (>=5 minutes)");
 
