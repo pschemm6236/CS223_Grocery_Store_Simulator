@@ -91,7 +91,7 @@ public class SimulatorDriver {
 
 		// call static methods to print data from simulation
 		printSimResults(customers, fullQueues, selfCheckoutQueue, percentSlower);
-		//printSimResultsTable(customers, fullQueues);
+		printSimResultsTable(customers);
 
 	} // end main
 
@@ -213,8 +213,7 @@ public class SimulatorDriver {
 	} // end printSimResults
 
 	// Takes the data and prints out formatted table
-	public static void printSimResultsTable(ArrayList<Customer> customers, Queue checkoutAQueue, Queue checkoutBQueue,
-			Queue checkoutCQueue) {
+	public static void printSimResultsTable(ArrayList<Customer> customers) {
 
 		System.out.println();
 		System.out.println(
