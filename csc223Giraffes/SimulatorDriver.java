@@ -1,6 +1,7 @@
 package csc223Giraffes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import java.text.DecimalFormat;
@@ -66,21 +67,22 @@ public class SimulatorDriver {
 		creator.populateCustomers(customers);
 
 		ArrayList<Queue> fullQueues = new ArrayList<Queue>();
-		ArrayList<Queue> selfQueues = new ArrayList<Queue>();
+		String[ ] selfQueues = new String[selfServiceLines];
 
 		fullQueues = createFullQueues(fullServiceLines);
 
-		selfQueues = createSelfQueues(selfServiceLines, fullQueues);
+		selfQueues = createSelfQueues(selfServiceLines);
 
-		Queue checkoutAQueue = new Queue("A");
+		/**Queue checkoutAQueue = new Queue("A");
 		Queue checkoutBQueue = new Queue("B");
 		Queue checkoutCQueue = new Queue("C");
-		SplitQueue selfCheckoutQueue = new SplitQueue(2, new String[] { "D", "E" });
+		**/
+		SplitQueue selfCheckoutQueue = new SplitQueue(selfQueues);
+		
 
 		// Create a Simulator object with the number of customers to simulate
 		// and pass it our Customer ArrayList and Queue objects
-		Simulator sim = new Simulator(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, selfCheckoutQueue,
-				percentSlower);
+		Simulator sim = new Simulator(customers, fullQueues, selfCheckoutQueue, percentSlower);
 
 		System.out.println("\n----- Starting Simulation -----\n");
 		sim.runSimulation();
@@ -88,8 +90,8 @@ public class SimulatorDriver {
 		scan.close();
 
 		// call static methods to print data from simulation
-		printSimResults(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue, selfCheckoutQueue, percentSlower);
-		printSimResultsTable(customers, checkoutAQueue, checkoutBQueue, checkoutCQueue);
+		printSimResults(customers, fullQueues, selfCheckoutQueue, percentSlower);
+		//printSimResultsTable(customers, fullQueues);
 
 	} // end main
 
@@ -98,46 +100,55 @@ public class SimulatorDriver {
 	public static ArrayList<Queue> createFullQueues(int full) {
 		ArrayList<Queue> fullQ = new ArrayList<Queue>();
 
-		 int counter = 0;
-		    for (int i = 0; i < full; i++) {
-		      String queueName;
-		      if (counter < 26) {
-		        char letter = (char)('A' + counter);
-		        queueName = Character.toString(letter);
-		      } else {
-		        char firstLetter = (char)('A' + (counter - 26) / 26);
-		        char secondLetter = (char)(firstLetter + (counter - 26) % 26);
-		        queueName = Character.toString(firstLetter) + Character.toString(secondLetter);
-		      }
-		      Queue newQueue = new Queue(queueName);
-		      fullQ.add(newQueue);
-		      counter++;
-		    }
+		int counter = 0;
+		
+		
+		for (int i = 0; i < full; i++) {
+			String queueName = "";
+			if (counter < 26) {
+				queueName = Character.toString((char) ('A' + counter ));
+	        } else {
+	            int suffix = ((counter - 26) / 26) + 1;
+	            queueName = Character.toString((char) ('A' + (counter - 26) % 26)) + suffix;
+	        }
+	        Queue newQueue = new Queue(queueName);
+	        fullQ.add(newQueue);
+	        counter++;
+	    }
 
-		    return fullQ;
-
+		return fullQ;
 	}
 
-	public static ArrayList<Queue> createSelfQueues(int self, ArrayList<Queue> fullQueues) {
+	public static String[] createSelfQueues(int self) {
 
-		ArrayList<Queue> selfQ = new ArrayList<Queue>();
+		String[] selfQueues = new String[self];
 
-		int numFullQueues = fullQueues.size();
-
-		char lastQueueName = fullQueues.get(numFullQueues - 1).getLineName().charAt(0);
-
-		for (int i = 1; i <= self; i++) {
-			Queue newQueue = new Queue(Character.toString((char) (lastQueueName + i)));
-			selfQ.add(newQueue);
-		}
-
-		return selfQ;
+	   
+	
+	    int counter = 0;
+	    
+	    for (int i = 0; i < self; i++) {
+	    	String queueName = "SC -";
+	    	
+	    	if(counter < 26) {
+	    		queueName += Character.toString((char) ('A' + counter));
+	    		counter++;
+	    		
+	    	}
+	    	else {
+	            int suffix = ((counter - 26) / 26) + 1;
+	            String tempName =  Character.toString((char) ('A' + (counter - 26) % 26)) + suffix;
+	    		queueName += tempName;
+	    		counter++;
+	    	}
+	    	selfQueues[i] = queueName;
+	    }
+	    return selfQueues;
 	}
 
 	// Takes the original customers ArrayList and Queue objects to gather all
 	// simulation results and print
-	public static void printSimResults(ArrayList<Customer> customers, Queue checkoutAQueue, Queue checkoutBQueue,
-			Queue checkoutCQueue, SplitQueue checkoutDandE, double percentSlower) {
+	public static void printSimResults(ArrayList<Customer> customers, ArrayList<Queue> fullQueues, SplitQueue checkoutDandE, double percentSlower) {
 
 		int satisfiedCust = 0;
 		int dissatisfiedCust = 0;
@@ -181,18 +192,18 @@ public class SimulatorDriver {
 
 		System.out.println("Average wait time for FULL: " + df.format(avgWaitTimeFull)
 				+ " min. With FULL serving a total of " + numCustomersFull + " for the day.");
-		System.out.println("Average wait time for SELF: " + df.format(avgWaitTimeSelf)
-				+ " min. With SELF serving a total of " + numCustomersSelf + " for the day.");
+		//System.out.println("Average wait time for SELF: " + df.format(avgWaitTimeSelf);
+		//		+ " min. With SELF serving a total of " + numCustomersSelf + " for the day.");
 
-		int totalChkoutNoUseTimeFULL = (checkoutAQueue.getTimeNotUsed() + checkoutBQueue.getTimeNotUsed()
-				+ checkoutCQueue.getTimeNotUsed());
+		 //int totalChkoutNoUseTimeFULL = (checkoutAQueue.getTimeNotUsed() + checkoutBQueue.getTimeNotUsed()
+			//	+ checkoutCQueue.getTimeNotUsed());
 
 		int totalChkoutNoUseTimeSELF = (checkoutDandE.getTotalTimeNotUsed());
 
 		// print results
 		System.out.println();
-		System.out.println("Total time checkouts (FULL) were not in use: " + totalChkoutNoUseTimeFULL + " minutes");
-		System.out.println("Total time checkouts (SELF) were not in use: " + totalChkoutNoUseTimeSELF + " minutes");
+		//System.out.println("Total time checkouts (FULL) were not in use: " + totalChkoutNoUseTimeFULL + " minutes");
+		//System.out.println("Total time checkouts (SELF) were not in use: " + totalChkoutNoUseTimeSELF + " minutes");
 		System.out.println("Customer satisfaction: " + satisfiedCust + " satisfied (<5 minutes) " + dissatisfiedCust
 				+ " dissatisfied (>=5 minutes)");
 
