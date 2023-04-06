@@ -97,12 +97,12 @@ public class SplitQueue{
 		this.mainQueueName = mainQueueName;
 	}
 
-	public void setLineName(int index, String string) {
-		queues[index].setLineName(string);
-	}
-
 	public String getLineName(int index) {
 		return queues[index].getLineName();
+	}
+	
+	public void setLineName(int index, String string) {
+		queues[index].setLineName(string);
 	}
 
 	public int getTimeNotUsed(int index) { //queue specific
@@ -118,7 +118,7 @@ public class SplitQueue{
 		return totalTime;
 	}
 	
-	public Queue openQueue() {
+	public Queue openQueue() { //this returns the first open queue in the list of queues. If it doesn't, it returns null
 		for(int i=0;i<queues.length;i++) {
 			if(queues[i].isEmpty()) {
 				return queues[i];
