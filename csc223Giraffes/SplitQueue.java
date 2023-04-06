@@ -11,9 +11,10 @@ package csc223Giraffes;
 
 public class SplitQueue{
 	private Queue mainQueue; //this is the main queue where items wait for open spots in the queues
+	private String mainQueueName; //This is the name of the queue
 	private Queue[] queues;  //array of queues. this is where the main queue drops into once one of the queues is open, these hold one value in most cases
 	
-	public SplitQueue(int length) { //one parameter, length
+	public SplitQueue(int length) { //one parameter, length. Use this when the name of each queue and the main queue don't matter
 		this.mainQueue = new Queue();
 		this.queues = new Queue[length];
 		for(int i=0;i<length;i++) {
@@ -21,10 +22,26 @@ public class SplitQueue{
 		}
 	}
 	
-	public SplitQueue(int length, String[] names) { //two parameters, length and the names for each queue
-		this.mainQueue = new Queue();
+	public SplitQueue(String mainQueueName, int length) { //two parameters, the main queue name and length. Use this when only the name of the main queue matters
+		this.mainQueue = new Queue(mainQueueName);
 		this.queues = new Queue[length];
 		for(int i=0;i<length;i++) {
+			queues[i] = new Queue();
+		}
+	}
+	
+	public SplitQueue(String[] names) { //one parameter, the names for each queue. Use this when only the names of the individual queues matter
+		this.mainQueue = new Queue();
+		this.queues = new Queue[names.length];
+		for(int i=0;i<names.length;i++) {
+			queues[i] = new Queue(names[i]);
+		}
+	}
+	
+	public SplitQueue(String mainQueueName, String[] names) { //two parameters, the main queue name and the names for each queue. Use this when the names of all the queues matter
+		this.mainQueue = new Queue(mainQueueName);
+		this.queues = new Queue[names.length];
+		for(int i=0;i<names.length;i++) {
 			queues[i] = new Queue(names[i]);
 		}
 	}
@@ -72,6 +89,14 @@ public class SplitQueue{
 		return mainQueue.size()+subCount;
 	}
 	
+	public String getMainQueueName() {
+		return mainQueueName;
+	}
+
+	public void setMainQueueName(String mainQueueName) {
+		this.mainQueueName = mainQueueName;
+	}
+
 	public void setLineName(int index, String string) {
 		queues[index].setLineName(string);
 	}
