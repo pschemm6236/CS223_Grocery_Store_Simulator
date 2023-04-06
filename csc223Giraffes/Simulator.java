@@ -13,19 +13,14 @@ public class Simulator {
 
 	// fields
 	private ArrayList<Customer> customers;
-	private Queue checkoutA;
-	private Queue checkoutB;
-	private Queue checkoutC;
+	private ArrayList<Queue> fullCheckouts;
 	private SplitQueue selfCheckout;
 	private double percentSlower; 
 
 	// full constructor
-	public Simulator(ArrayList<Customer> customers, Queue checkoutA, Queue checkoutB, Queue checkoutC,
-			SplitQueue selfCheckout, double percentSlower) {
+	public Simulator(ArrayList<Customer> customers, ArrayList<Queue> fullCheckouts, SplitQueue selfCheckout, double percentSlower) {
 		this.customers = customers;
-		this.checkoutA = checkoutA;
-		this.checkoutB = checkoutB;
-		this.checkoutC = checkoutC;
+		this.fullCheckouts = fullCheckouts;
 		this.selfCheckout = selfCheckout;
 		this.percentSlower = percentSlower;
 	}
@@ -42,8 +37,8 @@ public class Simulator {
 					if(serviceType==0){
 						System.out.println("	CUSTOMER " + customers.get(i).getCustId() + " LANDED TAILS SO THEY ENTER FULL CHECKOUT LINE");
 						System.out.println();
-						customers.get(i).setUsedLine(shortestQueue().getLineName()); //sets the line used for the customer to the shortest line name
-						shortestQueue().enqueue(customers.get(i)); //adds the customer to this line
+						customers.get(i).setUsedLine(shortestFullQueue().getLineName()); //sets the line used for the customer to the shortest line name
+						shortestFullQueue().enqueue(customers.get(i)); //adds the customer to this line
 					}
 					else {
 						System.out.println("	CUSTOMER " + customers.get(i).getCustId() + " LANDED HEADS SO THEY ENTER SELF-CHECKOUT LINE");
@@ -54,17 +49,11 @@ public class Simulator {
 					}
 				}
 			}
-			System.out.print("	Checkout A: ");
-			if(checkoutA.updateQueue(currentTime)!=null) {
-				customersServed++;
-			}
-			System.out.print("	Checkout B: ");
-			if(checkoutB.updateQueue(currentTime)!=null) {
-				customersServed++;
-			}
-			System.out.print("	Checkout C: ");
-			if(checkoutC.updateQueue (currentTime)!=null) {
-				customersServed++;
+			for(int i=0;i<fullCheckouts.size();i++) {
+				System.out.println("Checkout "+fullCheckouts.get(i).getLineName());
+				if(fullCheckouts.get(i).updateQueue(currentTime)!=null) {
+					customersServed++;
+				}
 			}
 			Customer[] returnedCustomers = selfCheckout.updateQueues(currentTime);
 			for(int i=0;i<returnedCustomers.length;i++) {
@@ -78,42 +67,22 @@ public class Simulator {
 		}
 	}
 
-	//change this for the queue structure 
-	public Queue shortestQueue() {
-
-		if(checkoutA.size()<=checkoutB.size()&&checkoutA.size()<=checkoutC.size()) {
-			return checkoutA;
+	public Queue shortestFullQueue() {
+		Queue shortest = fullCheckouts.get(0);
+		for(int i=1;i<fullCheckouts.size();i++) {
+			if (shortest.size()>fullCheckouts.get(i).size()) {
+				shortest = fullCheckouts.get(i);
+			}
 		}
-		else if(checkoutB.size()<=checkoutA.size()&&checkoutB.size()<=checkoutC.size()) {
-			return checkoutB;
-		}
-		else {
-			return checkoutC;
-		}
+		return shortest;
 	}
 
-	public Queue getCheckoutA() {
-		return checkoutA;
+	public ArrayList<Queue> getFullCheckouts() {
+		return fullCheckouts;
 	}
 
-	public void setCheckoutA(Queue checkoutA) {
-		this.checkoutA = checkoutA;
-	}
-
-	public Queue getCheckoutB() {
-		return checkoutB;
-	}
-
-	public void setCheckoutB(Queue checkoutB) {
-		this.checkoutB = checkoutB;
-	}
-
-	public Queue getCheckoutC() {
-		return checkoutC;
-	}
-
-	public void setCheckoutC(Queue checkoutC) {
-		this.checkoutC = checkoutC;
+	public void setFullCheckouts(ArrayList<Queue> fullCheckouts) {
+		this.fullCheckouts = fullCheckouts;
 	}
 	
 	public SplitQueue getSelfCheckout() {
