@@ -68,8 +68,9 @@ public class SplitQueue{
 				queues[i].enqueue(mainQueue.dequeue()); //adds the customer to the specific queue from the main queue
 			}
 		}
+		System.out.println("\n[SELF SERVICE]");
 		for(int i=0;i<queues.length;i++) { //updates each queue
-			System.out.print("\tCheckout "+queues[i].getLineName()+": "); //prints qhich queue is being updated
+			System.out.print("Checkout "+queues[i].getLineName()+": "); //prints which queue is being updated
 			if(queues[i].peek()!=null) { //if the queue is not empty
 				if(queues[i].peek().getStartTime()+queues[i].peek().getServiceTime()==time && !mainQueue.isEmpty()){ //then if the customer is done being served and the mainQueue has items
 					mainQueue.peek().setUsedLine(queues[i].getLineName());  //sets the line used of the customer to the line name

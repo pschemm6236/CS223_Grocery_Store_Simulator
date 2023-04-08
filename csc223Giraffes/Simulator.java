@@ -49,8 +49,9 @@ public class Simulator {
 					}
 				}
 			}
+			System.out.println("[FULL SERVICE]");
 			for(int i=0;i<fullCheckouts.size();i++) {
-				System.out.println("Checkout "+fullCheckouts.get(i).getLineName());
+				System.out.print("Checkout "+fullCheckouts.get(i).getLineName() + ": ");
 				if(fullCheckouts.get(i).updateQueue(currentTime)!=null) {
 					customersServed++;
 				}

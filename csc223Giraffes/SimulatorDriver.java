@@ -90,7 +90,7 @@ public class SimulatorDriver {
 		scan.close();
 
 		// call static methods to print data from simulation
-		printSimResults(customers, fullQueues, selfCheckoutQueue, percentSlower);
+		printSimResults(customers, fullQueues, selfCheckoutQueue);
 		printSimResultsTable(customers);
 
 	} // end main
@@ -148,7 +148,7 @@ public class SimulatorDriver {
 
 	// Takes the original customers ArrayList and Queue objects to gather all
 	// simulation results and print
-	public static void printSimResults(ArrayList<Customer> customers, ArrayList<Queue> fullQueues, SplitQueue self, double percentSlower) {
+	public static void printSimResults(ArrayList<Customer> customers, ArrayList<Queue> fullQueues, SplitQueue self) {
 
 		int satisfiedCust = 0;
 		int dissatisfiedCust = 0;
@@ -178,12 +178,12 @@ public class SimulatorDriver {
 			double waitTime = customer.waitingTime();
 			String line = customer.getUsedLine();
 
-			if (line.equals("A") || line.equals("B") || line.equals("C")) { // FULL line
-				totalWaitTimeFull += waitTime;
-				numCustomersFull++;
-			} else { // SELF line
+			if (line.contains("SC")) { // SELF line
 				totalWaitTimeSelf += waitTime;
 				numCustomersSelf++;
+			} else { // FULL line
+				totalWaitTimeFull += waitTime;
+				numCustomersFull++;
 			}
 		}
 
@@ -196,21 +196,54 @@ public class SimulatorDriver {
 				+ " min. With SELF serving a total of " + numCustomersSelf + " for the day.");
 
 		
-		int totalChkoutNoUseTimeFULL = 0;
-		//loop thru AL of fullChecouts, accumulate timenotused to variable
+		int totalTimeNotUsedFull = 0;
+		//loop thru ALL of fullChecouts, accumulate timenotused to variable
 		for(int i = 0; i<fullQueues.size(); i++) {
 			
-			totalChkoutNoUseTimeFULL += fullQueues.get(i).getTimeNotUsed();
+			totalTimeNotUsedFull += fullQueues.get(i).getTimeNotUsed();
 		}
-		 
+		int totalTimeNotUsedSelf = self.getTotalTimeNotUsed();
+		
 		// print results
 		System.out.println();
-		System.out.println("Total time checkouts (FULL) were not in use: " + totalChkoutNoUseTimeFULL + " minutes");
+		System.out.println("Total time checkouts (FULL) were not in use: " + totalTimeNotUsedFull + " minutes");
 		System.out.println("Total time checkouts (SELF) were not in use: " + self.getTotalTimeNotUsed() + " minutes");
 		System.out.println("Customer satisfaction: " + satisfiedCust + " satisfied (<5 minutes) " + dissatisfiedCust
 				+ " dissatisfied (>=5 minutes)");
+		
+		// output current line suggestions
+	    System.out.println("\n----- Line Suggestions -----\n");
+	   
+	    
+	    double idleWaitTimeThreshold = 2.0; // our ideal wait time for lines (can change as needed)
+	    double idleTimeThreshold = 30.0; // our ideal idle time for lines (can change as needed)
 
-	} // end printSimResults
+	    if (isSignificantDifference(avgWaitTimeFull, avgWaitTimeSelf, idleWaitTimeThreshold)) {
+	        if (avgWaitTimeFull > avgWaitTimeSelf) {
+	            System.out.println("Consider adding a FULL checkout line to reduce wait time.");
+	        } else {
+	            System.out.println("Consider adding a SELF checkout line to reduce wait time.");
+	        }
+	    } else {
+	        System.out.println("No need to add any lines.");
+	    }
+
+	    if (isSignificantDifference(totalTimeNotUsedFull, totalTimeNotUsedSelf, idleTimeThreshold)) {
+	        if (totalTimeNotUsedFull > totalTimeNotUsedSelf && fullQueues.size() != 1) {
+	            System.out.println("Consider removing a FULL checkout line to reduce idle time.");
+	        } else if (self.size() != 1){
+	            System.out.println("Consider removing a SELF checkout line to reduce idle time.");
+	        }
+	    } else {
+	        System.out.println("No need to remove any lines.");
+	    }
+
+	} // end printSimResults	
+	
+	// evaluates if there's a significant difference in the average wait times and idle times for FULL and SELF checkouts.
+	private static boolean isSignificantDifference(double value1, double value2, double threshold) {
+	    return Math.abs(value1 - value2) >= threshold;
+	}
 
 	// Takes the data and prints out formatted table
 	public static void printSimResultsTable(ArrayList<Customer> customers) {
@@ -252,11 +285,14 @@ public class SimulatorDriver {
 	public static void printRecSet() { // begin printRecSet
 
 		System.out.println("Recommended Settings:");
+		System.out.println("Number of full-service lines = 2");
+		System.out.println("Numberr of self-service lines = 6");
 		System.out.println("minimum arrival time = 1");
 		System.out.println("maximum arrival time = 4");
 		System.out.println("minimum service time = 3");
 		System.out.println("maximum service time = 4");
 		System.out.println("number of customers  = 3 to 12");
+		System.out.println("Percentage slower for SELF = 25%");
 
 		System.out.println();
 
