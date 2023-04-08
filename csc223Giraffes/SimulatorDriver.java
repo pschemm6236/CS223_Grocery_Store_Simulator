@@ -206,8 +206,8 @@ public class SimulatorDriver {
 		
 		// print results
 		System.out.println();
-		System.out.println("Total time checkouts (FULL) were not in use: " + totalTimeNotUsedFull + " minutes");
-		System.out.println("Total time checkouts (SELF) were not in use: " + self.getTotalTimeNotUsed() + " minutes");
+		System.out.println("Total accumulated time for all checkouts (FULL) were not in use: " + totalTimeNotUsedFull + " minutes");
+		System.out.println("Total accumulated time for all checkouts (SELF) were not in use: " + self.getTotalTimeNotUsed() + " minutes");
 		System.out.println("Customer satisfaction: " + satisfiedCust + " satisfied (<5 minutes) " + dissatisfiedCust
 				+ " dissatisfied (>=5 minutes)");
 		
