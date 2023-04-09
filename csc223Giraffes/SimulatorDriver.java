@@ -33,7 +33,7 @@ public class SimulatorDriver {
 		System.out.println("Number of full-service lines:");
 		fullServiceLines = scan.nextInt();
 
-		System.out.println("Numberr of self-service lines:");
+		System.out.println("Number of self-service lines:");
 		selfServiceLines = scan.nextInt();
 
 		System.out.println("Enter minimum arrival time between customers:");
