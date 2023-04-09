@@ -146,7 +146,7 @@ public class List<E> {
 
 	public Customer updateQueue(int time) {
 		if (isEmpty()) { // if the queue is empty
-			System.out.println("free");
+			System.out.println(" free");
 			timeNotUsed++;
 		} else if (firstNode.cust.getStartTime() == -1) { // if the next customer in the queue has not started
 			firstNode.cust.setStartTime(time);
