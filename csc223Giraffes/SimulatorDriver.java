@@ -17,6 +17,8 @@ public class SimulatorDriver {
 
 	public static void main(String[] args) { // begin main
 
+		new MyGUI();
+		
 		Scanner scan = new Scanner(System.in);
 
 		int fullServiceLines;
