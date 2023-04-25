@@ -20,6 +20,8 @@ import java.text.DecimalFormat;
  */
 
 public class GUISimDriver extends JFrame implements ActionListener {
+	
+	private JLabel currentTimeLabel;
 	 private JTextField fullServiceLinesField;
 	    private JTextField selfServiceLinesField;
 	    private JTextField minArrivalTimeField;
@@ -70,6 +72,8 @@ public class GUISimDriver extends JFrame implements ActionListener {
         startButton.addActionListener(this);
         panel.add(startButton);
 
+        currentTimeLabel = new JLabel("Time: 0");
+        
         getContentPane().add(panel);
         pack();
         setLocationRelativeTo(null);
@@ -395,6 +399,12 @@ public class GUISimDriver extends JFrame implements ActionListener {
 	    printSimResultsTable(customers);
 
 	    setVisible(false);
+	    System.exit(0);
 	}
+	
+	public void setCurrentTime(int time) {
+        // Update the text of the current time label
+        currentTimeLabel.setText("Time: " + time);
+    }
 
 } // end class SimulatorDriver
