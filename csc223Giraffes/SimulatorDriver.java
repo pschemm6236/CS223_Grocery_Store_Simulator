@@ -92,7 +92,7 @@ public class SimulatorDriver {
 		scan.close();
 
 		// call static methods to print data from simulation
-		printSimResults(customers, fullQueues, selfCheckoutQueue);
+		printSimResults(customers, fullQueues, selfCheckoutQueue, selfServiceLines);
 		printSimResultsTable(customers);
 
 	} // end main
@@ -150,7 +150,7 @@ public class SimulatorDriver {
 
 	// Takes the original customers ArrayList and Queue objects to gather all
 	// simulation results and print
-	public static void printSimResults(ArrayList<Customer> customers, ArrayList<Queue> fullQueues, SplitQueue self) {
+	public static void printSimResults(ArrayList<Customer> customers, ArrayList<Queue> fullQueues, SplitQueue self, int numOfSelfLines) {
 
 		int satisfiedCust = 0;
 		int dissatisfiedCust = 0;
@@ -233,9 +233,13 @@ public class SimulatorDriver {
 	    if (isSignificantDifference(totalTimeNotUsedFull, totalTimeNotUsedSelf, idleTimeThreshold)) {
 	        if (totalTimeNotUsedFull > totalTimeNotUsedSelf && fullQueues.size() != 1) {
 	            System.out.println("Consider removing a FULL checkout line to reduce idle time.");
-	        } else if (self.size() != 1){
+	        } 
+	        else if (numOfSelfLines != 1){
 	            System.out.println("Consider removing a SELF checkout line to reduce idle time.");
 	        }
+	        else {
+		        System.out.println("No need to remove any lines.");
+		    }
 	    } else {
 	        System.out.println("No need to remove any lines.");
 	    }
