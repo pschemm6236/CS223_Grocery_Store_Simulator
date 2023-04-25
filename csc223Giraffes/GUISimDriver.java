@@ -1,9 +1,15 @@
 package csc223Giraffes;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import javax.swing.*;
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
 /**
@@ -13,11 +19,66 @@ import java.text.DecimalFormat;
  *
  */
 
-public class SimulatorDriver {
+public class GUISimDriver extends JFrame implements ActionListener {
+	 private JTextField fullServiceLinesField;
+	    private JTextField selfServiceLinesField;
+	    private JTextField minArrivalTimeField;
+	    private JTextField maxArrivalTimeField;
+	    private JTextField minServiceTimeField;
+	    private JTextField maxServiceTimeField;
+	    private JTextField numCustomersField;
+	    private JTextField percentSlowerField;
+	    
+	public GUISimDriver() {
+		super("Simulation Settings");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel panel = new JPanel(new GridLayout(9, 2));
+
+        panel.add(new JLabel("Number of full-service lines:"));
+        fullServiceLinesField = new JTextField();
+        panel.add(fullServiceLinesField);
+
+        panel.add(new JLabel("Number of self-service lines:"));
+        selfServiceLinesField = new JTextField();
+        panel.add(selfServiceLinesField);
+
+        panel.add(new JLabel("Minimum arrival time between customers:"));
+        minArrivalTimeField = new JTextField();
+        panel.add(minArrivalTimeField);
+
+        panel.add(new JLabel("Maximum arrival time between customers:"));
+        maxArrivalTimeField = new JTextField();
+        panel.add(maxArrivalTimeField);
+
+        panel.add(new JLabel("Minimum service time:"));
+        minServiceTimeField = new JTextField();
+        panel.add(minServiceTimeField);
+
+        panel.add(new JLabel("Maximum service time:"));
+        maxServiceTimeField = new JTextField();
+        panel.add(maxServiceTimeField);
+
+        panel.add(new JLabel("Number of customers to serve:"));
+        numCustomersField = new JTextField();
+        panel.add(numCustomersField);
+
+        panel.add(new JLabel("Percentage slower for self-service:"));
+        percentSlowerField = new JTextField();
+        panel.add(percentSlowerField);
+
+        JButton startButton = new JButton("Start Simulation");
+        startButton.addActionListener(this);
+        panel.add(startButton);
+
+        getContentPane().add(panel);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+	}
 
 	public static void main(String[] args) { // begin main
 
-		new MyGUI();
+		new GUISimDriver();
 		
 		Scanner scan = new Scanner(System.in);
 
@@ -305,5 +366,33 @@ public class SimulatorDriver {
 		System.out.println();
 
 	} // end printRecSet
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		 int fullServiceLines = Integer.parseInt(fullServiceLinesField.getText());
+	        int selfServiceLines = Integer.parseInt(selfServiceLinesField.getText());
+	        int minArrivalTime = Integer.parseInt(minArrivalTimeField.getText());
+	        int maxArrivalTime = Integer.parseInt(maxArrivalTimeField.getText());
+	        int minServiceTime = Integer.parseInt(minServiceTimeField.getText());
+	        int maxServiceTime = Integer.parseInt(maxServiceTimeField.getText());
+	        int numCustomers = Integer.parseInt(numCustomersField.getText());
+	        double percentSlower = Double.parseDouble(percentSlowerField.getText());
+
+	        Scanner scan = new Scanner(System.in);
+	        ArrayList<Customer> customers = new ArrayList<Customer>();
+	        CustomerCreator creator = new CustomerCreator(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime);
+	        creator.populateCustomers(customers);
+	        ArrayList<Queue> fullQueues = new ArrayList<Queue>();
+	        String[] selfQueues = new String[selfServiceLines];
+	        fullQueues = createFullQueues(fullServiceLines);
+	        selfQueues = createSelfQueues(selfServiceLines);
+	        SplitQueue selfCheckoutQueue = new SplitQueue(selfQueues);
+	        Simulator sim = new Simulator(customers, fullQueues, selfCheckoutQueue, percentSlower);
+	        sim.runSimulation();
+	        scan.close();
+	        printSimResults(customers, fullQueues, selfCheckoutQueue, selfServiceLines);
+	        printSimResultsTable(customers);
+	}
 
 } // end class SimulatorDriver
