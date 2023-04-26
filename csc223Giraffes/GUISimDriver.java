@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 import javax.swing.*;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,9 +32,16 @@ public class GUISimDriver extends JFrame implements ActionListener {
 	    private JTextField numCustomersField;
 	    private JTextField percentSlowerField;
 	    
+	    private JTextArea outputArea;
+	    
+
+
 	public GUISimDriver() {
 		super("Simulation Settings");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // Set the size of the JFrame
+        setSize(800, 800); // Width: 800, Height: 800
         JPanel panel = new JPanel(new GridLayout(9, 2));
 
         panel.add(new JLabel("Number of full-service lines:"));
@@ -71,90 +81,29 @@ public class GUISimDriver extends JFrame implements ActionListener {
         panel.add(startButton);
 
         getContentPane().add(panel);
+        // Set the preferred size of the panel
+        panel.setPreferredSize(new Dimension(800, 800)); // Width: 800, Height: 800
+
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-	}
+        
+        outputArea = new JTextArea(20, 50);
+        outputArea.setEditable(false);
+        outputArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+        getContentPane().add(scrollPane, BorderLayout.SOUTH);
+	} // end GUISimDriver
+	
+	public void printToOutputArea(String text) {
+	    outputArea.append(text + "\n");
+	    outputArea.setCaretPosition(outputArea.getDocument().getLength());
+	} // end 
+
 
 	public static void main(String[] args) { // begin main
 
 		new GUISimDriver();
-		
-		Scanner scan = new Scanner(System.in);
-
-		int fullServiceLines;
-		int selfServiceLines;
-		int minArrivalTime;
-		int maxArrivalTime;
-		int minServiceTime;
-		int maxServiceTime;
-		int numCustomers;
-
-		printRecSet();
-
-		// GET USER SIMULATION SETTINGS
-		System.out.println("Number of full-service lines:");
-		fullServiceLines = scan.nextInt();
-
-		System.out.println("Number of self-service lines:");
-		selfServiceLines = scan.nextInt();
-
-		System.out.println("Enter minimum arrival time between customers:");
-		minArrivalTime = scan.nextInt();
-
-		System.out.println("Enter maximum arrival time between customers:");
-		maxArrivalTime = scan.nextInt();
-
-		System.out.println("Enter minimum service time:");
-		minServiceTime = scan.nextInt();
-
-		System.out.println("Enter maximum service time:");
-		maxServiceTime = scan.nextInt();
-
-		System.out.println("Enter number of customers to serve:");
-		numCustomers = scan.nextInt();
-
-		System.out.println("Percentage slower for SELF: ");
-		double percentSlower = scan.nextDouble();
-
-		// ArrayList to Store Customer Objects that is defined here in main AND passed
-		// by reference to wherever
-		ArrayList<Customer> customers = new ArrayList<Customer>();
-
-		// CustomerCreator object which takes all USER SIMULATION SETTINGS
-		CustomerCreator creator = new CustomerCreator(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime,
-				maxServiceTime);
-
-		// call populateCustomers method within our creator to fill customers ArrayList
-		// with Customer objects
-		creator.populateCustomers(customers);
-
-		ArrayList<Queue> fullQueues = new ArrayList<Queue>();
-		String[ ] selfQueues = new String[selfServiceLines];
-
-		fullQueues = createFullQueues(fullServiceLines);
-
-		selfQueues = createSelfQueues(selfServiceLines);
-
-		/**Queue checkoutAQueue = new Queue("A");
-		Queue checkoutBQueue = new Queue("B");
-		Queue checkoutCQueue = new Queue("C");
-		**/
-		SplitQueue selfCheckoutQueue = new SplitQueue(selfQueues);
-		
-
-		// Create a Simulator object with the number of customers to simulate
-		// and pass it our Customer ArrayList and Queue objects
-		Simulator sim = new Simulator(customers, fullQueues, selfCheckoutQueue, percentSlower);
-
-		System.out.println("\n----- Starting Simulation -----\n");
-		sim.runSimulation();
-
-		scan.close();
-
-		// call static methods to print data from simulation
-		printSimResults(customers, fullQueues, selfCheckoutQueue, selfServiceLines);
-		printSimResultsTable(customers);
 
 	} // end main
 
@@ -211,7 +160,7 @@ public class GUISimDriver extends JFrame implements ActionListener {
 
 	// Takes the original customers ArrayList and Queue objects to gather all
 	// simulation results and print
-	public static void printSimResults(ArrayList<Customer> customers, ArrayList<Queue> fullQueues, SplitQueue self, int numOfSelfLines) {
+	public static void printSimResults(ArrayList<Customer> customers, ArrayList<Queue> fullQueues, SplitQueue self, int numOfSelfLines, JTextArea outputArea) {
 
 		int satisfiedCust = 0;
 		int dissatisfiedCust = 0;
@@ -315,28 +264,31 @@ public class GUISimDriver extends JFrame implements ActionListener {
 	}
 
 	// Takes the data and prints out formatted table
-	public static void printSimResultsTable(ArrayList<Customer> customers) {
+	public static void printSimResultsTable(ArrayList<Customer> customers, JTextArea outputArea) {
 
-		System.out.println();
-		System.out.println(
-				"|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
-		System.out.println(
-				"| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |");
-		System.out.println(
-				"|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
+		
+	    outputArea.append("\n");
+	    outputArea.append("|-------|------------------------|--------------|----------------------------|-------------|-----------------|\n");
+	    outputArea.append("| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |\n");
+	    outputArea.append("|-------|------------------------|--------------|----------------------------|-------------|-----------------|\n");
 
-		// for loop each row of table to print data
-		for (int i = 0; i < customers.size(); i++) {
+	    // for loop each row of table to print data
+	    for (int i = 0; i < customers.size(); i++) {
 
-			Customer ithCustomer = customers.get(i);
+	        Customer ithCustomer = customers.get(i);
 
-			System.out.printf("| %5d | %22d | %12d | %26d | %11d | %15s |\n", ithCustomer.getCustId(),
-					ithCustomer.getArrivalTime(), ithCustomer.getServiceTime(), ithCustomer.getEndTime(),
-					ithCustomer.waitingTime(), ithCustomer.getUsedLine());
-			System.out.println(
-					"|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
+	        String formattedString = String.format("| %5d | %22d | %12d | %26d | %11d | %15s |\n",
+	                ithCustomer.getCustId(),
+	                ithCustomer.getArrivalTime(),
+	                ithCustomer.getServiceTime(),
+	                ithCustomer.getEndTime(),
+	                ithCustomer.waitingTime(),
+	                ithCustomer.getUsedLine());
 
-		}
+	        outputArea.append(formattedString);
+	        outputArea.append("|-------|------------------------|--------------|----------------------------|-------------|-----------------|\n");
+
+	    }
 
 	} // end printSimResultsTable
 
@@ -369,30 +321,51 @@ public class GUISimDriver extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		 int fullServiceLines = Integer.parseInt(fullServiceLinesField.getText());
-	        int selfServiceLines = Integer.parseInt(selfServiceLinesField.getText());
-	        int minArrivalTime = Integer.parseInt(minArrivalTimeField.getText());
-	        int maxArrivalTime = Integer.parseInt(maxArrivalTimeField.getText());
-	        int minServiceTime = Integer.parseInt(minServiceTimeField.getText());
-	        int maxServiceTime = Integer.parseInt(maxServiceTimeField.getText());
-	        int numCustomers = Integer.parseInt(numCustomersField.getText());
-	        double percentSlower = Double.parseDouble(percentSlowerField.getText());
-
-	        Scanner scan = new Scanner(System.in);
-	        ArrayList<Customer> customers = new ArrayList<Customer>();
-	        CustomerCreator creator = new CustomerCreator(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime);
-	        creator.populateCustomers(customers);
-	        ArrayList<Queue> fullQueues = new ArrayList<Queue>();
-	        String[] selfQueues = new String[selfServiceLines];
-	        fullQueues = createFullQueues(fullServiceLines);
-	        selfQueues = createSelfQueues(selfServiceLines);
-	        SplitQueue selfCheckoutQueue = new SplitQueue(selfQueues);
-	        Simulator sim = new Simulator(customers, fullQueues, selfCheckoutQueue, percentSlower);
-	        sim.runSimulation();
-	        scan.close();
-	        printSimResults(customers, fullQueues, selfCheckoutQueue, selfServiceLines);
-	        printSimResultsTable(customers);
+		runSimulationWithGUIInputs();
 	}
+	
+	// method to run the simulation using GUI 
+	public void runSimulationWithGUIInputs() {
+		// TODO Auto-generated method stub
+		
+		// GET USER SIMULATION SETTINGS
+		int fullServiceLines = Integer.parseInt(fullServiceLinesField.getText());
+		int selfServiceLines = Integer.parseInt(selfServiceLinesField.getText());
+		int minArrivalTime = Integer.parseInt(minArrivalTimeField.getText());
+		int maxArrivalTime = Integer.parseInt(maxArrivalTimeField.getText());
+		int minServiceTime = Integer.parseInt(minServiceTimeField.getText());
+		int maxServiceTime = Integer.parseInt(maxServiceTimeField.getText());
+		int numCustomers = Integer.parseInt(numCustomersField.getText());
+		double percentSlower = Double.parseDouble(percentSlowerField.getText());
+
+		Scanner scan = new Scanner(System.in);
+		// ArrayList to Store Customer Objects that is defined here in main AND passed
+		// by reference to wherever
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		
+		// CustomerCreator object which takes all USER SIMULATION SETTINGS
+		CustomerCreator creator = new CustomerCreator(numCustomers, minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime);
+		
+		// call populateCustomers method within our creator to fill customers ArrayList
+		// with Customer objects
+		creator.populateCustomers(customers);
+		
+		ArrayList<Queue> fullQueues = new ArrayList<Queue>();
+		String[] selfQueues = new String[selfServiceLines];
+		
+		fullQueues = createFullQueues(fullServiceLines);
+		
+		selfQueues = createSelfQueues(selfServiceLines);
+		
+		SplitQueue selfCheckoutQueue = new SplitQueue(selfQueues);
+		
+		Simulator sim = new Simulator(customers, fullQueues, selfCheckoutQueue, percentSlower);
+		
+		sim.runSimulation();
+		scan.close();
+		
+		//printSimResults(customers, fullQueues, selfCheckoutQueue, selfServiceLines);
+		printSimResultsTable(customers, outputArea);
+	} // end runSimulationWithGUIInputs
 
 } // end class SimulatorDriver
