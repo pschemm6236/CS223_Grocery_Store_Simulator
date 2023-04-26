@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -266,29 +267,37 @@ public class GUISimDriver extends JFrame implements ActionListener {
 	// Takes the data and prints out formatted table
 	public static void printSimResultsTable(ArrayList<Customer> customers, JTextArea outputArea) {
 
-		
-	    outputArea.append("\n");
-	    outputArea.append("|-------|------------------------|--------------|----------------------------|-------------|-----------------|\n");
-	    outputArea.append("| Cust #| Arrival Time (absolute)| Service Time |  Departure Time (absolute) |  Wait Time  | Queue Location  |\n");
-	    outputArea.append("|-------|------------------------|--------------|----------------------------|-------------|-----------------|\n");
-
-	    // for loop each row of table to print data
+		 // Set up the frame
+	    JFrame frame = new JFrame("Simulation Results");
+	    frame.setSize(800, 600);
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    
+	    // Create the table model
+	    String[] columnNames = {"Customer ID", "Arrival Time (absolute)", "Service Time","Departure time (absolute)",  "Wait Time", "Checkout Line", };
+	    Object[][] rowData = new Object[customers.size()][columnNames.length];
+	    DecimalFormat df = new DecimalFormat("##.#");
 	    for (int i = 0; i < customers.size(); i++) {
-
-	        Customer ithCustomer = customers.get(i);
-
-	        String formattedString = String.format("| %5d | %22d | %12d | %26d | %11d | %15s |\n",
-	                ithCustomer.getCustId(),
-	                ithCustomer.getArrivalTime(),
-	                ithCustomer.getServiceTime(),
-	                ithCustomer.getEndTime(),
-	                ithCustomer.waitingTime(),
-	                ithCustomer.getUsedLine());
-
-	        outputArea.append(formattedString);
-	        outputArea.append("|-------|------------------------|--------------|----------------------------|-------------|-----------------|\n");
-
+	        Customer customer = customers.get(i);
+	        rowData[i][0] = customer.getCustId();
+	        rowData[i][1] = customer.getArrivalTime();
+	        rowData[i][2] = customer.getServiceTime();
+	        rowData[i][3] = customer.getEndTime();
+	        rowData[i][4] = customer.waitingTime();
+	        rowData[i][5] = customer.getUsedLine();
 	    }
+	    DefaultTableModel model = new DefaultTableModel(rowData, columnNames);
+	    
+	    // Create the table and add it to a scroll pane
+	    JTable table = new JTable(model);
+	    JScrollPane scrollPane = new JScrollPane(table);
+	    
+	    // Add the scroll pane to a panel and add the panel to the frame
+	    JPanel panel = new JPanel();
+	    panel.add(scrollPane);
+	    frame.getContentPane().add(panel);
+	    
+	    // Show the frame
+	    frame.setVisible(true);
 
 	} // end printSimResultsTable
 
