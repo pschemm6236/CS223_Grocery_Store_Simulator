@@ -4,7 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.sql.*;
+
+import java.net.*;
 
 /**
  * 
@@ -14,10 +24,56 @@ import java.text.DecimalFormat;
  */
 
 public class SimulatorDriver {
+	
+	private static Connection connection = null;
+
 
 	public static void main(String[] args) { // begin main
 
-		new MyGUI();
+		//new MyGUI();
+		System.out.println("---*** ----MYSQLJDBC Connection Testing----***----");
+
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		}
+		catch (ClassNotFoundException e){
+			System.out.println("Where is your mySQL JDBC driver??");
+			e.printStackTrace();
+			return; 
+		}
+		
+		System.out.println("MY SQL JDBC Driver has been succesffuly registered");
+		
+		
+		
+		try {
+			connection = DriverManager
+			.getConnection("jdbc:mysql://localhost:3306/csc223Giraffes","root","");
+			
+			// clear the table
+	        PreparedStatement stmt = connection.prepareStatement("DELETE FROM sim_results");
+	        stmt.executeUpdate();
+	        System.out.println("The table has been cleared.");
+			
+		} catch (SQLException e) {
+			System.out.println("Connection failed! Please check and try again");
+			e.printStackTrace();
+			return; 
+		}
+		
+		if(connection != null) {
+			System.out.println("Success! You can take control of your databse");
+			
+		}
+		else {
+			System.out.println("Failed to make the required connection");
+		}
+		
+		
+		
+		
+		
 		
 		Scanner scan = new Scanner(System.in);
 
@@ -94,6 +150,8 @@ public class SimulatorDriver {
 		// call static methods to print data from simulation
 		printSimResults(customers, fullQueues, selfCheckoutQueue, selfServiceLines);
 		printSimResultsTable(customers);
+		
+		openPhpMyAdmin();
 
 	} // end main
 
@@ -274,8 +332,23 @@ public class SimulatorDriver {
 					ithCustomer.waitingTime(), ithCustomer.getUsedLine());
 			System.out.println(
 					"|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
+			 try { //begin try 
+		            PreparedStatement stmt = connection.prepareStatement( "INSERT INTO sim_results " +
+		                    "(customer_id, arrival_time, service_time, departure_time, wait_time, queue) " +
+		                    "VALUES (?, ?, ?, ?, ?, ?)"
+		                );
+		            stmt.setInt(1, ithCustomer.getCustId());
+		            stmt.setInt(2, ithCustomer.getArrivalTime());
+		            stmt.setInt(3, ithCustomer.getServiceTime());
+		            stmt.setInt(4, ithCustomer.getEndTime());
+		            stmt.setInt(5, ithCustomer.waitingTime());
+		            stmt.setString(6, ithCustomer.getUsedLine());
+		            stmt.executeUpdate(); // Execute the insert statement
+			 } catch (SQLException e) {
+		            e.printStackTrace();
+		     }        		
 
-		}
+		} //end for 
 
 	} // end printSimResultsTable
 
@@ -305,5 +378,14 @@ public class SimulatorDriver {
 		System.out.println();
 
 	} // end printRecSet
-
+	
+	public static void openPhpMyAdmin() {
+	    try {
+	        // Replace 'localhost' and 'phpmyadmin' with the appropriate values
+	        String url = "http://localhost/phpmyadmin/index.php?route=/sql&server=1&db=csc223giraffes&table=sim_results&pos=0";
+	        Desktop.getDesktop().browse(new URI(url));
+	    } catch (IOException | URISyntaxException e) {
+	        e.printStackTrace();
+	    }
+	}
 } // end class SimulatorDriver
