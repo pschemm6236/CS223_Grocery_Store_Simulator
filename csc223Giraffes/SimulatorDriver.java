@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -24,57 +23,15 @@ import java.net.*;
  */
 
 public class SimulatorDriver {
-	
-	private static Connection connection = null;
 
+	private static Connection conn = null;
 
 	public static void main(String[] args) { // begin main
 
-		//new MyGUI();
-		System.out.println("---*** ----MYSQLJDBC Connection Testing----***----");
+		System.out.println("---*** ----MYSQLJDBC Connection Testing----***----\n");
 
-		
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		}
-		catch (ClassNotFoundException e){
-			System.out.println("Where is your mySQL JDBC driver??");
-			e.printStackTrace();
-			return; 
-		}
-		
-		System.out.println("MY SQL JDBC Driver has been succesffuly registered");
-		
-		
-		
-		try {
-			connection = DriverManager
-			.getConnection("jdbc:mysql://localhost:3306/csc223Giraffes","root","");
-			
-			// clear the table
-	        PreparedStatement stmt = connection.prepareStatement("DELETE FROM sim_results");
-	        stmt.executeUpdate();
-	        System.out.println("The table has been cleared.");
-			
-		} catch (SQLException e) {
-			System.out.println("Connection failed! Please check and try again");
-			e.printStackTrace();
-			return; 
-		}
-		
-		if(connection != null) {
-			System.out.println("Success! You can take control of your databse");
-			
-		}
-		else {
-			System.out.println("Failed to make the required connection");
-		}
-		
-		
-		
-		
-		
-		
+		conn = createConnection();
+
 		Scanner scan = new Scanner(System.in);
 
 		int fullServiceLines;
@@ -125,18 +82,17 @@ public class SimulatorDriver {
 		creator.populateCustomers(customers);
 
 		ArrayList<Queue> fullQueues = new ArrayList<Queue>();
-		String[ ] selfQueues = new String[selfServiceLines];
+		String[] selfQueues = new String[selfServiceLines];
 
 		fullQueues = createFullQueues(fullServiceLines);
 
 		selfQueues = createSelfQueues(selfServiceLines);
 
-		/**Queue checkoutAQueue = new Queue("A");
-		Queue checkoutBQueue = new Queue("B");
-		Queue checkoutCQueue = new Queue("C");
-		**/
+		/**
+		 * Queue checkoutAQueue = new Queue("A"); Queue checkoutBQueue = new Queue("B");
+		 * Queue checkoutCQueue = new Queue("C");
+		 **/
 		SplitQueue selfCheckoutQueue = new SplitQueue(selfQueues);
-		
 
 		// Create a Simulator object with the number of customers to simulate
 		// and pass it our Customer ArrayList and Queue objects
@@ -150,7 +106,7 @@ public class SimulatorDriver {
 		// call static methods to print data from simulation
 		printSimResults(customers, fullQueues, selfCheckoutQueue, selfServiceLines);
 		printSimResultsTable(customers);
-		
+
 		openPhpMyAdmin();
 
 	} // end main
@@ -161,20 +117,19 @@ public class SimulatorDriver {
 		ArrayList<Queue> fullQ = new ArrayList<Queue>();
 
 		int counter = 0;
-		
-		
+
 		for (int i = 0; i < full; i++) {
 			String queueName = "";
 			if (counter < 26) {
-				queueName = Character.toString((char) ('A' + counter ));
-	        } else {
-	            int suffix = ((counter - 26) / 26) + 1;
-	            queueName = Character.toString((char) ('A' + (counter - 26) % 26)) + suffix;
-	        }
-	        Queue newQueue = new Queue(queueName);
-	        fullQ.add(newQueue);
-	        counter++;
-	    }
+				queueName = Character.toString((char) ('A' + counter));
+			} else {
+				int suffix = ((counter - 26) / 26) + 1;
+				queueName = Character.toString((char) ('A' + (counter - 26) % 26)) + suffix;
+			}
+			Queue newQueue = new Queue(queueName);
+			fullQ.add(newQueue);
+			counter++;
+		}
 
 		return fullQ;
 	}
@@ -183,32 +138,30 @@ public class SimulatorDriver {
 
 		String[] selfQueues = new String[self];
 
-	   
-	
-	    int counter = 0;
-	    
-	    for (int i = 0; i < self; i++) {
-	    	String queueName = "SC -";
-	    	
-	    	if(counter < 26) {
-	    		queueName += Character.toString((char) ('A' + counter));
-	    		counter++;
-	    		
-	    	}
-	    	else {
-	            int suffix = ((counter - 26) / 26) + 1;
-	            String tempName =  Character.toString((char) ('A' + (counter - 26) % 26)) + suffix;
-	    		queueName += tempName;
-	    		counter++;
-	    	}
-	    	selfQueues[i] = queueName;
-	    }
-	    return selfQueues;
+		int counter = 0;
+
+		for (int i = 0; i < self; i++) {
+			String queueName = "SC -";
+
+			if (counter < 26) {
+				queueName += Character.toString((char) ('A' + counter));
+				counter++;
+
+			} else {
+				int suffix = ((counter - 26) / 26) + 1;
+				String tempName = Character.toString((char) ('A' + (counter - 26) % 26)) + suffix;
+				queueName += tempName;
+				counter++;
+			}
+			selfQueues[i] = queueName;
+		}
+		return selfQueues;
 	}
 
 	// Takes the original customers ArrayList and Queue objects to gather all
 	// simulation results and print
-	public static void printSimResults(ArrayList<Customer> customers, ArrayList<Queue> fullQueues, SplitQueue self, int numOfSelfLines) {
+	public static void printSimResults(ArrayList<Customer> customers, ArrayList<Queue> fullQueues, SplitQueue self,
+			int numOfSelfLines) {
 
 		int satisfiedCust = 0;
 		int dissatisfiedCust = 0;
@@ -255,60 +208,59 @@ public class SimulatorDriver {
 		System.out.println("Average wait time for SELF: " + df.format(avgWaitTimeSelf)
 				+ " min. With SELF serving a total of " + numCustomersSelf + " for the day.");
 
-		
 		int totalTimeNotUsedFull = 0;
-		//loop thru ALL of fullChecouts, accumulate timenotused to variable
-		for(int i = 0; i<fullQueues.size(); i++) {
-			
+		// loop thru ALL of fullChecouts, accumulate timenotused to variable
+		for (int i = 0; i < fullQueues.size(); i++) {
+
 			totalTimeNotUsedFull += fullQueues.get(i).getTimeNotUsed();
 		}
 		int totalTimeNotUsedSelf = self.getTotalTimeNotUsed();
-		
+
 		// print results
 		System.out.println();
-		System.out.println("Total accumulated idle time for all checkouts (FULL): " + totalTimeNotUsedFull + " minutes");
-		System.out.println("Total accumulated idle time for all checkouts (SELF): " + self.getTotalTimeNotUsed() + " minutes");
+		System.out
+				.println("Total accumulated idle time for all checkouts (FULL): " + totalTimeNotUsedFull + " minutes");
+		System.out.println(
+				"Total accumulated idle time for all checkouts (SELF): " + self.getTotalTimeNotUsed() + " minutes");
 		System.out.println("Customer satisfaction: " + satisfiedCust + " satisfied (<5 minutes) " + dissatisfiedCust
 				+ " dissatisfied (>=5 minutes)");
-		
+
 		// output current line suggestions
-	    System.out.println("\n----- Line Suggestions -----\n");
-	   
-	    
-	    double idleWaitTimeThreshold = 2.0; // our ideal wait time for lines (can change as needed)
-	    double idleTimeThreshold = 30.0; // our ideal idle time for lines (can change as needed)
+		System.out.println("\n----- Line Suggestions -----\n");
 
-	    //create another nested if/elseif statement for if idle time is too high 
-	    
-	    if (isSignificantDifference(avgWaitTimeFull, avgWaitTimeSelf, idleWaitTimeThreshold)) {
-	        if (avgWaitTimeFull > avgWaitTimeSelf) {
-	            System.out.println("Consider adding a FULL checkout line to reduce wait time.");
-	        } else {
-	            System.out.println("Consider adding a SELF checkout line to reduce wait time.");
-	        }
-	    } else {
-	        System.out.println("No need to add any lines.");
-	    }
+		double idleWaitTimeThreshold = 2.0; // our ideal wait time for lines (can change as needed)
+		double idleTimeThreshold = 30.0; // our ideal idle time for lines (can change as needed)
 
-	    if (isSignificantDifference(totalTimeNotUsedFull, totalTimeNotUsedSelf, idleTimeThreshold)) {
-	        if (totalTimeNotUsedFull > totalTimeNotUsedSelf && fullQueues.size() != 1) {
-	            System.out.println("Consider removing a FULL checkout line to reduce idle time.");
-	        } 
-	        else if (numOfSelfLines != 1){
-	            System.out.println("Consider removing a SELF checkout line to reduce idle time.");
-	        }
-	        else {
-		        System.out.println("No need to remove any lines.");
-		    }
-	    } else {
-	        System.out.println("No need to remove any lines.");
-	    }
+		// create another nested if/elseif statement for if idle time is too high
 
-	} // end printSimResults	
-	
-	// evaluates if there's a significant difference in the average wait times and idle times for FULL and SELF checkouts.
+		if (isSignificantDifference(avgWaitTimeFull, avgWaitTimeSelf, idleWaitTimeThreshold)) {
+			if (avgWaitTimeFull > avgWaitTimeSelf) {
+				System.out.println("Consider adding a FULL checkout line to reduce wait time.");
+			} else {
+				System.out.println("Consider adding a SELF checkout line to reduce wait time.");
+			}
+		} else {
+			System.out.println("No need to add any lines.");
+		}
+
+		if (isSignificantDifference(totalTimeNotUsedFull, totalTimeNotUsedSelf, idleTimeThreshold)) {
+			if (totalTimeNotUsedFull > totalTimeNotUsedSelf && fullQueues.size() != 1) {
+				System.out.println("Consider removing a FULL checkout line to reduce idle time.");
+			} else if (numOfSelfLines != 1) {
+				System.out.println("Consider removing a SELF checkout line to reduce idle time.");
+			} else {
+				System.out.println("No need to remove any lines.");
+			}
+		} else {
+			System.out.println("No need to remove any lines.");
+		}
+
+	} // end printSimResults
+
+	// evaluates if there's a significant difference in the average wait times and
+	// idle times for FULL and SELF checkouts.
 	private static boolean isSignificantDifference(double value1, double value2, double threshold) {
-	    return Math.abs(value1 - value2) >= threshold;
+		return Math.abs(value1 - value2) >= threshold;
 	}
 
 	// Takes the data and prints out formatted table
@@ -332,23 +284,22 @@ public class SimulatorDriver {
 					ithCustomer.waitingTime(), ithCustomer.getUsedLine());
 			System.out.println(
 					"|-------|------------------------|--------------|----------------------------|-------------|-----------------|");
-			 try { //begin try 
-		            PreparedStatement stmt = connection.prepareStatement( "INSERT INTO sim_results " +
-		                    "(customer_id, arrival_time, service_time, departure_time, wait_time, queue) " +
-		                    "VALUES (?, ?, ?, ?, ?, ?)"
-		                );
-		            stmt.setInt(1, ithCustomer.getCustId());
-		            stmt.setInt(2, ithCustomer.getArrivalTime());
-		            stmt.setInt(3, ithCustomer.getServiceTime());
-		            stmt.setInt(4, ithCustomer.getEndTime());
-		            stmt.setInt(5, ithCustomer.waitingTime());
-		            stmt.setString(6, ithCustomer.getUsedLine());
-		            stmt.executeUpdate(); // Execute the insert statement
-			 } catch (SQLException e) {
-		            e.printStackTrace();
-		     }        		
+			try { // begin try
+				PreparedStatement stmt = conn.prepareStatement("INSERT INTO sim_results "
+						+ "(customer_id, arrival_time, service_time, departure_time, wait_time, queue) "
+						+ "VALUES (?, ?, ?, ?, ?, ?)");
+				stmt.setInt(1, ithCustomer.getCustId());
+				stmt.setInt(2, ithCustomer.getArrivalTime());
+				stmt.setInt(3, ithCustomer.getServiceTime());
+				stmt.setInt(4, ithCustomer.getEndTime());
+				stmt.setInt(5, ithCustomer.waitingTime());
+				stmt.setString(6, ithCustomer.getUsedLine());
+				stmt.executeUpdate(); // Execute the insert statement
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 
-		} //end for 
+		} // end for
 
 	} // end printSimResultsTable
 
@@ -378,14 +329,50 @@ public class SimulatorDriver {
 		System.out.println();
 
 	} // end printRecSet
-	
+
+	public static Connection createConnection() {
+
+		String user = "csc223";
+		String pass = "csc223";
+		String name = "giraffes"; // <-- put your team name here
+		String driver = "com.mysql.cj.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/csc223Giraffes";
+
+		System.out.println(driver);
+		System.out.println(url);
+
+		
+		PreparedStatement stmt;
+		
+		try {
+			Class.forName(driver).newInstance();
+			conn = DriverManager.getConnection(url, user, pass);
+			System.out.println("Connection really is from : " + conn.getClass().getName());
+			System.out.println("Connection successful!");
+			
+			// clear the table
+			stmt = conn.prepareStatement("DELETE FROM sim_results");
+			stmt.executeUpdate();
+			System.out.println("The table has been cleared.");
+
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return conn;
+	}
+
 	public static void openPhpMyAdmin() {
-	    try {
-	        // Replace 'localhost' and 'phpmyadmin' with the appropriate values
-	        String url = "http://localhost/phpmyadmin/index.php?route=/sql&server=1&db=csc223giraffes&table=sim_results&pos=0";
-	        Desktop.getDesktop().browse(new URI(url));
-	    } catch (IOException | URISyntaxException e) {
-	        e.printStackTrace();
-	    }
+		try {
+			// Replace 'localhost' and 'phpmyadmin' with the appropriate values
+			String url = "http://localhost/phpmyadmin/index.php?route=/sql&server=1&db=csc223giraffes&table=sim_results&pos=0";
+			Desktop.getDesktop().browse(new URI(url));
+
+			
+
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
 	}
 } // end class SimulatorDriver
