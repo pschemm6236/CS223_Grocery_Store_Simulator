@@ -24,7 +24,7 @@ import java.net.*;
 
 public class SimulatorDriver {
 
-	private static Connection conn = null;
+	private static Connection conn = null; 
 
 	public static void main(String[] args) { // begin main
 
@@ -108,6 +108,10 @@ public class SimulatorDriver {
 		printSimResultsTable(customers);
 
 		openPhpMyAdmin();
+		
+		databaseMenu();
+		
+		closeConnection();
 
 	} // end main
 
@@ -375,4 +379,26 @@ public class SimulatorDriver {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public static void closeConnection() {
+		if (conn != null) {
+			try {
+				conn.close();
+				conn = null;
+				//stmt.close();
+				System.out.println("The connectionwas successfully closed");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void databaseMenu() {
+		
+		
+		
+		
+	}
+	
 } // end class SimulatorDriver
