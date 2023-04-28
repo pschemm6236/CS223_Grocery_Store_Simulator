@@ -17,6 +17,7 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 	private int endTime;	
 	private String usedLine;
 	
+	
 	//no argument constructor 
 	public Customer() { 
 		
@@ -114,5 +115,8 @@ public class Customer implements Comparable<Customer> { //begin Customer class
 	public void setUsedLine(String usedLine) {
 		this.usedLine = usedLine;
 	}
+
+	
+	
 } //end Customer class
 
