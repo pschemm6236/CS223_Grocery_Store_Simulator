@@ -3,10 +3,6 @@ package csc223Giraffes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.awt.Desktop;
 import java.io.IOException;
@@ -24,7 +20,8 @@ import java.net.*;
 
 public class SimulatorDriver {
 
-	private static Connection conn = null; 
+	private static Connection conn = null;
+	private static Statement stmt = null;
 
 	public static void main(String[] args) { // begin main
 
@@ -32,8 +29,8 @@ public class SimulatorDriver {
 
 		conn = createConnection();
 
+		
 		Scanner scan = new Scanner(System.in);
-
 		int fullServiceLines;
 		int selfServiceLines;
 		int minArrivalTime;
@@ -108,9 +105,9 @@ public class SimulatorDriver {
 		printSimResultsTable(customers);
 
 		openPhpMyAdmin();
-		
+
 		databaseMenu();
-		
+
 		closeConnection();
 
 	} // end main
@@ -176,14 +173,54 @@ public class SimulatorDriver {
 		// for loop all the customers to get each of their wait times and number
 		// satisfied
 		for (int i = 0; i < customers.size(); i++) {
+			Customer c = customers.get(i);
 
 			int ithCustWaitTime = (customers.get(i).waitingTime());
 
 			// check for satisfied/non
 			if (ithCustWaitTime < 5) {
 				satisfiedCust++;
-			} else
+				
+				
+				 
+				//code for inserting satisfied customers into database table
+				try { // begin try
+					PreparedStatement stmt = conn.prepareStatement("INSERT INTO satisfied_customer "
+							+ "(customer_id, arrival_time, service_time, departure_time, wait_time, queue, satisfied) "
+							+ "VALUES (?, ?, ?, ?, ?, ?, ?)");
+					stmt.setInt(1, c.getCustId());
+					stmt.setInt(2, c.getArrivalTime());
+					stmt.setInt(3, c.getServiceTime());
+					stmt.setInt(4, c.getEndTime());
+					stmt.setInt(5, c.waitingTime());
+					stmt.setString(6, c.getUsedLine());
+					stmt.setString(7, "TRUE");
+					stmt.executeUpdate(); // Execute the insert statement
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
+			} else {
 				dissatisfiedCust++;
+				
+				//code for inserting dissatisfied customers into database table
+				try { // begin try
+					PreparedStatement stmt = conn.prepareStatement("INSERT INTO dissatisfied_customer "
+							+ "(customer_id, arrival_time, service_time, departure_time, wait_time, queue, satisfied) "
+							+ "VALUES (?, ?, ?, ?, ?, ?, ?)");
+					stmt.setInt(1, c.getCustId());
+					stmt.setInt(2, c.getArrivalTime());
+					stmt.setInt(3, c.getServiceTime());
+					stmt.setInt(4, c.getEndTime());
+					stmt.setInt(5, c.waitingTime());
+					stmt.setString(6, c.getUsedLine());
+					stmt.setString(7, "TRUE");
+					stmt.executeUpdate(); // Execute the insert statement
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
+			}
 		}
 
 		double totalWaitTimeFull = 0;
@@ -345,21 +382,18 @@ public class SimulatorDriver {
 		System.out.println(driver);
 		System.out.println(url);
 
-		
 		PreparedStatement stmt;
-		
+
 		try {
 			Class.forName(driver).newInstance();
 			conn = DriverManager.getConnection(url, user, pass);
 			System.out.println("Connection really is from : " + conn.getClass().getName());
 			System.out.println("Connection successful!");
-			
+
 			// clear the table
 			stmt = conn.prepareStatement("DELETE FROM sim_results");
 			stmt.executeUpdate();
 			System.out.println("The table has been cleared.");
-
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -373,32 +407,145 @@ public class SimulatorDriver {
 			String url = "http://localhost/phpmyadmin/index.php?route=/sql&server=1&db=csc223giraffes&table=sim_results&pos=0";
 			Desktop.getDesktop().browse(new URI(url));
 
-			
-
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	public static void closeConnection() {
 		if (conn != null) {
 			try {
 				conn.close();
 				conn = null;
-				//stmt.close();
+				// stmt.close();
 				System.out.println("The connectionwas successfully closed");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
+	public static void checkConnect() {
+		if (conn == null) {
+			conn = createConnection();
+		}
+		if (stmt == null) {
+			try {
+				stmt = conn.createStatement();
+			} catch (SQLException e) {
+				System.out.println("Cannot create the statement");
+			}
+
+		}
+	}
+
 	public static void databaseMenu() {
 		
+
+		Scanner scan = new Scanner(System.in);
+		// for selecting different queuries user can execute
+		boolean more = true;
+
+		while (more != false) { // begin while
+
+			System.out.println("----***----DATABASE MENU OPTIONS----****-----\n");
+			
+			System.out.println("1.) print out all satisfied customers");
+			System.out.println("2.) print out all dissatisfed customers");
+			
+			int choice = scan.nextInt();
+			
+			
+			if(choice == 1) {
+				custPrintDatabase();
+			}
+			else if(choice ==2) {
+				custSatisfiedDatabase();
+			}
+			else {
+				more = false;
+			}
+
+		} // begin while
+		scan.close();
+
+	} // end method 
+	
+	public static void custPrintDatabase() {
+		checkConnect();
 		
 		
+
 		
 	}
 	
+	public static void custSatisfiedDatabase() {
+		checkConnect();
+		
+		//String query
+		String query = "SELECT * FROM satisfied_customers";
+		try {
+			stmt = conn.createStatement();
+
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println(" ");
+			System.out.println("ID  customer_ID   arrival_time  service_time   departure_time   wait_time  queue   satisfied");
+			
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				
+				int custId = rs.getInt("customer_id"); 
+				int arrival = rs.getInt("arrival_time");
+				int service = rs.getInt("service_time");
+				int departure = rs.getInt("departure_time");
+				int wait = rs.getInt("wait_time");
+				String queue = rs.getString("queue");
+				String satisfied = rs.getString("satisfied");
+
+				System.out.println(custId + "     " + arrival + "       " + service + "      " + departure + "      " + wait + "      " + queue+ "      " + satisfied );
+			}
+		}
+
+		catch (SQLException e) {
+			System.out.println("SQL Exception");
+			e.printStackTrace();
+		}
+
+	}
+	
+	public static void custDissatisfiedDatabase() {
+		checkConnect();
+		
+		//String query
+		String query = "SELECT * FROM dissatisfied_customers";
+		try {
+			stmt = conn.createStatement();
+
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println(" ");
+			System.out.println("ID  customer_ID   arrival_time  service_time   departure_time   wait_time  queue   dissatisfied");
+			
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				
+				int custId = rs.getInt("customer_id"); 
+				int arrival = rs.getInt("arrival_time");
+				int service = rs.getInt("service_time");
+				int departure = rs.getInt("departure_time");
+				int wait = rs.getInt("wait_time");
+				String queue = rs.getString("queue");
+				String dissatisfied = rs.getString("satisfied");
+
+				System.out.println(custId + "     " + arrival + "       " + service + "      " + departure + "      " + wait + "      " + queue+ "      " + dissatisfied );
+			}
+		}
+
+		catch (SQLException e) {
+			System.out.println("SQL Exception");
+			e.printStackTrace();
+		}
+
+	}
+	
+
 } // end class SimulatorDriver
