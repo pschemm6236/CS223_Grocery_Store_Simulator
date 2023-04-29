@@ -62,7 +62,7 @@ public class DataTableMenu {
 		Border border = BorderFactory.createLineBorder(Color.black,2);
 
 		backButton = new JButton();
-		backButton.setBounds(5,5,20,20);
+		backButton.setBounds(5,5,30,30);
 		backButton.setText("<=");
 		backButton.setBackground(Color.white);
 		backButton.setBorder(border);

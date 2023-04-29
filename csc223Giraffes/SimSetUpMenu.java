@@ -21,6 +21,7 @@ public class SimSetUpMenu {
 	private static JButton dataButton;
 	private static JButton simulationButton;
 	private static JButton tableButton;
+	private static JButton startSimButton;
 	private static JFrame menu;
 	
 	// declare JLabels and JTextFields
@@ -41,9 +42,12 @@ public class SimSetUpMenu {
     private JLabel percentSlowerLabel;
     private JTextField percentSlower;
     
+    
+    private SimulationSettings simulationSettings;
 
-	public SimSetUpMenu(MenuManager mm) {
+	public SimSetUpMenu(MenuManager mm, SimulationSettings settings) {
 		menuManager = mm;
+		simulationSettings = settings;
 		
 		//Setting up the frame
 		menu = new JFrame();
@@ -68,7 +72,7 @@ public class SimSetUpMenu {
 
 		//Making the main label for this menu
 		mainLabel = new JLabel();
-		mainLabel.setText("Enter Your Sim Settings:");
+		mainLabel.setText("Enter Your Sim Settings:\n(Recommended Settings)");
 		mainLabel.setHorizontalTextPosition(JLabel.CENTER);
 		mainLabel.setVerticalTextPosition(JLabel.TOP);
 		mainLabel.setForeground(Color.blue);
@@ -86,7 +90,7 @@ public class SimSetUpMenu {
 		Border border = BorderFactory.createLineBorder(Color.black,2);
 
 		backButton = new JButton();
-		backButton.setBounds(5,5,20,20);
+		backButton.setBounds(5,5,30,30);
 		backButton.setText("<=");
 		backButton.setBackground(Color.white);
 		backButton.setBorder(border);
@@ -117,42 +121,54 @@ public class SimSetUpMenu {
 		tableButton.setFocusable(false);
 		tableButton.addActionListener(e -> tableFunction());
 		
+		startSimButton = new JButton();
+		startSimButton.setBounds(20, 440, 75, 50);
+		startSimButton.setText("START SIM");
+		startSimButton.setBackground(Color.white);
+		startSimButton.setForeground(Color.red);
+		startSimButton.setBorder(border);
+		startSimButton.setFocusable(false);
+		
+		// THIS IS WHERE SIMULATION SETTINGS WILL GET PASSED BACK TO MenuManager
+		startSimButton.addActionListener(e -> storeSimulationSettings());
+		
 		menu.add(dataButton);
 		menu.add(simulationButton);
 		menu.add(tableButton);
 		menu.add(mainLabel);
 		menu.add(backButton);
+		menu.add(startSimButton);
 		
 		// JLabels for the prompts
-        fullServiceLinesLabel = new JLabel("Number of full-service lines:");
+        fullServiceLinesLabel = new JLabel("Number of full-service lines (2): ");
         fullServiceLinesLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
         fullServiceLinesLabel.setBounds(50, 80, 300, 30);
 
-        selfServiceLinesLabel = new JLabel("Number of self-service lines:");
+        selfServiceLinesLabel = new JLabel("Number of self-service lines (6):");
         selfServiceLinesLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
         selfServiceLinesLabel.setBounds(50, 120, 300, 30);
 
-        minArrivalTimeLabel = new JLabel("Enter minimum arrival time between customers:");
+        minArrivalTimeLabel = new JLabel("Enter minimum arrival time between customers (1):");
         minArrivalTimeLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
         minArrivalTimeLabel.setBounds(50, 160, 400, 30);
 
-        maxArrivalTimeLabel = new JLabel("Enter maximum arrival time between customers:");
+        maxArrivalTimeLabel = new JLabel("Enter maximum arrival time between customers (4):");
         maxArrivalTimeLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
         maxArrivalTimeLabel.setBounds(50, 200, 400, 30);
 
-        minServiceTimeLabel = new JLabel("Enter minimum service time:");
+        minServiceTimeLabel = new JLabel("Enter minimum service time (3):");
         minServiceTimeLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
         minServiceTimeLabel.setBounds(50, 240, 300, 30);
 
-        maxServiceTimeLabel = new JLabel("Enter maximum service time:");
+        maxServiceTimeLabel = new JLabel("Enter maximum service time (4):");
         maxServiceTimeLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
         maxServiceTimeLabel.setBounds(50, 280, 300, 30);
 
-        numCustomersLabel = new JLabel("Enter number of customers to serve:");
+        numCustomersLabel = new JLabel("Enter number of customers to serve (3 to 12):");
         numCustomersLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
         numCustomersLabel.setBounds(50, 320, 300, 30);
 
-        percentSlowerLabel = new JLabel("Percentage slower for SELF:");
+        percentSlowerLabel = new JLabel("Percentage slower for SELF (25):");
         percentSlowerLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
         percentSlowerLabel.setBounds(50, 360, 300, 30);
 
@@ -228,7 +244,7 @@ public class SimSetUpMenu {
 		this.close();
 	}
 	
-	
+	// uses menuManger option 2 which just goes to VisualSimMenu (no starting of simulation)
 	private void simulationFunction() {
 		menuManager.toMenu(2);
 		this.close();
@@ -238,4 +254,36 @@ public class SimSetUpMenu {
 		menuManager.toMenu(3);
 		this.close();
 	}
+	
+	// uses menuManger option 5 which calls startSim in VisualSimMenu
+	private void simulationFunctionStartSimRun() {
+		menuManager.toMenu(5);
+		this.close();
+	}
+	
+	// method FOR WHEN START SIM button is pressed
+	private void storeSimulationSettings() {
+        int fullService = Integer.parseInt(fullServiceLines.getText());
+        int selfService = Integer.parseInt(selfServiceLines.getText());
+        int minArrival = Integer.parseInt(minArrivalTime.getText());
+        int maxArrival = Integer.parseInt(maxArrivalTime.getText());
+        int minService = Integer.parseInt(minServiceTime.getText());
+        int maxService = Integer.parseInt(maxServiceTime.getText());
+        int numCust = Integer.parseInt(numCustomers.getText());
+        double parsedPercentSlower = Double.parseDouble(percentSlower.getText());
+
+        simulationSettings.setFullService(fullService);
+        simulationSettings.setSelfService(selfService);
+        simulationSettings.setMinArrival(minArrival);
+        simulationSettings.setMaxArrival(maxArrival);
+        simulationSettings.setMinService(minService);
+        simulationSettings.setMaxService(maxService);
+        simulationSettings.setNumCust(numCust);
+        simulationSettings.setPercentSlower(parsedPercentSlower);
+        
+        // close the menu SimSetUpMenu
+        close();
+        // open the menu VisualSimMenu (begin the simulation, jumping straight from SimSetUpMenu into VisualSimMenu)
+        simulationFunctionStartSimRun();
+    }
 }
