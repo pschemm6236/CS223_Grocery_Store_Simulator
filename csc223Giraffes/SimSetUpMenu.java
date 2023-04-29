@@ -22,6 +22,7 @@ public class SimSetUpMenu {
 	private static JButton simulationButton;
 	private static JButton tableButton;
 	private static JButton startSimButton;
+	private static JButton autoFillButton;
 	private static JFrame menu;
 	
 	// declare JLabels and JTextFields
@@ -123,9 +124,19 @@ public class SimSetUpMenu {
 		startSimButton.setForeground(Color.red);
 		startSimButton.setBorder(border);
 		startSimButton.setFocusable(false);
-		
 		// THIS IS WHERE SIMULATION SETTINGS WILL GET PASSED BACK TO MenuManager
 		startSimButton.addActionListener(e -> storeSimulationSettings());
+				
+		autoFillButton = new JButton();
+		autoFillButton.setBounds(100, 440, 150, 50);
+		autoFillButton.setText("Auto Fill Rec. Settings");
+		autoFillButton.setBackground(Color.black);
+		autoFillButton.setForeground(Color.blue);
+		autoFillButton.setBorder(border);
+		autoFillButton.setFocusable(false);
+		// Fills the JTextFileds with recommended settings when pressed
+		autoFillButton.addActionListener(e -> setRecSettings());
+		
 		
 		menu.add(dataButton);
 		menu.add(simulationButton);
@@ -133,6 +144,7 @@ public class SimSetUpMenu {
 		menu.add(mainLabel);
 		menu.add(backButton);
 		menu.add(startSimButton);
+		menu.add(autoFillButton);
 		
 		// JLabels for the prompts
         fullServiceLinesLabel = new JLabel("Number of full-service lines (2): ");
@@ -281,4 +293,16 @@ public class SimSetUpMenu {
         // open the menu VisualSimMenu (begin the simulation, jumping straight from SimSetUpMenu into VisualSimMenu)
         simulationFunctionStartSimRun();
     }
+	
+	private void setRecSettings() {
+		
+		fullServiceLines.setText("2");
+		selfServiceLines.setText("6");
+		minArrivalTime.setText("1");
+		maxArrivalTime.setText("4");
+		minServiceTime.setText("3");
+		maxServiceTime.setText("4");
+		numCustomers.setText("12");
+		percentSlower.setText("25.0");
+	}
 }
