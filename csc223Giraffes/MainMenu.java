@@ -1,5 +1,7 @@
 package csc223Giraffes;
 
+package testing;
+
 import java.awt.*;
 import java.io.File;
 import javax.swing.*;
@@ -7,15 +9,18 @@ import javax.swing.border.Border;
 
 public class MainMenu {
 	
-	public static JLabel mainLabel;
-	public static JButton backButton;
-	public static JButton dataButton;
-	public static JButton setupButton;
-	public static JButton simulationButton;
-	public static JButton tableButton;
-	private static JFrame menu;
+	private  MenuManager menuManager;
+	private  JLabel mainLabel;
+	private  JButton dataButton;
+	private  JButton setupButton;
+	private  JButton simulationButton;
+	private  JButton tableButton;
+	private  JFrame menu;
 	
-	public MainMenu() {
+	public MainMenu(MenuManager mm) {
+		//Menu Manager
+		menuManager = mm;
+		
 		//Setting up the frame
 		menu = new JFrame();
 		menu.setTitle("Main Menu");
@@ -106,18 +111,22 @@ public class MainMenu {
 	}
 	
 	private void dataFunction() {
-		System.out.println("Openning database menu...");
+		menuManager.toMenu(4);
+		this.close();
 	}
 	
 	private void setupFunction() {
-		System.out.println("Openning setup menu...");
+		menuManager.toMenu(1);
+		this.close();
 	}
 	
 	private void simulationFunction() {
-		System.out.println("Openning simulation menu...");
+		menuManager.toMenu(2);
+		this.close();
 	}
 	
 	private void tableFunction() {
-		System.out.println("Openning table menu...");
+		menuManager.toMenu(3);
+		this.close();
 	}
 }

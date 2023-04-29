@@ -12,16 +12,20 @@ import javax.swing.JTable;
 import javax.swing.border.Border;
 
 public class DataTableMenu {
-	public String[][] data;
-	public  JTable table;
-	public  JScrollPane scrollPane;
-	public  JButton backButton;
-	public  JButton dataButton;
-	public  JButton setupButton;
-	public  JButton simulationButton;
+	private MenuManager menuManager;
+	private String[][] data;
+	private  JTable table;
+	private  JScrollPane scrollPane;
+	private  JButton backButton;
+	private  JButton dataButton;
+	private  JButton setupButton;
+	private  JButton simulationButton;
 	private  JFrame menu;
 	
-	public DataTableMenu() {
+	public DataTableMenu(MenuManager mm) {
+		//Declares the menuManager
+		menuManager = mm;
+		
 		//Setting up the frame
 		menu = new JFrame();
 		menu.setTitle("Data Table Menu");
@@ -106,18 +110,22 @@ public class DataTableMenu {
 	}
 	
 	private void dataFunction() {
-		System.out.println("Openning database menu...");
+		menuManager.toMenu(4);
+		this.close();
 	}
 	
 	private void setupFunction() {
-		System.out.println("Openning setup menu...");
+		menuManager.toMenu(1);
+		this.close();
 	}
 	
 	private void simulationFunction() {
-		System.out.println("Openning simulation menu...");
+		menuManager.toMenu(2);
+		this.close();
 	}
 	
 	private void backFunction() {
-		System.out.println("Openning main menu...");
+		menuManager.toMenu(0);
+		this.close();
 	}
 }
