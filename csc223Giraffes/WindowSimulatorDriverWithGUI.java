@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 
 import java.text.DecimalFormat;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,9 @@ import java.net.*;
 
 public class WindowSimulatorDriverWithGUI implements ActionListener {
 
+	SimSetUpMenu liamFrame = new SimSetUpMenu();
+	
+	
 	JFrame frame = new JFrame();
 	JLabel labelEnterSet = new JLabel("Enter Your Sim Settings:");
 
@@ -44,10 +48,15 @@ public class WindowSimulatorDriverWithGUI implements ActionListener {
 
 	WindowSimulatorDriverWithGUI() {
 
+		liamFrame.open();
+		
 		labelEnterSet.setBounds(0, 0, 5000, 50);
 		labelEnterSet.setFont(new Font(null, Font.PLAIN, 15));
 		frame.add(labelEnterSet);
-
+		
+		fullServiceLines = new JTextField();
+		fullServiceLines.setPreferredSize(new Dimension(250,40));
+		
 		btnStartSim.setBounds(100, 160, 200, 40);
 		btnStartSim.setFocusable(false);
 		btnStartSim.addActionListener(this);
@@ -57,8 +66,22 @@ public class WindowSimulatorDriverWithGUI implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(420, 420);
 		frame.setLayout(null);
+		
+		frame.add(fullServiceLines);
+		/* reset of JTextField objects here
+		*
+		*
+		*
+		*
+		*
+		*
+		*
+		*/
 		frame.setVisible(true);
 
+		
+		
+		
 	}
 
 	@Override
