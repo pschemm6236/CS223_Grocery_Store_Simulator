@@ -40,7 +40,7 @@ public class DataTableMenu {
 		//Creating the icon for the frame
 		String logoName = "JavaRUsLogo.png";
 		String defaultPath = new File(logoName).getAbsolutePath().replace("\\", "\\\\");
-		String newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"src\\testing\\"+defaultPath.substring(defaultPath.length()-logoName.length());
+		String newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"csc223Giraffes\\"+defaultPath.substring(defaultPath.length()-logoName.length());
 		ImageIcon icon = new ImageIcon(newPath);
 		menu.setIconImage(icon.getImage());
 		
@@ -53,9 +53,9 @@ public class DataTableMenu {
 	    String column[]={"Cust#","Arrival Time(abs)","Service Time","Depart Time(abs)","Wait Time", "Queue Location"};  
 	    
 	    table = new JTable(this.data,column);    
-	    table.setBounds(25,30,625,475);  
+	    table.setBounds(25,40,625,465);  
 	    scrollPane = new JScrollPane(table);
-	    scrollPane.setBounds(25,30,625,475);   
+	    scrollPane.setBounds(25,40,625,465);   
 
 		
 		//Buttons
@@ -103,7 +103,7 @@ public class DataTableMenu {
 	
 	public void open(ArrayList<Customer> customers) {
 		//This updates the table for possible new data
-		menu.remove(table);
+		menu.remove(scrollPane);
 		
 		String column[]={"Cust#","Arrival Time(abs)","Service Time","Depart Time(abs)","Wait Time", "Queue Location"}; 
 		table = new JTable(toArray(customers),column);    
@@ -111,7 +111,7 @@ public class DataTableMenu {
 	    scrollPane = new JScrollPane(table);
 	    scrollPane.setBounds(25,30,625,475); 
 	    
-	    menu.add(table);
+	    menu.add(scrollPane);
 	    
 		menu.setVisible(true);
 	}

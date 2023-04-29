@@ -1,7 +1,6 @@
 package csc223Giraffes;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
@@ -67,15 +66,10 @@ public class VisualSimMenu {
 		//Creating the icon for the frame
 		String logoName = "JavaRUsLogo.png";
 		String defaultPath = new File(logoName).getAbsolutePath().replace("\\", "\\\\");
-		String newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"src\\testing\\"+defaultPath.substring(defaultPath.length()-logoName.length());
+		String newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"csc223Giraffes\\"+defaultPath.substring(defaultPath.length()-logoName.length());
 		ImageIcon icon = new ImageIcon(newPath);
 		menu.setIconImage(icon.getImage());
 		
-		//Making the main label for this menu
-		logoName = "JavaRUsMainMenu.png";
-		defaultPath = new File(logoName).getAbsolutePath().replace("\\", "\\\\");
-		newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"src\\testing\\"+defaultPath.substring(defaultPath.length()-logoName.length());
-
 		//Making the main label for this menu
 		mainLabel = new JLabel();
 		mainLabel.setText("Simulation In Progress");
@@ -110,12 +104,12 @@ public class VisualSimMenu {
 		Border border = BorderFactory.createLineBorder(Color.black,2);
 
 		dataButton = new JButton();
-		dataButton.setBounds(125,400,200,100);
+		dataButton.setBounds(20,525,200,100);
 		dataButton.setText("Database Functions");
 		dataButton.setBackground(Color.white);
 		dataButton.setBorder(border);
 		dataButton.setFocusable(false);
-		//dataButton.addActionListener(e -> dataFunction());
+		dataButton.addActionListener(e -> dataFunction());
 		
 		backButton = new JButton();
 		backButton.setBounds(5,5,30,30);
@@ -125,21 +119,21 @@ public class VisualSimMenu {
 		backButton.setFocusable(false);
 		backButton.addActionListener(e -> backFunction());
 		
-		simulationButton = new JButton();
-		simulationButton.setBounds(375, 525, 200, 100);
-		simulationButton.setText("Simulation Viewer");
-		simulationButton.setBackground(Color.white);
-		simulationButton.setBorder(border);
-		simulationButton.setFocusable(false);
-		//simulationButton.addActionListener(e -> simulationFunction());
+		setupButton = new JButton();
+		setupButton.setBounds(245, 525, 200, 100);
+		setupButton.setText("Simulation Setup");
+		setupButton.setBackground(Color.white);
+		setupButton.setBorder(border);
+		setupButton.setFocusable(false);
+		setupButton.addActionListener(e -> setupFunction());
 		
 		tableButton = new JButton();
-		tableButton.setBounds(125, 525, 200, 100);
+		tableButton.setBounds(470, 525, 200, 100);
 		tableButton.setText("Simulation Data");
 		tableButton.setBackground(Color.white);
 		tableButton.setBorder(border);
 		tableButton.setFocusable(false);
-		//tableButton.addActionListener(e -> tableFunction());
+		tableButton.addActionListener(e -> tableFunction());
 		
 		// all bar settings
 		bar = new JProgressBar();
@@ -155,7 +149,7 @@ public class VisualSimMenu {
 		
 		menu.add(dataButton);
 		menu.add(backButton);
-		menu.add(simulationButton);
+		menu.add(setupButton);
 		menu.add(tableButton);
 		menu.add(mainLabel);
 		menu.add(bar);
@@ -184,8 +178,8 @@ public class VisualSimMenu {
 		this.close();
 	}
 	
-	private void simulationFunction() {
-		menuManager.toMenu(2);
+	private void tableFunction() {
+		menuManager.toMenu(3);
 		this.close();
 	}
 	
@@ -207,7 +201,7 @@ public class VisualSimMenu {
 	}
 	
 	// begins the when called
-	public void startSim() {
+	public ArrayList <Customer> startSim() {
 		
 		// call to fill the variables from User's settings
 		pullUserSettings();
@@ -243,6 +237,8 @@ public class VisualSimMenu {
 		// force adjust progress bar to 100% if sim is done
 		simIsDone = true;
 		fill();
+		
+		return customers;
 	}
 	
 	public static ArrayList<Queue> createFullQueues(int full) {

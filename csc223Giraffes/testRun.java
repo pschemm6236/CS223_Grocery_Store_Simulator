@@ -7,8 +7,6 @@ public class testRun {
 
 		MenuManager menus = new MenuManager();
         menus.start();
-		
-		
 
 	}
 

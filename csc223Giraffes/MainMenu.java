@@ -32,7 +32,7 @@ public class MainMenu {
 		//Creating the icon for the frame
 		String logoName = "JavaRUsLogo.png";
 		String defaultPath = new File(logoName).getAbsolutePath().replace("\\", "\\\\");
-		String newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"src\\testing\\"+defaultPath.substring(defaultPath.length()-logoName.length());
+		String newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"csc223Giraffes\\"+defaultPath.substring(defaultPath.length()-logoName.length());
 		ImageIcon icon = new ImageIcon(newPath);
 		menu.setIconImage(icon.getImage());
 		
@@ -40,8 +40,7 @@ public class MainMenu {
 		//Making the main label for this menu
 		logoName = "JavaRUsMainMenu.png";
 		defaultPath = new File(logoName).getAbsolutePath().replace("\\", "\\\\");
-		newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"src\\testing\\"+defaultPath.substring(defaultPath.length()-logoName.length());
-		
+		newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"csc223Giraffes\\"+defaultPath.substring(defaultPath.length()-logoName.length());
 		ImageIcon image = new ImageIcon(newPath);
 				
 		mainLabel = new JLabel();

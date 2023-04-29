@@ -1,21 +1,24 @@
 package csc223Giraffes;
 
+import java.util.ArrayList;
+
 public class MenuManager {
 	
 	private MainMenu main;
 	private DataTableMenu dataT;
 	private SimSetUpMenu setup;
-	
 	private VisualSimMenu visualSim; // New VisualSimMenu variable
 	private SimulationSettings simSettings; // New SimulationSettings variable
+	
+	private ArrayList<Customer> customers;
 	
 	public MenuManager() {
 		simSettings = new SimulationSettings(); // Initialize SimulationSettings
 		main = new MainMenu(this);
 		dataT = new DataTableMenu(this);
-		setup = new SimSetUpMenu(this, simSettings);
 		setup = new SimSetUpMenu(this, simSettings); // Pass simSettings to SimSetUpMenu
 		visualSim = new VisualSimMenu(this, simSettings); // Pass simSettings to VisualSimMenu
+		customers = new ArrayList<Customer>();
 	}
 	
 	public void toMenu(int menuChoice) {
@@ -31,17 +34,49 @@ public class MenuManager {
 			visualSim.open();
 		}
 		else if(menuChoice == 3){ //data table
-			dataT.open();
+			dataT.open(customers);
 		}
 		else if(menuChoice == 4){ //data base
 			
 		}
 		else if(menuChoice == 5){ //visual simulation (just view)
 			visualSim.open();
-			visualSim.startSim();
+			customers = visualSim.startSim();
 		}
 	}
+
+	public ArrayList<Customer> getCustomers() {
+		return customers;
+	}
+
+	public void setCustomers(ArrayList<Customer> customers) {
+		this.customers = customers;
+	}
 	
+	public SimSetUpMenu getSetup() {
+		return setup;
+	}
+
+	public void setSetup(SimSetUpMenu setup) {
+		this.setup = setup;
+	}
+
+	public VisualSimMenu getVisualSim() {
+		return visualSim;
+	}
+
+	public void setVisualSim(VisualSimMenu visualSim) {
+		this.visualSim = visualSim;
+	}
+
+	public SimulationSettings getSimSettings() {
+		return simSettings;
+	}
+
+	public void setSimSettings(SimulationSettings simSettings) {
+		this.simSettings = simSettings;
+	}
+
 	public void start() {
 		main.open();
 	}

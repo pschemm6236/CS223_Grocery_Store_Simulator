@@ -61,15 +61,10 @@ public class SimSetUpMenu {
 		//Creating the icon for the frame
 		String logoName = "JavaRUsLogo.png";
 		String defaultPath = new File(logoName).getAbsolutePath().replace("\\", "\\\\");
-		String newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"src\\testing\\"+defaultPath.substring(defaultPath.length()-logoName.length());
+		String newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"csc223Giraffes\\"+defaultPath.substring(defaultPath.length()-logoName.length());
 		ImageIcon icon = new ImageIcon(newPath);
 		menu.setIconImage(icon.getImage());
 		
-		//Making the main label for this menu
-		logoName = "JavaRUsMainMenu.png";
-		defaultPath = new File(logoName).getAbsolutePath().replace("\\", "\\\\");
-		newPath = defaultPath.substring(0,defaultPath.length()-logoName.length())+"src\\testing\\"+defaultPath.substring(defaultPath.length()-logoName.length());
-
 		//Making the main label for this menu
 		mainLabel = new JLabel();
 		mainLabel.setText("Enter Your Sim Settings:\n(Recommended Settings)");
@@ -82,7 +77,7 @@ public class SimSetUpMenu {
 		mainLabel.setOpaque(true);
 		mainLabel.setHorizontalAlignment(JLabel.CENTER);
 		mainLabel.setVerticalAlignment(JLabel.CENTER);
-		mainLabel.setBounds(25,4,675,20);
+		mainLabel.setBounds(35,4,655,20);
 		
 
 		
