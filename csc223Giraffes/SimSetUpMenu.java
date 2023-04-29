@@ -1,7 +1,6 @@
 package csc223Giraffes;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
 
@@ -20,7 +19,6 @@ public class SimSetUpMenu {
 	private static JLabel mainLabel;
 	private static JButton backButton;
 	private static JButton dataButton;
-	private static JButton setupButton;
 	private static JButton simulationButton;
 	private static JButton tableButton;
 	private static JFrame menu;
@@ -80,7 +78,7 @@ public class SimSetUpMenu {
 		mainLabel.setOpaque(true);
 		mainLabel.setHorizontalAlignment(JLabel.CENTER);
 		mainLabel.setVerticalAlignment(JLabel.CENTER);
-		mainLabel.setBounds(0,4,700,20);
+		mainLabel.setBounds(25,4,675,20);
 		
 
 		
@@ -96,23 +94,15 @@ public class SimSetUpMenu {
 		backButton.addActionListener(e -> backFunction());
 		
 		dataButton = new JButton();
-		dataButton.setBounds(125,400,200,100);
+		dataButton.setBounds(20,500,200,100);
 		dataButton.setText("Database Functions");
 		dataButton.setBackground(Color.white);
 		dataButton.setBorder(border);
 		dataButton.setFocusable(false);
 		dataButton.addActionListener(e -> dataFunction());
 		
-		setupButton = new JButton();
-		setupButton.setBounds(375, 400, 200, 100);
-		setupButton.setText("Main Menu");
-		setupButton.setBackground(Color.white);
-		setupButton.setBorder(border);
-		setupButton.setFocusable(false);
-		setupButton.addActionListener(e -> setupFunction());
-		
 		simulationButton = new JButton();
-		simulationButton.setBounds(375, 525, 200, 100);
+		simulationButton.setBounds(245, 500, 200, 100);
 		simulationButton.setText("Simulation Viewer");
 		simulationButton.setBackground(Color.white);
 		simulationButton.setBorder(border);
@@ -120,7 +110,7 @@ public class SimSetUpMenu {
 		simulationButton.addActionListener(e -> simulationFunction());
 		
 		tableButton = new JButton();
-		tableButton.setBounds(125, 525, 200, 100);
+		tableButton.setBounds(470, 500, 200, 100);
 		tableButton.setText("Simulation Data");
 		tableButton.setBackground(Color.white);
 		tableButton.setBorder(border);
@@ -128,10 +118,10 @@ public class SimSetUpMenu {
 		tableButton.addActionListener(e -> tableFunction());
 		
 		menu.add(dataButton);
-		menu.add(setupButton);
 		menu.add(simulationButton);
 		menu.add(tableButton);
 		menu.add(mainLabel);
+		menu.add(backButton);
 		
 		// JLabels for the prompts
         fullServiceLinesLabel = new JLabel("Number of full-service lines:");
@@ -218,8 +208,6 @@ public class SimSetUpMenu {
         menu.add(numCustomers);
         menu.add(percentSlowerLabel);
         menu.add(percentSlower);
-        
-        menu.setVisible(true);
 	}
 	
 	public void open() {

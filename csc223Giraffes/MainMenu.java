@@ -1,7 +1,5 @@
 package csc223Giraffes;
 
-package testing;
-
 import java.awt.*;
 import java.io.File;
 import javax.swing.*;

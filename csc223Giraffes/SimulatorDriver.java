@@ -24,6 +24,9 @@ public class SimulatorDriver {
 	private static Statement stmt = null;
 
 	public static void main(String[] args) { // begin main
+		
+		MenuManager menus = new MenuManager();
+        menus.start();
 
 		System.out.println("---*** ----MYSQLJDBC Connection Testing----***----\n");
 

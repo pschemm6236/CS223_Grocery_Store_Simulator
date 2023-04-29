@@ -4,12 +4,12 @@ public class MenuManager {
 	
 	private MainMenu main;
 	private DataTableMenu dataT;
-	private SimSetUpMenu sim;
+	private SimSetUpMenu setup;
 	
 	public MenuManager() {
 		main = new MainMenu(this);
 		dataT = new DataTableMenu(this);
-		sim = new SimSetUpMenu(this);
+		setup = new SimSetUpMenu(this);
 	}
 	
 	public void toMenu(int menuChoice) {
@@ -17,7 +17,7 @@ public class MenuManager {
 			main.open();
 		}
 		else if(menuChoice == 1){ //setup
-			
+			setup.open();
 		}
 		else if(menuChoice == 2){ //simulation
 			
@@ -50,3 +50,4 @@ public class MenuManager {
 		this.dataT = dataT;
 	}	
 }
+
