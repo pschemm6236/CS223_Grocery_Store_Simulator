@@ -2,6 +2,7 @@ package csc223Giraffes;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -48,9 +49,7 @@ public class DataTableMenu {
 		//ADD MAKE OPEN METHOD UPDATE THE TABLE
 		
 		//Table
-	    this.data = new String[][]{ {"101","1","2","N/A","N/A","N/A"},    
-	                          {"102","3","4","N/A","N/A","N/A"},    
-	                          {"101","5","6","N/A","N/A","N/A"}};    
+	    this.data = new String[][]{ {"N/A","N/A","N/A","N/A","N/A","N/A"}};    
 	    String column[]={"Cust#","Arrival Time(abs)","Service Time","Depart Time(abs)","Wait Time", "Queue Location"};  
 	    
 	    table = new JTable(this.data,column);    
@@ -99,14 +98,43 @@ public class DataTableMenu {
 	    menu.add(dataButton);
 	    menu.add(setupButton);
 		menu.add(simulationButton);
+		
 	}
 	
-	public void open() {
+	public void open(ArrayList<Customer> customers) {
+		//This updates the table for possible new data
+		menu.remove(table);
+		
+		String column[]={"Cust#","Arrival Time(abs)","Service Time","Depart Time(abs)","Wait Time", "Queue Location"}; 
+		table = new JTable(toArray(customers),column);    
+	    table.setBounds(25,30,625,475);  
+	    scrollPane = new JScrollPane(table);
+	    scrollPane.setBounds(25,30,625,475); 
+	    
+	    menu.add(table);
+	    
 		menu.setVisible(true);
 	}
 	
 	public void close() {
 		menu.setVisible(false);
+	}
+	
+	private static String[][] toArray(ArrayList<Customer> customers){
+		String[][] textData = new String[customers.size()][6];
+		
+		for(int i=0;i<customers.size();i++) {
+			textData[i][0] = customers.get(i).getCustId()+"";
+			textData[i][1] = customers.get(i).getArrivalTime()+"";
+			textData[i][2] = customers.get(i).getServiceTime()+"";
+			textData[i][3] = customers.get(i).getEndTime()+"";
+			textData[i][4] = (customers.get(i).getStartTime()-customers.get(i).getArrivalTime())+"";
+			textData[i][5] = customers.get(i).getUsedLine()+"";
+		}
+		
+		return textData;
+		
+		
 	}
 	
 	private void dataFunction() {
@@ -129,3 +157,4 @@ public class DataTableMenu {
 		this.close();
 	}
 }
+
