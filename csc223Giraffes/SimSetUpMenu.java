@@ -15,12 +15,14 @@ import javax.swing.border.Border;
 
 public class SimSetUpMenu {
 	
-	public static JLabel mainLabel;
-	public static JButton backButton;
-	public static JButton dataButton;
-	public static JButton setupButton;
-	public static JButton simulationButton;
-	public static JButton tableButton;
+	private MenuManager menuManager;
+	
+	private static JLabel mainLabel;
+	private static JButton backButton;
+	private static JButton dataButton;
+	private static JButton setupButton;
+	private static JButton simulationButton;
+	private static JButton tableButton;
 	private static JFrame menu;
 	
 	// declare JLabels and JTextFields
@@ -42,7 +44,9 @@ public class SimSetUpMenu {
     private JTextField percentSlower;
     
 
-	public SimSetUpMenu() {
+	public SimSetUpMenu(MenuManager mm) {
+		menuManager = mm;
+		
 		//Setting up the frame
 		menu = new JFrame();
 		menu.setTitle("Simulation Setup");
@@ -83,13 +87,21 @@ public class SimSetUpMenu {
 		//Buttons
 		Border border = BorderFactory.createLineBorder(Color.black,2);
 
+		backButton = new JButton();
+		backButton.setBounds(5,5,20,20);
+		backButton.setText("<=");
+		backButton.setBackground(Color.white);
+		backButton.setBorder(border);
+		backButton.setFocusable(false);
+		backButton.addActionListener(e -> backFunction());
+		
 		dataButton = new JButton();
 		dataButton.setBounds(125,400,200,100);
 		dataButton.setText("Database Functions");
 		dataButton.setBackground(Color.white);
 		dataButton.setBorder(border);
 		dataButton.setFocusable(false);
-		//dataButton.addActionListener(e -> dataFunction());
+		dataButton.addActionListener(e -> dataFunction());
 		
 		setupButton = new JButton();
 		setupButton.setBounds(375, 400, 200, 100);
@@ -97,7 +109,7 @@ public class SimSetUpMenu {
 		setupButton.setBackground(Color.white);
 		setupButton.setBorder(border);
 		setupButton.setFocusable(false);
-		//setupButton.addActionListener(e -> setupFunction());
+		setupButton.addActionListener(e -> setupFunction());
 		
 		simulationButton = new JButton();
 		simulationButton.setBounds(375, 525, 200, 100);
@@ -105,7 +117,7 @@ public class SimSetUpMenu {
 		simulationButton.setBackground(Color.white);
 		simulationButton.setBorder(border);
 		simulationButton.setFocusable(false);
-		//simulationButton.addActionListener(e -> simulationFunction());
+		simulationButton.addActionListener(e -> simulationFunction());
 		
 		tableButton = new JButton();
 		tableButton.setBounds(125, 525, 200, 100);
@@ -113,7 +125,7 @@ public class SimSetUpMenu {
 		tableButton.setBackground(Color.white);
 		tableButton.setBorder(border);
 		tableButton.setFocusable(false);
-		//tableButton.addActionListener(e -> tableFunction());
+		tableButton.addActionListener(e -> tableFunction());
 		
 		menu.add(dataButton);
 		menu.add(setupButton);
@@ -216,5 +228,26 @@ public class SimSetUpMenu {
 	
 	public void close() {
 		menu.setVisible(false);
+	}
+	
+	private void backFunction() {
+		menuManager.toMenu(0);
+		this.close();
+	}
+	
+	private void dataFunction() {
+		menuManager.toMenu(4);
+		this.close();
+	}
+	
+	
+	private void simulationFunction() {
+		menuManager.toMenu(2);
+		this.close();
+	}
+	
+	private void tableFunction() {
+		menuManager.toMenu(3);
+		this.close();
 	}
 }

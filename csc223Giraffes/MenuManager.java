@@ -4,10 +4,12 @@ public class MenuManager {
 	
 	private MainMenu main;
 	private DataTableMenu dataT;
+	private SimSetUpMenu sim;
 	
 	public MenuManager() {
 		main = new MainMenu(this);
 		dataT = new DataTableMenu(this);
+		sim = new SimSetUpMenu(this);
 	}
 	
 	public void toMenu(int menuChoice) {
