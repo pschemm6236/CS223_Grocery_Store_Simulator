@@ -14,6 +14,13 @@ public class SplitQueue{
 	private String mainQueueName; //This is the name of the queue
 	private Queue[] queues;  //array of queues. this is where the main queue drops into once one of the queues is open, these hold one value in most cases
 	
+	// WILL BE USED TO HOLD THE CURRENT ITH OUTPUT OF THE SELF LINE STATUS 
+	public String ithSELFStringStatus;
+	
+	public String getIthSELFStringStatus() {
+		return ithSELFStringStatus;
+	}
+
 	public SplitQueue(int length) { //one parameter, length. Use this when the name of each queue and the main queue don't matter
 		this.mainQueue = new Queue();
 		this.queues = new Queue[length];
@@ -61,6 +68,9 @@ public class SplitQueue{
 	} 
 	
 	public Customer[] updateQueues(int time) {
+		
+		ithSELFStringStatus = "";
+		
 		Customer[] customers = new Customer[queues.length]; //this will represent the customers that are returned to the simulator for each queue during an update
 		for(int i=0;i<queues.length;i++) { //adds to Queues that are empty from the mainQueue
 			if(queues[i].isEmpty() && !mainQueue.isEmpty()) { //if the queue is empty and the mainQueue has items
@@ -69,8 +79,13 @@ public class SplitQueue{
 			}
 		}
 		System.out.println("\n[SELF SERVICE]");
+		ithSELFStringStatus += "\n[SELF SERVICE]\n";
+		
 		for(int i=0;i<queues.length;i++) { //updates each queue
 			System.out.print("Checkout "+queues[i].getLineName()+": "); //prints which queue is being updated
+			
+			ithSELFStringStatus += ("Checkout "+queues[i].getLineName()+": ");
+			
 			if(queues[i].peek()!=null) { //if the queue is not empty
 				if(queues[i].peek().getStartTime()+queues[i].peek().getServiceTime()==time && !mainQueue.isEmpty()){ //then if the customer is done being served and the mainQueue has items
 					mainQueue.peek().setUsedLine(queues[i].getLineName());  //sets the line used of the customer to the line name
@@ -78,6 +93,8 @@ public class SplitQueue{
 				}
 			}
 			customers[i] = queues[i].updateQueue(time); //updates the queue
+			
+			ithSELFStringStatus += "\n";
 		}
 		return customers;
 	}

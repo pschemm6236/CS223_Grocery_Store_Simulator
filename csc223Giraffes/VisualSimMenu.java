@@ -32,6 +32,9 @@ public class VisualSimMenu {
 	
 	public static JLabel mainLabel;
 	public static JLabel outputLabelOne;
+	public static JLabel outputAllLineStatus;
+
+
 	public static JButton backButton;
 	public static JButton dataButton;
 	public static JButton setupButton;
@@ -39,6 +42,8 @@ public class VisualSimMenu {
 	public static JButton tableButton;
 	public static int counter;
 	public boolean simIsDone = false;
+
+
 	private static JFrame menu;
 	
 	
@@ -92,12 +97,26 @@ public class VisualSimMenu {
 		outputLabelOne.setVerticalTextPosition(JLabel.TOP);
 		outputLabelOne.setForeground(Color.darkGray);
 		outputLabelOne.setBackground(Color.white);
-		outputLabelOne.setFont(new Font(Font.SERIF,Font.BOLD,40));
+		outputLabelOne.setFont(new Font(Font.SERIF,Font.BOLD,25));
 		outputLabelOne.setIconTextGap(5);
 		outputLabelOne.setOpaque(true);
 		outputLabelOne.setHorizontalAlignment(JLabel.CENTER);
 		outputLabelOne.setVerticalAlignment(JLabel.CENTER);
 		outputLabelOne.setBounds(0, 34, 700, 40);
+		
+		// Making the and output label
+		outputAllLineStatus = new JLabel();
+		outputAllLineStatus.setText("No line status updates...");
+		outputAllLineStatus.setHorizontalTextPosition(JLabel.CENTER);
+		outputAllLineStatus.setVerticalTextPosition(JLabel.TOP);
+		outputAllLineStatus.setForeground(Color.darkGray);
+		outputAllLineStatus.setBackground(Color.white);
+		outputAllLineStatus.setFont(new Font(Font.SERIF, Font.BOLD, 15));
+		outputAllLineStatus.setIconTextGap(5);
+		outputAllLineStatus.setOpaque(true);
+		outputAllLineStatus.setHorizontalAlignment(JLabel.CENTER);
+		outputAllLineStatus.setVerticalAlignment(JLabel.CENTER);
+		outputAllLineStatus.setBounds(0, 100, 350, 300);
 
 		
 		//Buttons
@@ -144,9 +163,6 @@ public class VisualSimMenu {
 		bar.setForeground(Color.red);
 		bar.setBackground(Color.black);
 		
-		// method test call to fill up bar
-		
-		
 		menu.add(dataButton);
 		menu.add(backButton);
 		menu.add(setupButton);
@@ -154,6 +170,7 @@ public class VisualSimMenu {
 		menu.add(mainLabel);
 		menu.add(bar);
 		menu.add(outputLabelOne);
+		menu.add(outputAllLineStatus);
 		
        // need for debug
        // menu.setVisible(true);
@@ -203,6 +220,8 @@ public class VisualSimMenu {
 	// begins the when called
 	public ArrayList <Customer> startSim() {
 		
+		// ensure bar is not filled before running
+		resetBar();
 		// call to fill the variables from User's settings
 		pullUserSettings();
 		
@@ -232,11 +251,7 @@ public class VisualSimMenu {
 		Simulator sim = new Simulator(customers, fullQueues, selfCheckoutQueue, percentSlower, this);
 
 		System.out.println("\n----- Starting Simulation -----\n");
-		sim.runSimulation();
-
-		// force adjust progress bar to 100% if sim is done
-		simIsDone = true;
-		fill();
+		sim.runSimulationGUI();
 		
 		return customers;
 	}
@@ -302,27 +317,25 @@ public class VisualSimMenu {
 
 		
 	}
-
-	// method to fill bar when called (still needs simulation implementation)
-	public void oldFill() {
-		int counter =0;
-		
-		while(counter<=8) {
-			
-			bar.setValue(counter);
-			outputLabelOne.setText("counter = " + counter);
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			counter +=1;
-		}
-		bar.setString("Done! :)");
-	}
 	
 	public void setOutputLabelOneText(String text) {
 	    outputLabelOne.setText(text);
+	}
+	
+	public static void setOutputAllLineStatus(String text) {
+		outputAllLineStatus.setText(text);
+	}
+	
+	// reset the progress bar when called
+	public void resetBar() {
+		bar.setValue(0);
+		bar.setString(null);
+		bar.setStringPainted(true);
+		simIsDone = false;
+		
+	}
+	
+	public void setSimIsDone(boolean simIsDone) {
+		this.simIsDone = simIsDone;
 	}
 }
