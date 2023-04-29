@@ -16,20 +16,28 @@ public class Simulator {
 	private ArrayList<Queue> fullCheckouts;
 	private SplitQueue selfCheckout;
 	private double percentSlower; 
+	
+	private VisualSimMenu visualSimMenu;
 
 	// full constructor
-	public Simulator(ArrayList<Customer> customers, ArrayList<Queue> fullCheckouts, SplitQueue selfCheckout, double percentSlower) {
+	public Simulator(ArrayList<Customer> customers, ArrayList<Queue> fullCheckouts, SplitQueue selfCheckout, double percentSlower, VisualSimMenu visualSimMen) {
 		this.customers = customers;
 		this.fullCheckouts = fullCheckouts;
 		this.selfCheckout = selfCheckout;
 		this.percentSlower = percentSlower;
+		
+		this.visualSimMenu = visualSimMen;
 	}
 
 	public void runSimulation() {
 		int currentTime = 0;
 		int customersServed = 0;
 		while (customersServed < customers.size()) {
+			
 			System.out.println("Time "+currentTime+": ");
+			// update the JLabel (outputLabelOne) back inside visualSimMenu so GUI can display current simulation Time
+			visualSimMenu.setOutputLabelOneText("Time "+currentTime+": ");
+			
 			for(int i=0;i<customers.size();i++) { //this for loop adds the customers that just arrived
 				if(customers.get(i).getArrivalTime()==currentTime) {
 					int serviceType = customers.get(i).serviceTypePreference();
@@ -54,19 +62,25 @@ public class Simulator {
 				System.out.print("Checkout "+fullCheckouts.get(i).getLineName() + ": ");
 				if(fullCheckouts.get(i).updateQueue(currentTime)!=null) {
 					customersServed++;
+					
+					// call method to adjust progress bar
+					visualSimMenu.fill();
 				}
 			}
 			Customer[] returnedCustomers = selfCheckout.updateQueues(currentTime);
 			for(int i=0;i<returnedCustomers.length;i++) {
 				if (returnedCustomers[i] != null) { //if a customer was finished being served for this queue
 					customersServed++; //adds to the customers served
+					
+					// call method to adjust progress bar
+					visualSimMenu.fill();
 				}
 			}
 
 			currentTime++;
 			System.out.println();
 		}
-	}
+	} // end runSimulation
 
 	public Queue shortestFullQueue() {
 		Queue shortest = fullCheckouts.get(0);
