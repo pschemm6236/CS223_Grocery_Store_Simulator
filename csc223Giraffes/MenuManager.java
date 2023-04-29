@@ -24,6 +24,8 @@ public class MenuManager {
 	public void toMenu(int menuChoice) {
 		if(menuChoice == 0) { //main
 			main.open();
+			
+			
 			// debugger call for when user enters settings in SimSetUpMenu (ensure settings are passed)
 			debugAreSettingsPassed();
 		}

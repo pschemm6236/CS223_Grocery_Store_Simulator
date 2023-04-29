@@ -24,15 +24,14 @@ public class SimulatorDriver {
 	private static Statement stmt = null;
 
 	public static void main(String[] args) { // begin main
-		
-		MenuManager menus = new MenuManager();
-        menus.start();
-
-		System.out.println("---*** ----MYSQLJDBC Connection Testing----***----\n");
 
 		conn = createConnection();
 
-		
+		MenuManager menus = new MenuManager();
+		menus.start();
+
+		System.out.println("---*** ----MYSQLJDBC Connection Testing----***----\n");
+
 		Scanner scan = new Scanner(System.in);
 		int fullServiceLines;
 		int selfServiceLines;
@@ -94,22 +93,24 @@ public class SimulatorDriver {
 		 **/
 		SplitQueue selfCheckoutQueue = new SplitQueue(selfQueues);
 
+		MenuManager mm = new MenuManager();
+		SimulationSettings ss = new SimulationSettings();
+
+		VisualSimMenu vsm = new VisualSimMenu(mm, ss);
+
 		// Create a Simulator object with the number of customers to simulate
 		// and pass it our Customer ArrayList and Queue objects
-		Simulator sim = new Simulator(customers, fullQueues, selfCheckoutQueue, percentSlower);
+		Simulator sim = new Simulator(customers, fullQueues, selfCheckoutQueue, percentSlower, vsm);
 
 		System.out.println("\n----- Starting Simulation -----\n");
 		sim.runSimulation();
-
-		scan.close();
 
 		// call static methods to print data from simulation
 		printSimResults(customers, fullQueues, selfCheckoutQueue, selfServiceLines);
 		printSimResultsTable(customers);
 
-		openPhpMyAdmin();
 
-		databaseMenu();
+		databaseMenu(scan);
 
 		closeConnection();
 
@@ -183,10 +184,8 @@ public class SimulatorDriver {
 			// check for satisfied/non
 			if (ithCustWaitTime < 5) {
 				satisfiedCust++;
-				
-				
-				 
-				//code for inserting satisfied customers into database table
+
+				// code for inserting satisfied customers into database table
 				try { // begin try
 					PreparedStatement stmt = conn.prepareStatement("INSERT INTO satisfied_customer "
 							+ "(customer_id, arrival_time, service_time, departure_time, wait_time, queue, satisfied) "
@@ -202,11 +201,11 @@ public class SimulatorDriver {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-				
+
 			} else {
 				dissatisfiedCust++;
-				
-				//code for inserting dissatisfied customers into database table
+
+				// code for inserting dissatisfied customers into database table
 				try { // begin try
 					PreparedStatement stmt = conn.prepareStatement("INSERT INTO dissatisfied_customer "
 							+ "(customer_id, arrival_time, service_time, departure_time, wait_time, queue, satisfied) "
@@ -217,12 +216,12 @@ public class SimulatorDriver {
 					stmt.setInt(4, c.getEndTime());
 					stmt.setInt(5, c.waitingTime());
 					stmt.setString(6, c.getUsedLine());
-					stmt.setString(7, "TRUE");
+					stmt.setString(7, "FALSE");
 					stmt.executeUpdate(); // Execute the insert statement
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-				
+
 			}
 		}
 
@@ -256,8 +255,42 @@ public class SimulatorDriver {
 		// loop thru ALL of fullChecouts, accumulate timenotused to variable
 		for (int i = 0; i < fullQueues.size(); i++) {
 
+			Queue q = fullQueues.get(i);
+
 			totalTimeNotUsedFull += fullQueues.get(i).getTimeNotUsed();
+
+			// for appending queues and idle time to DB
+			try { // begin try
+				PreparedStatement stmt = conn.prepareStatement(
+						"INSERT INTO full_queues_idle_time " + "(queue, idle_time) " + "VALUES (?, ?)");
+				stmt.setString(1, q.getLineName());
+				stmt.setInt(2, q.getTimeNotUsed());
+				
+
+				stmt.executeUpdate(); // Execute the insert statement
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
 		}
+
+		for (int i = 0; i < self.getQueues().length - 1; i++) {
+
+
+			// for appending queues and idle time to DB
+			try { // begin try
+				PreparedStatement stmt = conn.prepareStatement(
+						"INSERT INTO self_queues_idle_time " + "(queue, idle_time) " + "VALUES (?, ?)");
+				stmt.setString(1, self.getLineName(i));
+				stmt.setInt(2, self.getTimeNotUsed(i));
+
+				stmt.executeUpdate(); // Execute the insert statement
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 		int totalTimeNotUsedSelf = self.getTotalTimeNotUsed();
 
 		// print results
@@ -404,16 +437,7 @@ public class SimulatorDriver {
 		return conn;
 	}
 
-	public static void openPhpMyAdmin() {
-		try {
-			// Replace 'localhost' and 'phpmyadmin' with the appropriate values
-			String url = "http://localhost/phpmyadmin/index.php?route=/sql&server=1&db=csc223giraffes&table=sim_results&pos=0";
-			Desktop.getDesktop().browse(new URI(url));
-
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public static void closeConnection() {
 		if (conn != null) {
@@ -442,62 +466,65 @@ public class SimulatorDriver {
 		}
 	}
 
-	public static void databaseMenu() {
-		
+	public static void databaseMenu(Scanner scan) {
 
-		Scanner scan = new Scanner(System.in);
 		// for selecting different queuries user can execute
 		boolean more = true;
 
 		while (more != false) { // begin while
 
-			System.out.println("----***----DATABASE MENU OPTIONS----****-----\n");
-			
+			System.out.println("\n----***----DATABASE MENU OPTIONS----****-----\n");
+
 			System.out.println("1.) print out all satisfied customers");
 			System.out.println("2.) print out all dissatisfed customers");
-			
+			System.out.println("3.) print out all all full queues with idle time greater than 1");
+			System.out.println("4.) print out all self queues with idle time greater than 1");
+
+			System.out.println("Choice: ");
+
 			int choice = scan.nextInt();
-			
-			
-			if(choice == 1) {
-				custPrintDatabase();
-			}
-			else if(choice ==2) {
+
+			if (choice == 1) {
 				custSatisfiedDatabase();
+			} else if (choice == 2) {
+				custDissatisfiedDatabase();
+			} 
+			else if (choice == 3) {
+				fullQueueIdleTimeDatabase();
+			}
+			else if(choice == 4) {
+				selfQueueIdleTimeDatabase();
 			}
 			else {
 				more = false;
 			}
 
-		} // begin while
+		} // end while
 		scan.close();
 
-	} // end method 
-	
+	} // end method
+
 	public static void custPrintDatabase() {
 		checkConnect();
-		
-		
 
-		
 	}
-	
+
 	public static void custSatisfiedDatabase() {
 		checkConnect();
-		
-		//String query
-		String query = "SELECT * FROM satisfied_customers";
+
+		// String query
+		String query = "SELECT * FROM satisfied_customer";
 		try {
 			stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery(query);
 			System.out.println(" ");
-			System.out.println("ID  customer_ID   arrival_time  service_time   departure_time   wait_time  queue   satisfied");
-			
-			while (rs.next()) {
+			System.out.printf("%-3s  %-12s  %-13s  %-14s  %-17s  %-9s  %-7s  %s\n", "ID", "customer_ID", "arrival_time",
+					"service_time", "departure_time", "wait_time", "queue", "satisfied");
+
+			while (rs.next()) { // begin while
 				int id = rs.getInt("id");
-				
-				int custId = rs.getInt("customer_id"); 
+				int custId = rs.getInt("customer_id");
 				int arrival = rs.getInt("arrival_time");
 				int service = rs.getInt("service_time");
 				int departure = rs.getInt("departure_time");
@@ -505,7 +532,13 @@ public class SimulatorDriver {
 				String queue = rs.getString("queue");
 				String satisfied = rs.getString("satisfied");
 
-				System.out.println(custId + "     " + arrival + "       " + service + "      " + departure + "      " + wait + "      " + queue+ "      " + satisfied );
+				System.out.printf("%-3d  %-12d  %-13d  %-14d  %-17d  %-9d  %-7s  %s\n", id, custId, arrival, service,
+						departure, wait, queue, satisfied);
+			} // end while
+
+			if (rs.equals(null)) {
+				System.out.printf("%-3d  %-12d  %-13d  %-14d  %-17d  %-9d  %-7s  %s\n", null, null, null, null,
+						null, null, null, null);
 			}
 		}
 
@@ -515,23 +548,23 @@ public class SimulatorDriver {
 		}
 
 	}
-	
+
 	public static void custDissatisfiedDatabase() {
 		checkConnect();
-		
-		//String query
-		String query = "SELECT * FROM dissatisfied_customers";
+
+		// String query
+		String query = "SELECT * FROM dissatisfied_customer";
 		try {
 			stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery(query);
 			System.out.println(" ");
-			System.out.println("ID  customer_ID   arrival_time  service_time   departure_time   wait_time  queue   dissatisfied");
-			
+			System.out.printf("%-3s  %-12s  %-13s  %-14s  %-17s  %-9s  %-7s  %s\n", "ID", "customer_ID", "arrival_time",
+					"service_time", "departure_time", "wait_time", "queue", "satisfied");
+
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				
-				int custId = rs.getInt("customer_id"); 
+				int custId = rs.getInt("customer_id");
 				int arrival = rs.getInt("arrival_time");
 				int service = rs.getInt("service_time");
 				int departure = rs.getInt("departure_time");
@@ -539,8 +572,14 @@ public class SimulatorDriver {
 				String queue = rs.getString("queue");
 				String dissatisfied = rs.getString("satisfied");
 
-				System.out.println(custId + "     " + arrival + "       " + service + "      " + departure + "      " + wait + "      " + queue+ "      " + dissatisfied );
+				System.out.printf("%-3d  %-12d  %-13d  %-14d  %-17d  %-9d  %-7s  %s\n", id, custId, arrival, service,
+						departure, wait, queue, dissatisfied);
 			}
+			if (rs.equals(null)) {
+				System.out.printf("%-3d  %-12d  %-13d  %-14d  %-17d  %-9d  %-7s  %s\n", null, null, null, null,
+						null, null, null, null);
+			}
+
 		}
 
 		catch (SQLException e) {
@@ -549,6 +588,65 @@ public class SimulatorDriver {
 		}
 
 	}
-	
 
+	public static void fullQueueIdleTimeDatabase() {
+		checkConnect();
+
+		String query = "SELECT queue, SUM(idle_time) AS total_idle_time FROM full_queues_idle_time GROUP BY queue";
+
+	    try {
+	        stmt = conn.createStatement();
+	        ResultSet rs = stmt.executeQuery(query);
+
+	        System.out.println();
+	        System.out.printf("%-3s  %-12s\n", "queue", "idle_time");
+
+	        while (rs.next()) {
+	            String q = rs.getString("queue");
+	            int t = rs.getInt("total_idle_time");
+
+	            System.out.printf("%-3s  %-12d\n", q, t);
+	        }
+
+	        if (rs.equals(null) ) {
+	            System.out.printf("%-3s  %-12s\n", null, null);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("SQL Exception");
+	        e.printStackTrace();
+	    }
+	}
+
+	public static void selfQueueIdleTimeDatabase() {
+		checkConnect();
+
+		// String query
+		String query = "SELECT queue, SUM(idle_time) AS total_idle_time FROM self_queues_idle_time GROUP BY queue";
+		
+		
+		try {
+			stmt = conn.createStatement();
+
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println(" ");
+			System.out.printf("%-3s  %-12s", "queue", "idle_time");
+
+			while (rs.next()) {
+				String q = rs.getString("queue");
+				int t = rs.getInt("total_idle_time");
+
+				System.out.printf("%-3s  %-12s\n", q, t);
+			}
+
+			if (rs.equals(null)) {
+				System.out.printf("%-3d  %-12d", null, null);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL Exception");
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 } // end class SimulatorDriver

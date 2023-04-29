@@ -144,6 +144,16 @@ public class SplitQueue{
 		}
 		return null;
 	}
+
+	public Queue[] getQueues() {
+		return queues;
+	}
+
+	public void setQueues(Queue[] queues) {
+		this.queues = queues;
+	}
+	
+	
 }
 
 /**************************************************************************
