@@ -39,6 +39,7 @@ public class List<E> {
 	private ListNode<Customer> lastNode;
 	private String lineName; // string like "list" used in printing
 	private int timeNotUsed;
+	private VisualSimMenu visualSimMenu;
 
 	// constructor creates empty List with "list" as the name
 	public List() {
@@ -50,6 +51,14 @@ public class List<E> {
 		this.lineName = lineName;
 		firstNode = lastNode = null;
 		this.timeNotUsed = 0;
+	}
+	
+	// ADDED ANOTHER CONSTRUCTOR SO WE CAN OUTPUT TO GUI
+	public List(String lineName, VisualSimMenu visualSimMenu) {
+	    this.lineName = lineName;
+	    firstNode = lastNode = null;
+	    this.timeNotUsed = 0;
+	    this.visualSimMenu = visualSimMenu;
 	}
 
 	// insert item at front of List
@@ -151,15 +160,18 @@ public class List<E> {
 		} else if (firstNode.cust.getStartTime() == -1) { // if the next customer in the queue has not started
 			firstNode.cust.setStartTime(time);
 			System.out.println("Customer " + firstNode.cust.getCustId() + " starts service");
+			visualSimMenu.updateQueueStatus("Customer " + firstNode.cust.getCustId() + " starts service");
 		} else if (firstNode.cust.getStartTime() + firstNode.cust.getServiceTime() == time) { // if the customer is in the queue and their time is done
 			firstNode.cust.setEndTime(time);
 			System.out.print("Customer " + firstNode.cust.getCustId() + " leaves");
+			visualSimMenu.updateQueueStatus("Customer " + firstNode.cust.getCustId() + " leaves");
 			Customer customerRemoved = removeFromFront();
 			if (isEmpty()) { // if the queue is not empty
 				timeNotUsed++;
 			} else {
 				firstNode.cust.setStartTime(time);
 				System.out.print(", Customer " + firstNode.cust.getCustId() + " starts service");
+				visualSimMenu.updateQueueStatus(", Customer " + firstNode.cust.getCustId() + " starts service");
 			}
 			System.out.println();
 

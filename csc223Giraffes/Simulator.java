@@ -21,11 +21,6 @@ public class Simulator {
 	
 	private VisualSimMenu visualSimMenu;
 	private Timer timer;
-	
-	// WILL BE USED TO HOLD THE CURRENT ITH OUTPUT OF THE FULL LINE STATUS 
-	public String ithFULLStringStatus;
-	// STORES THE OUTPUT FOR BOTH LINES AS ITS SEEN IN THE CONSOLE
-	public String allLineOutputString;
 		
 	// full constructor
 	public Simulator(ArrayList<Customer> customers, ArrayList<Queue> fullCheckouts, SplitQueue selfCheckout, double percentSlower, VisualSimMenu visualSimMen) {
@@ -134,19 +129,15 @@ public class Simulator {
 	                    }
 	                }
 	            }
-	            ithFULLStringStatus = "";
 	            
 	            System.out.println("[FULL SERVICE]");
-	            ithFULLStringStatus += "\n[FULL SERVICE]\n";
 	            
 	            for (int i = 0; i < fullCheckouts.size(); i++) {
 	                System.out.print("Checkout " + fullCheckouts.get(i).getLineName() + ": ");
 	                
-	                ithFULLStringStatus += ("Checkout " + fullCheckouts.get(i).getLineName() + ": ");
-	                
 	                if (fullCheckouts.get(i).updateQueue(currentTime) != null) {
 	                    customersServed++;
-
+	                    
 	                    // call method to adjust progress bar
 	                    visualSimMenu.fill();
 	                }
@@ -160,21 +151,12 @@ public class Simulator {
 	                    visualSimMenu.fill();
 	                }
 	            }
-	            
-	            ithFULLStringStatus += "\n";
-	            
-	            // output the line status in GUI
-	    	    allLineOutputString = ithFULLStringStatus + selfCheckout.getIthSELFStringStatus();
-	    	    visualSimMenu.setOutputAllLineStatus(allLineOutputString);
-	    	    
+	            	           
 	            currentTime++;
 	            System.out.println();
 
 	        }
 	    });
-	    
-	    
-	    
 	    
 	    timer.start();
 	} // end runSimulationGUI
