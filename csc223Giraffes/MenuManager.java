@@ -9,6 +9,7 @@ public class MenuManager {
 	private SimSetUpMenu setup;
 	private VisualSimMenu visualSim; // New VisualSimMenu variable
 	private SimulationSettings simSettings; // New SimulationSettings variable
+	private DataBaseFuncMenu dataFun;
 	
 	private ArrayList<Customer> customers;
 	
@@ -18,6 +19,7 @@ public class MenuManager {
 		dataT = new DataTableMenu(this);
 		setup = new SimSetUpMenu(this, simSettings); // Pass simSettings to SimSetUpMenu
 		visualSim = new VisualSimMenu(this, simSettings); // Pass simSettings to VisualSimMenu
+		dataFun = new DataBaseFuncMenu(this);
 		customers = new ArrayList<Customer>();
 	}
 	
@@ -38,8 +40,8 @@ public class MenuManager {
 		else if(menuChoice == 3){ //data table
 			dataT.open(customers);
 		}
-		else if(menuChoice == 4){ //data base
-			
+		else if(menuChoice == 4){ //data base (no functionality just a message page)
+			dataFun.open();
 		}
 		else if(menuChoice == 5){ //visual simulation (just view)
 			visualSim.open();

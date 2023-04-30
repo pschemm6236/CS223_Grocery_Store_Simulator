@@ -346,9 +346,11 @@ public class VisualSimMenu {
 		queueStatusTextArea.setText(status + "\n");
 	}
 	
-	// reset the progress bar when called (also the JTextArea)
+	// reset the progress bar when called (also the JTextArea and JLabels)
 	public void resetBar() {
 		simulationResultsArea.setText("");
+		outputLabelOne.setText("Nothing new...");
+		queueStatusTextArea.setText("No line status updates...");
 		bar.setValue(0);
 		bar.setString(null);
 		bar.setStringPainted(true);
@@ -440,31 +442,38 @@ public class VisualSimMenu {
 		// output current line suggestions
 		simulationResultsArea.append("\n----- Line Suggestions -----\n");
 
-		double idleWaitTimeThreshold = 2.0; // our ideal wait time for lines (can change as needed)
-		double idleTimeThreshold = 30.0; // our ideal idle time for lines (can change as needed)
+		double idealWaitTimeThreshold = 2.0; // our ideal wait time for lines (can change as needed)
+		double idealIdleTimeThreshold = 30.0; // our ideal idle time for lines (can change as needed)
 
-		// create another nested if/elseif statement for if idle time is too high
-
-		if (isSignificantDifference(avgWaitTimeFull, avgWaitTimeSelf, idleWaitTimeThreshold)) {
-			if (avgWaitTimeFull > avgWaitTimeSelf) {
-				simulationResultsArea.append("Consider adding a FULL checkout line to reduce wait time.\n");
-			} else {
-				simulationResultsArea.append("Consider adding a SELF checkout line to reduce wait time.\n");
-			}
+		// checking if wait times are high 
+		if (isSignificantDifference(avgWaitTimeFull, avgWaitTimeSelf, idealWaitTimeThreshold)) {
+		    if (avgWaitTimeFull > avgWaitTimeSelf) {
+		        simulationResultsArea.append("Consider adding a FULL checkout line to reduce wait time.\n");
+		    } else {
+		        simulationResultsArea.append("Consider adding a SELF checkout line to reduce wait time.\n");
+		    }
 		} else {
-			simulationResultsArea.append("No need to add any lines.\n");
+		    simulationResultsArea.append("No need to add any lines.\n");
 		}
 
-		if (isSignificantDifference(totalTimeNotUsedFull, totalTimeNotUsedSelf, idleTimeThreshold)) {
-			if (totalTimeNotUsedFull > totalTimeNotUsedSelf && fullQueues.size() != 1) {
-				simulationResultsArea.append("Consider removing a FULL checkout line to reduce idle time.\n");
-			} else if (numOfSelfLines != 1) {
-				simulationResultsArea.append("Consider removing a SELF checkout line to reduce idle time.\n");
-			} else {
-				simulationResultsArea.append("No need to remove any lines.\n");
-			}
+		// checking if idle times are high 
+		if (totalTimeNotUsedFull > idealIdleTimeThreshold || totalTimeNotUsedSelf > idealIdleTimeThreshold) {
+		    if (totalTimeNotUsedFull > idealIdleTimeThreshold && totalTimeNotUsedSelf > idealIdleTimeThreshold) {
+		        if (fullQueues.size() != 1 && numOfSelfLines != 1) {
+		            simulationResultsArea.append("Consider removing a FULL checkout line and a SELF checkout line to reduce idle time.\n");
+		        }
+		        else {
+				    simulationResultsArea.append("We cannot remove anymore lines, we MUST ATLEAST have 1 of each.\n");
+				}
+		    } else if (totalTimeNotUsedFull > totalTimeNotUsedSelf && fullQueues.size() != 1) {
+		        simulationResultsArea.append("Consider removing a FULL checkout line to reduce idle time.\n");
+		    } else if (numOfSelfLines != 1) {
+		        simulationResultsArea.append("Consider removing a SELF checkout line to reduce idle time.\n");
+		    } else {
+		        simulationResultsArea.append("No need to remove any lines.\n");
+		    }
 		} else {
-			simulationResultsArea.append("No need to remove any lines.\n");
+		    simulationResultsArea.append("No need to remove any lines.\n");
 		}
 
 	} // end printSimResults
