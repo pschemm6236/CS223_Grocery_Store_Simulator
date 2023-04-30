@@ -123,15 +123,30 @@ public class SimulatorDriver {
 	// - - - - - - - - - - - - - static methods - - - - - - - - - - - - -
 
 	public static ArrayList<Queue> createFullQueues(int full) {
+		
+		// Create a new ArrayList to hold the full queues
 		ArrayList<Queue> fullQ = new ArrayList<Queue>();
+
+		// Initialize a counter to keep track of the number of queues created
 
 		int counter = 0;
 
+		
+		// Loop through the specified number of full queues
 		for (int i = 0; i < full; i++) {
+			
+			
 			String queueName = "";
+			// Generate a name for the queue based on the current counter value
 			if (counter < 26) {
 				queueName = Character.toString((char) ('A' + counter));
-			} else {
+			} 
+			//constructs the queue name for queues that have a suffix. 
+			//It takes the ASCII value of the letter 'A' and adds to it the remainder of (counter - 26) divided by 26. 
+			//This gives the letter that should be added to the queue name. Then it adds the suffix to the end of the queue name. 
+			//Finally, it converts the letter and the suffix to a string using the
+			else {
+				
 				int suffix = ((counter - 26) / 26) + 1;
 				queueName = Character.toString((char) ('A' + (counter - 26) % 26)) + suffix;
 			}
@@ -257,6 +272,7 @@ public class SimulatorDriver {
 
 		int totalTimeNotUsedFull = 0;
 		// loop thru ALL of fullChecouts, accumulate timenotused to variable
+		//also loop thru all full checkouts and add queues and idle time to database 
 		for (int i = 0; i < fullQueues.size(); i++) {
 
 			Queue q = fullQueues.get(i);
@@ -277,20 +293,19 @@ public class SimulatorDriver {
 
 		}
 
-		for (int i = 0; i < self.getQueues().length - 1; i++) {
-
+		//loop thru selfQueues and add selfQueues to database and their idle times
+		for (Queue q : self.getQueues()) {
 			// for appending queues and idle time to DB
 			try { // begin try
 				PreparedStatement stmt = conn.prepareStatement(
 						"INSERT INTO self_queues_idle_time " + "(queue, idle_time) " + "VALUES (?, ?)");
-				stmt.setString(1, self.getLineName(i));
-				stmt.setInt(2, self.getTimeNotUsed(i));
+				stmt.setString(1, q.getLineName());
+				stmt.setInt(2, q.getTimeNotUsed());
 
 				stmt.executeUpdate(); // Execute the insert statement
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-
 		}
 
 		int totalTimeNotUsedSelf = self.getTotalTimeNotUsed();
@@ -451,13 +466,13 @@ public class SimulatorDriver {
 	}
 	
 	
-	//delete data from database 
-	//reset the primary key to 1 
-	public static void clearDatabaseTables() {
+	//method for deleting data from the database and  
+	//resetting the primary key to 1 
+	public static void clearDatabaseTables() { //begin method 
 		
 		checkConnect();
 
-	    try {
+	    try { 
 	        stmt = conn.createStatement();
 
 	        // Delete data from sim_results table
@@ -491,8 +506,10 @@ public class SimulatorDriver {
 	        e.printStackTrace();
 	    }
 		
-	}
+	} //end method 
 
+	//check to see if there is a connection with the SQL server 
+	//also check to see if the statement is null 
 	public static void checkConnect() {
 		if (conn == null) {
 			conn = createConnection();
@@ -507,7 +524,9 @@ public class SimulatorDriver {
 		}
 	}
 
-	public static void databaseMenu(Scanner scan) {
+	
+	//method for controlling the database menu 
+	public static void databaseMenu(Scanner scan) { //begin databaseMenu 
 
 		// for selecting different queuries user can execute
 		boolean more = true;
@@ -541,7 +560,7 @@ public class SimulatorDriver {
 		} // end while
 		scan.close();
 
-	} // end method
+	} // end databaseMenu 
 
 	public static void custSatisfiedDatabase() {
 		checkConnect();
@@ -623,7 +642,9 @@ public class SimulatorDriver {
 
 	}
 
-	public static void fullQueueIdleTimeDatabase() {
+	//method for retrieving the idle time for full queues from the database and 
+	//printing to the console output 
+	public static void fullQueueIdleTimeDatabase() { //begin method 
 		checkConnect();
 
 		String query = "SELECT id, queue, SUM(idle_time) AS total_idle_time FROM full_queues_idle_time GROUP BY queue";
@@ -652,9 +673,12 @@ public class SimulatorDriver {
 		    System.out.println("SQL Exception");
 		    e.printStackTrace();
 		}
-	}
+	} //end method 
 
-	public static void selfQueueIdleTimeDatabase() {
+	
+	//method for retrieving the idle time for self queues from the database and 
+	//printing to the console output  
+	public static void selfQueueIdleTimeDatabase() { //begin method 
 		checkConnect();
 
 		// String query
@@ -690,6 +714,6 @@ public class SimulatorDriver {
 			System.out.println("SQL Exception");
 			e.printStackTrace();
 		}
-	}
+	}//end method 
 
 } // end class SimulatorDriver

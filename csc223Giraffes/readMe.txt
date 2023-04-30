@@ -1,4 +1,7 @@
-This program is simple to run. There are 7 integer values that the user must enter, a double value for the desired percent slower for the self checkout,
+This offers EITHER a GUI or a database user experience. Unfortunately, due to time constraints, we were unable to implement 
+the database functionality with the GUI. If the user elects to use just the GUI, then they need to run the class "runGUIVersionDriver". 
+After the user runs this version of the driver class, the Graphical User Interface window pops up, and the 
+ There are 7 integer values that the user must enter, a double value for the desired percent slower for the self checkout,
 and then the program simulation automatically runs. A user must first enter the desired number of full-checkout and self-checkout lines. Then,
 the user must enter the time values, in order, for the minimum arrival, maximum arrival, minimum service, maximum service, number of customers, and percent slower for the program to simulate. 
 After the user enters the desired input number they want to run the program with time values and checkout line statuses
