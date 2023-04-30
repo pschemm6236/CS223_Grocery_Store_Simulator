@@ -109,10 +109,14 @@ public class SimulatorDriver {
 		printSimResults(customers, fullQueues, selfCheckoutQueue, selfServiceLines);
 		printSimResultsTable(customers);
 
-
 		databaseMenu(scan);
+		
+		clearDatabaseTables();
 
 		closeConnection();
+		
+		System.out.println("Thanks for using our simulation program! ");
+		System.exit(0);
 
 	} // end main
 
@@ -265,7 +269,6 @@ public class SimulatorDriver {
 						"INSERT INTO full_queues_idle_time " + "(queue, idle_time) " + "VALUES (?, ?)");
 				stmt.setString(1, q.getLineName());
 				stmt.setInt(2, q.getTimeNotUsed());
-				
 
 				stmt.executeUpdate(); // Execute the insert statement
 			} catch (SQLException e) {
@@ -275,7 +278,6 @@ public class SimulatorDriver {
 		}
 
 		for (int i = 0; i < self.getQueues().length - 1; i++) {
-
 
 			// for appending queues and idle time to DB
 			try { // begin try
@@ -426,10 +428,7 @@ public class SimulatorDriver {
 			System.out.println("Connection really is from : " + conn.getClass().getName());
 			System.out.println("Connection successful!");
 
-			// clear the table
-			stmt = conn.prepareStatement("DELETE FROM sim_results");
-			stmt.executeUpdate();
-			System.out.println("The table has been cleared.");
+	
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -437,11 +436,10 @@ public class SimulatorDriver {
 		return conn;
 	}
 
-	
-
 	public static void closeConnection() {
 		if (conn != null) {
 			try {
+
 				conn.close();
 				conn = null;
 				// stmt.close();
@@ -450,6 +448,49 @@ public class SimulatorDriver {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	
+	//delete data from database 
+	//reset the primary key to 1 
+	public static void clearDatabaseTables() {
+		
+		checkConnect();
+
+	    try {
+	        stmt = conn.createStatement();
+
+	        // Delete data from sim_results table
+	        //reset the primary key to 1 
+	        stmt.executeUpdate("DELETE FROM sim_results");
+	        stmt.executeUpdate("ALTER TABLE sim_results AUTO_INCREMENT = 1");
+
+	        // Delete data from full_queues_idle_time table
+	        stmt.executeUpdate("DELETE FROM full_queues_idle_time");
+	        stmt.executeUpdate("ALTER TABLE full_queues_idle_time AUTO_INCREMENT = 1");
+
+	        // Delete data from satisfied_customer table
+	        stmt.executeUpdate("DELETE FROM satisfied_customer");
+	        stmt.executeUpdate("ALTER TABLE satisfied_customer AUTO_INCREMENT = 1");
+
+	        
+
+	        // Delete data from dissatisfied_customer table
+	        stmt.executeUpdate("DELETE FROM dissatisfied_customer");
+	        stmt.executeUpdate("ALTER TABLE dissatisfied_customer AUTO_INCREMENT = 1");
+
+	        // Delete data from self_queues_idle_time table
+	        stmt.executeUpdate("DELETE FROM self_queues_idle_time");
+	        stmt.executeUpdate("ALTER TABLE self_queues_idle_time AUTO_INCREMENT = 1");
+	        
+
+	        System.out.println("All tables cleared successfully.");
+
+	    } catch (SQLException e) {
+	        System.out.println("SQL Exception");
+	        e.printStackTrace();
+	    }
+		
 	}
 
 	public static void checkConnect() {
@@ -477,8 +518,9 @@ public class SimulatorDriver {
 
 			System.out.println("1.) print out all satisfied customers");
 			System.out.println("2.) print out all dissatisfed customers");
-			System.out.println("3.) print out all all full queues with idle time greater than 1");
-			System.out.println("4.) print out all self queues with idle time greater than 1");
+			System.out.println("3.) print out all all full queues idle time");
+			System.out.println("4.) print out all self queues idle time");
+			System.out.println("5.) exit the database menu and end the program");
 
 			System.out.println("Choice: ");
 
@@ -488,14 +530,11 @@ public class SimulatorDriver {
 				custSatisfiedDatabase();
 			} else if (choice == 2) {
 				custDissatisfiedDatabase();
-			} 
-			else if (choice == 3) {
+			} else if (choice == 3) {
 				fullQueueIdleTimeDatabase();
-			}
-			else if(choice == 4) {
+			} else if (choice == 4) {
 				selfQueueIdleTimeDatabase();
-			}
-			else {
+			} else {
 				more = false;
 			}
 
@@ -503,11 +542,6 @@ public class SimulatorDriver {
 		scan.close();
 
 	} // end method
-
-	public static void custPrintDatabase() {
-		checkConnect();
-
-	}
 
 	public static void custSatisfiedDatabase() {
 		checkConnect();
@@ -537,8 +571,8 @@ public class SimulatorDriver {
 			} // end while
 
 			if (rs.equals(null)) {
-				System.out.printf("%-3d  %-12d  %-13d  %-14d  %-17d  %-9d  %-7s  %s\n", null, null, null, null,
-						null, null, null, null);
+				System.out.printf("%-3d  %-12d  %-13d  %-14d  %-17d  %-9d  %-7s  %s\n", null, null, null, null, null,
+						null, null, null);
 			}
 		}
 
@@ -549,7 +583,7 @@ public class SimulatorDriver {
 
 	}
 
-	public static void custDissatisfiedDatabase() {
+	public static void custDissatisfiedDatabase() { 
 		checkConnect();
 
 		// String query
@@ -576,8 +610,8 @@ public class SimulatorDriver {
 						departure, wait, queue, dissatisfied);
 			}
 			if (rs.equals(null)) {
-				System.out.printf("%-3d  %-12d  %-13d  %-14d  %-17d  %-9d  %-7s  %s\n", null, null, null, null,
-						null, null, null, null);
+				System.out.printf("%-3d  %-12d  %-13d  %-14d  %-17d  %-9d  %-7s  %s\n", null, null, null, null, null,
+						null, null, null);
 			}
 
 		}
@@ -592,61 +626,70 @@ public class SimulatorDriver {
 	public static void fullQueueIdleTimeDatabase() {
 		checkConnect();
 
-		String query = "SELECT queue, SUM(idle_time) AS total_idle_time FROM full_queues_idle_time GROUP BY queue";
+		String query = "SELECT id, queue, SUM(idle_time) AS total_idle_time FROM full_queues_idle_time GROUP BY queue";
 
-	    try {
-	        stmt = conn.createStatement();
-	        ResultSet rs = stmt.executeQuery(query);
+		try {
+		    stmt = conn.createStatement();
+		    ResultSet rs = stmt.executeQuery(query);
 
-	        System.out.println();
-	        System.out.printf("%-3s  %-12s\n", "queue", "idle_time");
+		    System.out.println();
+		    System.out.printf("%-4s  %-6s  %-12s\n", "id", "queue", "idle_time");
 
-	        while (rs.next()) {
-	            String q = rs.getString("queue");
-	            int t = rs.getInt("total_idle_time");
+		    
+		    while (rs.next()) {
+		    	int id = rs.getInt("id");
+		        String q = rs.getString("queue");
+		        int t = rs.getInt("total_idle_time");
 
-	            System.out.printf("%-3s  %-12d\n", q, t);
-	        }
+		        System.out.printf("%-4d  %-6s  %-12d\n", id, q, t);
+		       
+		    }
 
-	        if (rs.equals(null) ) {
-	            System.out.printf("%-3s  %-12s\n", null, null);
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("SQL Exception");
-	        e.printStackTrace();
-	    }
+		    if (rs.equals(null)) {
+		        System.out.printf("%-4s  %-6s  %-12s\n", null, null, null);
+		    }
+		} catch (SQLException e) {
+		    System.out.println("SQL Exception");
+		    e.printStackTrace();
+		}
 	}
 
 	public static void selfQueueIdleTimeDatabase() {
 		checkConnect();
 
 		// String query
-		String query = "SELECT queue, SUM(idle_time) AS total_idle_time FROM self_queues_idle_time GROUP BY queue";
-		
-		
+		String query = "SELECT id, queue, SUM(idle_time) AS total_idle_time FROM self_queues_idle_time GROUP BY queue";
+
 		try {
 			stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery(query);
 			System.out.println(" ");
-			System.out.printf("%-3s  %-12s", "queue", "idle_time");
+			System.out.printf("%-4s  %-6s  %-12s\n", "id", "queue", "idle_time");
+
+			if (rs.next()) {
+				int id = rs.getInt("id");
+		        String q = rs.getString("queue");
+		        int t = rs.getInt("total_idle_time");
+
+		        System.out.printf("%-4d  %-6s  %-12d\n", id, q, t);
+			}
 
 			while (rs.next()) {
-				String q = rs.getString("queue");
-				int t = rs.getInt("total_idle_time");
+				int id = rs.getInt("id");
+		        String q = rs.getString("queue");
+		        int t = rs.getInt("total_idle_time");
 
-				System.out.printf("%-3s  %-12s\n", q, t);
+		        System.out.printf("%-4d  %-6s  %-12d\n", id, q, t);
 			}
 
 			if (rs.equals(null)) {
-				System.out.printf("%-3d  %-12d", null, null);
-			}
+		        System.out.printf("%-4s  %-6s  %-12s\n", null, null, null);
+		    }
 		} catch (SQLException e) {
 			System.out.println("SQL Exception");
 			e.printStackTrace();
 		}
-		
-		
 	}
-	
+
 } // end class SimulatorDriver
